@@ -1,6 +1,6 @@
-#Tracker
+# Tracker
 
-##Elevator pitch
+## Elevator pitch
 Have you ever wanted to gain muscle or lose fat? The best way to do this is to track what food you eat. With the Tracker application, you will be able to enter in the calories, carbs, fat and protein you consume with each meal. You can also save pre-constructed meals, set goals for yourself, and even compete with friends! Start your fitness journey today with Tracker.
 
 ## Key features
