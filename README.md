@@ -15,7 +15,7 @@ Have you ever wanted to gain muscle or lose fat? The best way to do this is to t
 - Persistent storage daily calories and weight so user can go back and look
 
 ## Design
-
+![image](https://github.com/krewdreele/startup/assets/97317394/ee11bd46-104e-4dc8-8d66-43e606e3ac59)
 
 ## Technologies
 I am going to use the required technologies in the following ways.
