@@ -3,39 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="mainstyle.css" />
     <title>Home</title>
   </head>
   <body>
     <header>
       <h1>Tracker</h1>
-      <a href="profile.html">username</a>
+      <nav>
+        <a href="main.html">Home</a>
+        <a href="goals.html">Goals</a>
+        <a href="meals.html">Meals</a>
+        <a href="log.html">Log</a>
+      </nav>
+      <a id="profile" href="profile.html">username</a>
+      <img src="Portrait.png" />
     </header>
     <main>
-      <h2>Calories</h2>
-      <div>1,350</div>
-      <ul>
-        <li>Protein: 60g</li>
-        <li>Fat: 30g</li>
-        <li>Carbs: 45g</li>
-      </ul>
-      <a href="addfood.html">+</a>
+      <section id="notifications">
+        <h2>Notifications</h2>
+        <p>Spencer ate 1,000 calories!</p>
+        <div class="container">
+          <input type="text" placeholder="comment" />
+          <button>⤴</button>
+        </div>
+        <p>Truman hit his macro goal for today!</p>
+        <div class="container">
+          <input type="text" placeholder="comment" />
+          <button>⤴</button>
+        </div>
+      </section>
 
-      <h2>Notifications</h2>
-      <p>Spencer ate 1,000 calories!</p>
-      <input type="text" class="comment" placeholder="comment" />
-      <button>⤴</button>
-      <p>Truman hit his macro goal for today!</p>
-      <input type="text" class="comment" placeholder="comment" />
-      <button>⤴</button>
-
-      <nav>
-        <menu>
-          <a href="main.html">Home</a>
-          <a href="goals.html">Goals</a>
-          <a href="meals.html">Meals</a>
-          <a href="log.html">Log</a>
-        </menu>
-      </nav>
+      <section id="calories">
+        <h2>Calories</h2>
+        <div>1,350</div>
+        <ul>
+          <li>Protein: 60g</li>
+          <li>Fat: 30g</li>
+          <li>Carbs: 45g</li>
+        </ul>
+        <a href="addfood.html">+</a>
+      </section>
     </main>
     <footer>
       <a href="https://github.com/krewdreele">Drew Keele</a>
