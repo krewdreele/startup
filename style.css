@@ -10,6 +10,10 @@ body{
     height: 100vh;
 }
 
+canvas{
+    position: absolute;
+}
+
 header, footer{
     flex: 1;
     display: flex;
