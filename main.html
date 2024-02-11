@@ -14,6 +14,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
     <title>Home</title>
   </head>
   <body>
@@ -32,18 +38,18 @@
       <div class="section-container">
         <section>
           <h2>Notifications</h2>
-          <section id="notifications">
-            <p>Spencer ate 1,000 calories!</p>
-            <div class="container">
-              <input type="text" placeholder="comment" />
-              <button class="btn btn-info">></button>
+          <div id="notifications">
+            <div class="post">
+              Spencer
+              <img width="30px" src="Portrait.png" />
+              <p>Check out this meal! 1500 calories!</p>
+              <img src="breakfast.jpg" />
+              <div>
+                <input type="text" placeholder="comment" />
+                <button class="btn btn-info">></button>
+              </div>
             </div>
-            <p>Truman hit his macro goal for today!</p>
-            <div class="container">
-              <input type="text" placeholder="comment" />
-              <button class="btn btn-info">></button>
-            </div>
-          </section>
+          </div>
         </section>
       </div>
       <div class="section-container">
@@ -53,10 +59,10 @@
           <p>Protein: 60g</p>
           <p>Fat: 30g</p>
           <p>Carbs: 45g</p>
-          <a class="btn btn-info" href="addfood.html">+</a>
         </section>
       </div>
     </main>
+
     <footer>
       <a href="https://github.com/krewdreele">Drew Keele</a>
     </footer>

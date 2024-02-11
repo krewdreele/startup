@@ -74,6 +74,12 @@ section > p{
     flex-direction: column;
     align-items: flex-start;
     font-size: medium;
+    overflow-y: scroll;
+    width: 400px;
+}
+
+.post>img {
+    max-width: 300px;
 }
 
 #meals {
@@ -89,6 +95,7 @@ section > p{
     width: 100%;
     overflow-x:scroll;
     margin: 10px;
+    align-items: center;
 }
 
 .card {
@@ -100,6 +107,9 @@ section > p{
     max-height: 50%;
 }
 
+button {
+    margin: 10px;
+}
 
 a {
     margin: 20px;
@@ -111,11 +121,6 @@ b {
     font-size: larger;
 }
 
-.container {
-    display: flex;
-    margin: 10px;
-    max-height: 25px;
-}
 
 .container > button {
     font-size: small;
@@ -125,12 +130,34 @@ b {
 .accordian-section{
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 
 footer {
     flex: 1;
     border-top: thin lightgray solid;
     display: flex;
+}
+
+.add-meal-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 200px;
+    justify-content: left;
+}
+
+input {
+    margin: 3px 0px;
+    border: thin solid gray;
+    border-radius: 6px;
+}
+
+#upload {
+    background-color: white;
+    border: thin solid gray;
+    border-radius: 10px;;
+    margin-left: 40px;
+    padding: 20px;
 }
 
 

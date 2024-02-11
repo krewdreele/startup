@@ -70,27 +70,36 @@
                 type="button"
                 class="btn btn-info"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModalLive"
+                data-bs-target="#meal-info"
               >
                 Info
               </button>
             </div>
           </div>
+          <button
+            style="height: 50%"
+            type="button"
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#add-meal"
+          >
+            +
+          </button>
         </div>
       </div>
     </main>
     <div
       class="modal fade"
-      id="exampleModalLive"
+      id="meal-info"
       tabindex="-1"
-      aria-labelledby="exampleModalLiveLabel"
+      aria-labelledby="meal-info-label"
       style="display: none"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLiveLabel">Info</h5>
+            <h5 class="modal-title" id="meal-info-label">Info</h5>
             <button
               type="button"
               class="btn-close"
@@ -105,14 +114,49 @@
             <p>Carbs: 25g</p>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary">Edit</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="add-meal"
+      tabindex="-1"
+      aria-labelledby="add-meal-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="add-meal-label">Add a meal</h5>
             <button
               type="button"
-              class="btn btn-primary-outline"
+              class="btn-close"
               data-bs-dismiss="modal"
-            >
-              Edit
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="add-meal-container">
+              <div>
+                <input type="text" placeholder="name" required />
+                <input type="text" placeholder="calories" required />
+                <input type="text" placeholder="protein" required />
+                <input type="text" placeholder="fat" required />
+                <input type="text" placeholder="carbs" required />
+              </div>
+              <img id="upload" src="upload.png" width="150px" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary">
+              Cancel
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary">Add</button>
           </div>
         </div>
       </div>
