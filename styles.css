@@ -14,7 +14,7 @@ body {
 header,
 main, 
 footer {
-    margin: 15px;
+    margin: 0px 15px 5px 15px;
 }
 
 header {
@@ -44,16 +44,17 @@ img {
 }
 
 main {
-    flex: 5;
+    flex: 6;
     display: flex;
     flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
 }
 
 .section-container {
     border: thin lightgray solid;
     border-radius: 15px;
-    margin: 0px 100px;
-    flex: 1;
+    flex: 0 400px;
+    margin: 15px 0px;
 }
 
 section {
@@ -87,6 +88,7 @@ section > p{
     justify-content: space-evenly;
     width: 100%;
     overflow-x:scroll;
+    margin: 10px;
 }
 
 .card {
@@ -118,6 +120,11 @@ b {
 .container > button {
     font-size: small;
     align-items: center;
+}
+
+.accordian-section{
+    display: flex;
+    flex-direction: row;
 }
 
 footer {
