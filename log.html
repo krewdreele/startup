@@ -20,6 +20,7 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="calendar.css" />
     <title>Log</title>
   </head>
   <body>
@@ -35,134 +36,293 @@
       <img src="Portrait.png" />
     </header>
     <main>
-      <div class="accordion" id="accordionExample" style="width: 70vw">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button
-              class="accordion-button"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-              aria-expanded="true"
-              aria-controls="collapseOne"
-            >
-              Day #3 - 01 / 03 / 24
+      <div class="datepicker">
+        <div class="datepicker-top">
+          <div class="btn-group"></div>
+          <div class="month-selector">
+            <button class="arrow">
+              <i class="material-icons">&leftarrow;</i>
             </button>
-          </h2>
-          <div
-            id="collapseOne"
-            class="accordion-collapse collapse show"
-            aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="accordion-body">
-              <div class="accordian-section">
-                <div>
-                  <h4>Goals</h4>
-                  <p>Calories: 2000 ✓</p>
-                  <p>Protein: 40g X</p>
-                  <p>Fat: 20g ✓</p>
-                  <p>Carbs: 65g ✓</p>
-                </div>
-                <div>
-                  <h4>Meals</h4>
-                  <p>Breakfast: Eggs n Toast</p>
-                  <p>Lunch: Turkey Sandwich meal</p>
-                  <p>Dinner: Steak meal</p>
-                  <p>Snacks:</p>
-                  <ul>
-                    <li>Chips</li>
-                    <li>Gummy bears</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <span class="month-name">December 2020</span>
+            <button class="arrow">
+              <i class="material-icons">&rightarrow;</i>
+            </button>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-            >
-              Day #2 - 01 / 02 / 24
-            </button>
-          </h2>
-          <div
-            id="collapseTwo"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#accordionExample"
+        <div class="datepicker-calendar">
+          <span class="day">Mo</span>
+          <span class="day">Tu</span>
+          <span class="day">We</span>
+          <span class="day">Th</span>
+          <span class="day">Fr</span>
+          <span class="day">Sa</span>
+          <span class="day">Su</span>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
           >
-            <div class="accordion-body">
-              <div class="accordian-section">
-                <div>
-                  <h4>Goals</h4>
-                  <p>Calories: 2000 ✓</p>
-                  <p>Protein: 40g X</p>
-                  <p>Fat: 20g ✓</p>
-                  <p>Carbs: 65g ✓</p>
-                </div>
-                <div>
-                  <h4>Meals</h4>
-                  <p>Breakfast: Eggs n Toast</p>
-                  <p>Lunch: Turkey Sandwich meal</p>
-                  <p>Dinner: Steak meal</p>
-                  <p>Snacks:</p>
-                  <ul>
-                    <li>Chips</li>
-                    <li>Gummy bears</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+            30
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            1
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            2
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            3
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            4
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            5
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            6
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            7
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            8
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            9
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            10
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            11
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            12
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            13
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            14
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            15
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            16
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            17
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            18
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            19
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            20
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            21
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            22
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            23
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            24
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            25
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            26
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            27
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            28
+          </button>
+          <button
+            class="btn btn-outline-success"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            29
+          </button>
+          <button
+            class="date current day"
+            data-bs-toggle="modal"
+            data-bs-target="#calendar-date"
+          >
+            30
+          </button>
+          <button class="btn btn-outline-secondary">31</button>
+          <button class="btn btn-outline-secondary">1</button>
+          <button class="btn btn-outline-secondary">2</button>
+          <button class="btn btn-outline-secondary">3</button>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingThree">
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              Day #1 - 01 / 01 / 24
-            </button>
-          </h2>
-          <div
-            id="collapseThree"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingThree"
-            data-bs-parent="#accordionExample"
-          >
-            <div class="accordion-body">
-              <div class="accordian-section">
-                <div>
-                  <h4>Goals</h4>
-                  <p>Calories: 2000 ✓</p>
-                  <p>Protein: 40g X</p>
-                  <p>Fat: 20g ✓</p>
-                  <p>Carbs: 65g ✓</p>
-                </div>
-                <div>
-                  <h4>Meals</h4>
-                  <p>Breakfast: Eggs n Toast</p>
-                  <p>Lunch: Turkey Sandwich meal</p>
-                  <p>Dinner: Steak meal</p>
-                  <p>Snacks:</p>
-                  <ul>
-                    <li>Chips</li>
-                    <li>Gummy bears</li>
-                  </ul>
-                </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="calendar-date"
+        tabindex="-1"
+        aria-labelledby="calendar-date-label"
+        style="display: none"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="calendar-date-label">Date...</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <h4>Goals</h4>
+                <p>Calories: 2000 ✓</p>
+                <p>Protein: 40g X</p>
+                <p>Fat: 20g ✓</p>
+                <p>Carbs: 65g ✓</p>
+              </div>
+              <div>
+                <h4>Meals</h4>
+                <p>Breakfast: Eggs n Toast</p>
+                <p>Lunch: Turkey Sandwich meal</p>
+                <p>Dinner: Steak meal</p>
+                <p>Snacks:</p>
+                <ul>
+                  <li>Chips</li>
+                  <li>Gummy bears</li>
+                </ul>
               </div>
             </div>
+            <div class="modal-footer"></div>
           </div>
         </div>
       </div>

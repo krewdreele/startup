@@ -1,0 +1,49 @@
+button {
+    font: inherit;
+    cursor: pointer;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+.datepicker-top {
+    margin-bottom: 1rem;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    margin-top: -.5rem;
+}
+
+.month-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background-color: #FFF;
+    border-radius: 12px;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0 0 2px 0 rgba(#000, .25), 0 0 10px 0 rgba(#000, .15);
+}
+
+.month-name {
+    font-weight: 600;
+}
+
+.datepicker-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-row-gap: 1rem;
+}
+
+
