@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap');
 
-:root {
+body, header, footer{
     font-family: Oxygen, sans-serif;
     font-size: larger;
 }
@@ -158,6 +158,36 @@ input {
     border-radius: 10px;;
     margin-left: 40px;
     padding: 20px;
+}
+
+#profile {
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile-header, #profile-content {
+    min-width: 300px;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: row;
+}
+
+#profile-header {
+    flex: 1;
+}
+
+#profile-header > img, p{
+    margin: 10px;
+}
+
+#profile-content {
+    flex: 3;
+}
+
+#biography {
+    padding: 10px;
+    max-width: 500px;
+    margin: 15px;
 }
 
 
