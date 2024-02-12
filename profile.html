@@ -34,20 +34,177 @@
     </header>
     <main id="profile">
       <div class="section-container" id="profile-header">
-        <div>
+        <div class="container">
           <img src="Portrait.png" />
           <p>Username</p>
+          <button
+            type="button"
+            class="btn btn-link"
+            data-bs-toggle="modal"
+            data-bs-target="#friends"
+            style="text-decoration: none"
+          >
+            Friends
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#edit-profile"
+          >
+            Edit
+          </button>
+          <button type="button" class="btn btn-secondary">Settings</button>
         </div>
         <div id="biography">
-          This is where the user's biography would go...fidsfbjhsad bjfkhsdfk
-          jbadjhsbf nfjsdbf kabfjdbadsjk sdhbjfjksdb fhsdbfh fkshdbh hjb dbfj
-          bsdbfbj dsfb jsbfhj h
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
         </div>
       </div>
       <div class="section-container" id="profile-content">
-        <section></section>
+        <section>
+          <h2>Meals</h2>
+          <div class="card-container">
+            <div class="card">
+              <img src="breakfast.jpg" />
+              <title>Eggs n Toast</title>
+              <rect width="100%" height="100%" fill="#20c997"></rect>
+
+              <div class="card-body">
+                <h5>Breakfast 1</h5>
+                <p class="card-text">
+                  Sunny side up eggs, grilled hashbrowns, toast with butter and
+                  black coffee.
+                </p>
+                <button
+                  type="button"
+                  class="btn btn-info"
+                  data-bs-toggle="modal"
+                  data-bs-target="#meal-info"
+                >
+                  Info
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
+    <div
+      class="modal fade"
+      id="meal-info"
+      tabindex="-1"
+      aria-labelledby="meal-info-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="meal-info-label">Info</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Calories: 800</p>
+            <p>Protein: 36g</p>
+            <p>Fat: 14g</p>
+            <p>Carbs: 25g</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary">Edit</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="edit-profile"
+      tabindex="-1"
+      aria-labelledby="edit-profile-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="edit-profile-label">Edit Profile</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="username" />
+            <input type="text" placeholder="biography" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="friends"
+      tabindex="-1"
+      aria-labelledby="friends-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="edit-profile-label">Friends</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="search" />
+            <ul id="friends-list">
+              <li>
+                <img width="30px" src="Portrait.png" />
+                <a>Spencer</a>
+              </li>
+              <li>
+                <img width="30px" src="Portrait.png" />
+                <a>Truman</a>
+              </li>
+              <li>
+                <img width="30px" src="Portrait.png" />
+                <a>Lexi</a>
+              </li>
+              <li>
+                <img width="30px" src="Portrait.png" />
+                <a>Brandon</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer>
       <a href="https://github.com/krewdreele">Drew Keele</a>

@@ -43,6 +43,10 @@ img {
     margin: 10px;
 }
 
+header > img {
+    height:50px;
+}
+
 main {
     flex: 6;
     display: flex;
@@ -122,11 +126,6 @@ b {
 }
 
 
-.container > button {
-    font-size: small;
-    align-items: center;
-}
-
 .accordian-section{
     display: flex;
     flex-direction: row;
@@ -169,7 +168,7 @@ input {
     min-width: 300px;
     max-width: 1000px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 #profile-header {
@@ -190,4 +189,15 @@ input {
     margin: 15px;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+}
+#friends-list {
+    list-style: none;
+}
+#friends-list > li > img, a{
+    
+    margin: 5px;
+}
 
