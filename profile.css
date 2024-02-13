@@ -1,0 +1,47 @@
+#profile {
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile-header,
+#profile-content {
+    min-width: 300px;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-header {
+    flex: 1;
+}
+
+#profile-header>img,
+p {
+    margin: 10px;
+}
+
+#profile-content {
+    flex: 3;
+}
+
+#biography {
+    padding: 10px;
+    max-width: 500px;
+    margin: 15px;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+#friends-list {
+    list-style: none;
+}
+
+#friends-list>li>img,
+a {
+
+    margin: 5px;
+}
+

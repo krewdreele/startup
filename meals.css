@@ -1,0 +1,22 @@
+#meals {
+    align-items: center;
+    font-size: medium;
+}
+
+#meals>.card-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: space-evenly;
+    width: 100%;
+    overflow-x: scroll;
+    margin: 10px;
+    align-items: center;
+}
+
+.add-meal-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 200px;
+    justify-content: left;
+}

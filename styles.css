@@ -86,31 +86,6 @@ section > p{
     max-width: 300px;
 }
 
-#meals {
-    align-items: center;
-    font-size: medium;
-}
-
-#meals > .card-container {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    justify-content: space-evenly;
-    width: 100%;
-    overflow-x:scroll;
-    margin: 10px;
-    align-items: center;
-}
-
-.card {
-    width: 300px;
-}
-
-.card > img {
-    max-width: 100%;
-    max-height: 50%;
-}
-
 button {
     margin: 10px;
 }
@@ -126,23 +101,10 @@ b {
 }
 
 
-.accordian-section{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
 footer {
     flex: 1;
     border-top: thin lightgray solid;
     display: flex;
-}
-
-.add-meal-container {
-    display: flex;
-    flex-direction: row;
-    max-width: 200px;
-    justify-content: left;
 }
 
 input {
@@ -159,45 +121,12 @@ input {
     padding: 20px;
 }
 
-#profile {
-    flex-direction: column;
-    align-items: center;
+.card {
+    width: 300px;
 }
 
-#profile-header, #profile-content {
-    min-width: 300px;
-    max-width: 1000px;
-    display: flex;
-    flex-direction: column;
-}
-
-#profile-header {
-    flex: 1;
-}
-
-#profile-header > img, p{
-    margin: 10px;
-}
-
-#profile-content {
-    flex: 3;
-}
-
-#biography {
-    padding: 10px;
-    max-width: 500px;
-    margin: 15px;
-}
-
-.container {
-    display: flex;
-    align-items: center;
-}
-#friends-list {
-    list-style: none;
-}
-#friends-list > li > img, a{
-    
-    margin: 5px;
+.card>img {
+    max-width: 100%;
+    max-height: 50%;
 }
 
