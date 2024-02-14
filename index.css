@@ -14,17 +14,38 @@ canvas{
     position: absolute;
 }
 
-header, footer{
-    flex: 1;
+header{
+    flex: 2;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
 }
 
 main{
-    flex: 2;
+    flex: 4;
     display:flex;
     text-align: center;
     justify-content: center;
+}
+
+p{
+    margin: 20px;
+}
+
+footer {
+    flex: 1;
+    font-size: small;
+}
+
+#account-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+}
+
+#account-info > input {
+    margin: 15px;
 }
 

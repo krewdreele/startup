@@ -31,8 +31,10 @@
         <a href="meals.html">Meals</a>
         <a href="log.html">Log</a>
       </nav>
-      <a href="profile.html">username</a>
-      <img src="Portrait.png" />
+      <div>
+        <a href="profile.html">username</a>
+        <img src="Portrait.png" />
+      </div>
     </header>
     <main>
       <div class="section-container">
@@ -59,10 +61,45 @@
           <p>Protein: 60g</p>
           <p>Fat: 30g</p>
           <p>Carbs: 45g</p>
+          <button
+            type="button"
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#add-food"
+          >
+            +
+          </button>
         </section>
       </div>
     </main>
-
+    <div
+      class="modal fade"
+      id="add-food"
+      tabindex="-1"
+      aria-labelledby="add-food-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="add-food-label">Search Your Meals</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="start typing..." />
+            <button type="button" class="btn btn-outline-primary">
+              &#128269;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>
       <a href="https://github.com/krewdreele">Drew Keele</a>
     </footer>

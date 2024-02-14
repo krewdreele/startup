@@ -1,4 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap');
+@media screen and (max-width: 600px) {
+    header{
+        width: 90%;
+    }
+
+    header > h1 {
+        margin: 5px;
+    }
+
+    header > div {
+        display: flex;
+        flex-direction: column;
+        margin-right: 15px;
+    }
+
+    header > nav {
+        display: flex;
+        flex-direction: column;
+    }
+
+    header > nav > a{
+        margin: 5px;
+    }
+
+    div > a {
+        margin: 5px;
+    }
+}
 
 body, header, footer{
     font-family: Oxygen, sans-serif;
@@ -79,7 +107,6 @@ section > p{
     align-items: flex-start;
     font-size: medium;
     overflow-y: scroll;
-    width: 400px;
 }
 
 .post>img {
@@ -116,9 +143,8 @@ input {
 #upload {
     background-color: white;
     border: thin solid gray;
-    border-radius: 10px;;
+    border-radius: 10px;
     margin-left: 40px;
-    padding: 20px;
 }
 
 .card {
