@@ -1,3 +1,17 @@
+@media screen and (max-width: 600px){
+    .add-meal-container > div {
+        width: 45%;
+    }
+    
+    .add-meal-container > div > input{
+           width:100%;
+        }
+
+    #upload {
+        width: 50%;
+    }
+}
+
 #meals {
     align-items: center;
     font-size: medium;
@@ -17,5 +31,9 @@
 .add-meal-container {
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: space-between;
+}
+
+.add-meal-container > div > input {
+    max-width: 60%;
 }
