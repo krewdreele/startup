@@ -52,3 +52,17 @@ For this deliverable I built out the structure of my application using HTML.
 - DB/Login - Input box and submit button for login. I want to store meal information, goals and a daily log info in the DB. These all have separate html pages.
 - WebSocket - The notifications give the user updates on what their friends are eating and allows for comments / replies.
 - Third party - If there is a way to use a third party service to look up foods and add them automatically that would be cool to implement.
+
+## CSS Deliverable
+
+Styled the website into its final appearance using CSS and Bootstrap.
+
+- Header footer and main content sections
+- Navigation buttons styled with bootstrap
+- Added modals to a lot of buttons to have pop-ups look good
+- Responsive to different window sizes
+- Added a calendar to easily keep track of personal log
+- Third party service will call openfoodfacts.org to get nutrition information about different food
+- Application elements have good contrast and whitespace
+- Consistent font used throughout the whole website
+- Images will be uploaded by the user but there are a few example images throughout the website
