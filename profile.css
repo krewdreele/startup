@@ -21,7 +21,7 @@
     flex: 1;
 }
 
-#profile-header>img,
+#profile-header > div >img,
 p {
     margin: 10px;
 }
