@@ -32,37 +32,26 @@
     <main>
       <div>
         <p>Please login to continue</p>
-        <form method="get" action="main.html">
-          <input type="text" id="username" placeholder="username" required />
-          <input
-            type="password"
-            id="password"
-            placeholder="password"
-            required
-          />
-          <button
-            type="submit"
-            class="btn btn-info"
-            onclick="authenticateUser()"
-          >
-            Login
-          </button>
+        <input type="text" id="username" placeholder="username" required />
+        <input type="password" id="password" placeholder="password" required />
+        <button type="submit" class="btn btn-info" onclick="authenticateUser()">
+          Login
+        </button>
 
-          <p>Don't have an account?</p>
-          <button
-            type="button"
-            class="btn btn-info"
-            data-bs-target="#create-account"
-            data-bs-toggle="modal"
-          >
-            Create Account
-          </button>
-        </form>
+        <p>Don't have an account?</p>
+        <button
+          type="button"
+          class="btn btn-info"
+          data-bs-target="#create-account-modal"
+          data-bs-toggle="modal"
+        >
+          Create Account
+        </button>
       </div>
     </main>
     <div
       class="modal fade"
-      id="create-account"
+      id="create-account-modal"
       tabindex="-1"
       aria-labelledby="create-account-label"
       style="display: none"
@@ -83,21 +72,45 @@
           </div>
           <div class="modal-body">
             <div id="account-info">
-              First name:
-              <input type="text" placeholder="first name" id="fn" required />
-              Last name:
-              <input type="text" placeholder="last name" id="ln" required />
-              Username:
-              <input type="text" placeholder="username" id="un" required />
-              Password:
-              <input type="password" placeholder="password" id="pw" required />
-              Confirm:
-              <input
-                type="password"
-                placeholder="confirm password"
-                id="confirm"
-                required
-              />
+              <div>
+                First name:
+                <input type="text" placeholder="first name" id="fn" required />
+              </div>
+              <div>
+                Last name:
+                <input type="text" placeholder="last name" id="ln" required />
+              </div>
+
+              <div>
+                Username:
+                <input type="text" placeholder="username" id="un" required />
+              </div>
+
+              <div>
+                Password:
+                <input
+                  type="password"
+                  placeholder="password"
+                  id="pw"
+                  required
+                />
+              </div>
+              <div>
+                Confirm:
+                <input
+                  type="password"
+                  placeholder="confirm password"
+                  id="confirm"
+                  required
+                />
+              </div>
+
+              <div
+                class="alert alert-danger"
+                role="alert"
+                id="create-profile-alert"
+                style="display: none; font-size: medium"
+              ></div>
             </div>
           </div>
           <div class="modal-footer">
@@ -108,7 +121,12 @@
             >
               Cancel
             </button>
-            <button type="submit" class="btn btn-success" onclick="addUser()">
+            <button
+              type="submit"
+              class="btn btn-success"
+              onclick="addUser()"
+              data-bs-dismiss="none"
+            >
               Create
             </button>
           </div>

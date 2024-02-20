@@ -42,10 +42,12 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: left;
-    max-width: 300px;
+    max-width: 90%;
 }
 
-#account-info > input {
-    margin: 15px;
+#account-info > div {
+    margin: 5px;
+    display: flex;
+    justify-content: space-around;
 }
 
