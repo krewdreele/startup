@@ -37,7 +37,6 @@
         <button type="submit" class="btn btn-info" onclick="authenticateUser()">
           Login
         </button>
-
         <p>Don't have an account?</p>
         <button
           type="button"
@@ -47,6 +46,12 @@
         >
           Create Account
         </button>
+        <div
+          class="alert alert-danger"
+          role="alert"
+          id="login-alert"
+          style="display: none; font-size: medium"
+        ></div>
       </div>
     </main>
     <div
@@ -74,26 +79,21 @@
             <div id="account-info">
               <div>
                 First name:
-                <input type="text" placeholder="first name" id="fn" required />
+                <input type="text" placeholder="first name" id="fn" />
               </div>
               <div>
                 Last name:
-                <input type="text" placeholder="last name" id="ln" required />
+                <input type="text" placeholder="last name" id="ln" />
               </div>
 
               <div>
                 Username:
-                <input type="text" placeholder="username" id="un" required />
+                <input type="text" placeholder="username" id="un" />
               </div>
 
               <div>
                 Password:
-                <input
-                  type="password"
-                  placeholder="password"
-                  id="pw"
-                  required
-                />
+                <input type="password" placeholder="password" id="pw" />
               </div>
               <div>
                 Confirm:
@@ -101,10 +101,8 @@
                   type="password"
                   placeholder="confirm password"
                   id="confirm"
-                  required
                 />
               </div>
-
               <div
                 class="alert alert-danger"
                 role="alert"
