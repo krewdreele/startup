@@ -60,10 +60,10 @@
       <div class="section-container">
         <section>
           <h2>Daily Goals</h2>
-          <p>Calories: 2400</p>
-          <p>Protein: 150g</p>
-          <p>Fat: 45g</p>
-          <p>Carbs: 100g</p>
+          <p id="calorie-daily-goal">Calories: 2400</p>
+          <p id="protein-daily-goal">Protein: 150g</p>
+          <p id="fat-daily-goal">Fat: 45g</p>
+          <p id="carb-daily-goal">Carbs: 100g</p>
           <button
             type="button"
             class="btn btn-info"
@@ -158,35 +158,50 @@
             <ul>
               <label for="calories">Calories</label>
               <li>
-                <select name="ltgt">
+                <select name="ltgt" id="ltgt-calorie">
                   <option value="less than">less than</option>
-                  <option value="greater than">greater than</option>
+                  <option value="more than">more than</option>
                 </select>
-                <input type="text" placeholder="calories" name="calories" />
+                <input
+                  type="text"
+                  placeholder="calories"
+                  name="calories"
+                  id="calorie-in"
+                />
               </li>
               <label for="protein">Protein</label>
               <li>
-                <select name="ltgt">
+                <select name="ltgt" id="ltgt-protein">
                   <option value="less than">less than</option>
-                  <option value="greater than">greater than</option>
+                  <option value="more than">more than</option>
                 </select>
-                <input type="text" placeholder="grams" name="protein" />
+                <input
+                  type="text"
+                  placeholder="grams"
+                  name="protein"
+                  id="protein-in"
+                />
               </li>
               <label for="fat">Fat</label>
               <li>
-                <select name="ltgt">
+                <select name="ltgt" id="ltgt-fat">
                   <option value="less than">less than</option>
-                  <option value="greater than">greater than</option>
+                  <option value="more than">more than</option>
                 </select>
-                <input type="text" placeholder="grams" name="fat" />
+                <input type="text" placeholder="grams" name="fat" id="fat-in" />
               </li>
               <label for="carbs">Carbohydrates</label>
               <li>
-                <select name="ltgt">
+                <select name="ltgt" id="ltgt-carb">
                   <option value="less than">less than</option>
-                  <option value="greater than">greater than</option>
+                  <option value="more than">more than</option>
                 </select>
-                <input type="text" placeholder="grams" name="carbs" />
+                <input
+                  type="text"
+                  placeholder="grams"
+                  name="carbs"
+                  id="carb-in"
+                />
               </li>
             </ul>
             <div class="modal-footer">
@@ -197,7 +212,14 @@
               >
                 Cancel
               </button>
-              <button type="button" class="btn btn-primary">Save</button>
+              <button
+                data-bs-dismiss="modal"
+                type="button"
+                class="btn btn-primary"
+                onclick="saveDailyGoal()"
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
