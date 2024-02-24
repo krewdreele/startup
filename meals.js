@@ -70,12 +70,92 @@ function getInfo(element){
 
     let info = JSON.parse(localStorage.getItem(name.textContent));
 
-    document.getElementById("info-cals").textContent = `Calories: ${info.calories}`;
-    document.getElementById("info-protein").textContent = `Protein: ${info.protein}g`;
-    document.getElementById("info-fat").textContent = `Fat: ${info.fat}g`;
-    document.getElementById("info-carbs").textContent = `Carbs: ${info.carbs}g`;
+    document.getElementById("meal-info-label").textContent = name.textContent;
+    document.getElementById("info-cals").textContent = `${info?.calories ?? "N/A"}`;
+    document.getElementById("info-protein").textContent = `${info?.protein ?? "N/A"}`;
+    document.getElementById("info-fat").textContent = `${info?.fat ?? "N/A"}`;
+    document.getElementById("info-carbs").textContent = `${info?.carbs ?? "N/A"}`;
 }
 
 function editInfo(element){
-    //TODO
+    document.getElementById("save-info-button").style.display = "block";
+    element.style.display = "none";
+
+    let calorie_info = document.getElementById("info-cals");
+    let protein_info = document.getElementById("info-protein");
+    let fat_info = document.getElementById("info-fat");
+    let carb_info = document.getElementById("info-carbs");
+
+    let calorie_input = document.createElement("input");
+    calorie_input.setAttribute("type", "text");
+    calorie_input.setAttribute("id", "cal-in");
+    calorie_input.style.width = "50%";
+    calorie_input.value = calorie_info.textContent;
+
+    let protein_input = document.createElement("input");
+    protein_input.setAttribute("type", "text");
+    protein_input.setAttribute("id", "protein-in");
+    protein_input.style.width = "50%";
+    protein_input.value = protein_info.textContent;
+
+    let fat_input = document.createElement("input");
+    fat_input.setAttribute("type", "text");
+    fat_input.setAttribute("id", "fat-in");
+    fat_input.style.width = "50%";
+    fat_input.value = fat_info.textContent;
+
+    let carb_input = document.createElement("input");
+    carb_input.setAttribute("type", "text");
+    carb_input.setAttribute("id", "carb-in");
+    carb_input.style.width = "50%";
+    carb_input.value = carb_info.textContent;
+
+    let body = element.parentElement.parentElement.children[1];
+
+    body.replaceChild(calorie_input, calorie_info);
+    body.replaceChild(protein_input, protein_info);
+    body.replaceChild(fat_input, fat_info);
+    body.replaceChild(carb_input, carb_info);
+}
+
+function saveInfo(element){
+    document.getElementById("edit-button").style.display = "block";
+    element.style.display = "none";
+
+
+    let name = document.getElementById("meal-info-label");
+    let calorie_input = document.getElementById("cal-in");
+    let protein_input = document.getElementById("protein-in");
+    let fat_input = document.getElementById("fat-in");
+    let carb_input = document.getElementById("carb-in");
+
+    localStorage.setItem(name.textContent, JSON.stringify({
+            "calories" : calorie_input.value,
+            "protein" : protein_input.value,
+            "fat" : fat_input.value,
+            "carbs" : carb_input.value
+        }))
+
+    let calories = document.createElement("p");
+    calories.setAttribute("id", "info-cals");
+    calories.textContent = calorie_input.value;
+
+    let protein = document.createElement("p");
+    protein.setAttribute("id", "info-protein");
+    protein.textContent = protein_input.value;
+
+    let fat = document.createElement("p");
+    fat.setAttribute("id", "info-fat");
+    fat.textContent = fat_input.value;
+
+    let carbs = document.createElement("p");
+    carbs.setAttribute("id", "info-carbs");
+    carbs.textContent = carb_input.value;
+
+    let body = element.parentElement.parentElement.children[1];
+
+    body.replaceChild(calories, calorie_input);
+    body.replaceChild(protein, protein_input);
+    body.replaceChild(fat, fat_input);
+    body.replaceChild(carbs, carb_input);
 }

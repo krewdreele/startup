@@ -115,15 +115,35 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            <p id="info-cals">Calories: 800</p>
-            <p id="info-protein">Protein: 36g</p>
-            <p id="info-fat">Fat: 14g</p>
-            <p id="info-carbs">Carbs: 25g</p>
+          <div class="modal-body" style="display: flex; flex-direction: column">
+            Calories:
+            <p id="info-cals"></p>
+            Protein:
+            <p id="info-protein"></p>
+            Fat:
+            <p id="info-fat"></p>
+            Carbs:
+            <p id="info-carbs"></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary">Edit</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onclick="editInfo(this)"
+              id="edit-button"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              onclick="saveInfo(this)"
+              id="save-info-button"
+              style="display: none"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
