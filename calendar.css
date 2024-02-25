@@ -47,7 +47,7 @@
     box-shadow: 0 0 2px 0 rgba(#000, .25), 0 0 10px 0 rgba(#000, .15);
 }
 
-.month-name {
+#month-name {
     font-weight: 600;
 }
 
