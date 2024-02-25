@@ -71,17 +71,17 @@
           <h2>Calories</h2>
           <b id="total-cals">1,350</b>
           <div style="display: flex">
-            <label for="total-protein">Protein: </label>
+            <p>Protein:</p>
             <p id="total-protein">60</p>
             <p>g</p>
           </div>
           <div style="display: flex">
-            <label for="total-fat">Fat: </label>
+            <p>Fat:</p>
             <p id="total-fat">60</p>
             <p>g</p>
           </div>
           <div style="display: flex">
-            <label for="total-carbs">Carbohydrates: </label>
+            <p>Carbohydrates:</p>
             <p id="total-carbs">60</p>
             <p>g</p>
           </div>
@@ -91,7 +91,6 @@
             data-bs-toggle="modal"
             data-bs-target="#add-food"
             style="width: 20%; margin: 20px"
-            onclick="addFood()"
           >
             +
           </button>
@@ -118,10 +117,15 @@
             ></button>
           </div>
           <div class="modal-body">
-            <input type="text" placeholder="start typing..." />
-            <button type="button" class="btn btn-outline-primary">
-              &#128269;
-            </button>
+            <input
+              type="text"
+              placeholder="start typing..."
+              id="search-input"
+            />
+            <div
+              id="meal-search-container"
+              style="display: flex; flex-direction: column; width: 50%"
+            ></div>
           </div>
           <div class="modal-footer">
             <button
@@ -135,7 +139,7 @@
               type="button"
               class="btn btn-primary"
               data-bs-dismiss="modal"
-              onclick=""
+              onclick="addMeal()"
             >
               Add
             </button>

@@ -1,4 +1,5 @@
 document.getElementById("username").textContent = localStorage.getItem("this_user");
+
 function saveMainGoal(){
     let start_date_in = document.getElementById("start-date-in").value;
     let start_weight_in = document.getElementById("start-weight-in").value;
