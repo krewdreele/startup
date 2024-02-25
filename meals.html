@@ -24,7 +24,7 @@
     <script defer src="meals.js"></script>
     <title>Meals</title>
   </head>
-  <body>
+  <body onload="loadMeals()">
     <header>
       <h1>Tracker</h1>
       <nav>
@@ -41,40 +41,138 @@
 
     <main>
       <div id="meals">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="meals.html"
-              >Breakfast</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Lunch</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Dinner</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">Snacks</a>
-          </li>
-        </ul>
-        <div id="card-container">
-          <div class="card">
-            <img src="breakfast.jpg" />
-            <div class="card-body">
-              <h5>Breakfast 1</h5>
-              <p class="card-text">
-                Sunny side up eggs, grilled hashbrowns, toast with butter and
-                black coffee.
-              </p>
+        <div class="bd-example">
+          <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
               <button
+                class="nav-link active"
+                id="breakfast-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#Breakfast"
                 type="button"
-                class="btn btn-info"
-                data-bs-toggle="modal"
-                data-bs-target="#meal-info"
-                onclick="getInfo(this)"
+                role="tab"
+                aria-controls="breakfast"
+                aria-selected="true"
+                onclick="changeMode(this)"
               >
-                Info
+                Breakfast
               </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="lunch-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#Lunch"
+                type="button"
+                role="tab"
+                aria-controls="lunch"
+                aria-selected="false"
+                onclick="changeMode(this)"
+              >
+                Lunch
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="dinner-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#Dinner"
+                type="button"
+                role="tab"
+                aria-controls="dinner"
+                aria-selected="false"
+                onclick="changeMode(this)"
+              >
+                Dinner
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="Breakfast"
+              role="tabpanel"
+              aria-labelledby="breakfast-tab"
+            >
+              <div class="card-container">
+                <div class="card">
+                  <img src="breakfast.jpg" />
+                  <div class="card-body">
+                    <h5>Breakfast 1</h5>
+                    <p class="card-text">
+                      Sunny side up eggs, grilled hashbrowns, toast with butter
+                      and black coffee.
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-info"
+                      data-bs-toggle="modal"
+                      data-bs-target="#meal-info"
+                      onclick="getInfo(this)"
+                    >
+                      Info
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="Lunch"
+              role="tabpanel"
+              aria-labelledby="lunch-tab"
+            >
+              <div class="card-container">
+                <div class="card">
+                  <img src="breakfast.jpg" />
+                  <div class="card-body">
+                    <h5>Breakfast 1</h5>
+                    <p class="card-text">
+                      Sunny side up eggs, grilled hashbrowns, toast with butter
+                      and black coffee.
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-info"
+                      data-bs-toggle="modal"
+                      data-bs-target="#meal-info"
+                      onclick="getInfo(this)"
+                    >
+                      Info
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="Dinner"
+              role="tabpanel"
+              aria-labelledby="dinner-tab"
+            >
+              <div class="card-container">
+                <div class="card">
+                  <img src="breakfast.jpg" />
+                  <div class="card-body">
+                    <h5>Breakfast 1</h5>
+                    <p class="card-text">
+                      Sunny side up eggs, grilled hashbrowns, toast with butter
+                      and black coffee.
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-info"
+                      data-bs-toggle="modal"
+                      data-bs-target="#meal-info"
+                      onclick="getInfo(this)"
+                    >
+                      Info
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -98,6 +196,7 @@
     ></div>
     <div
       class="modal fade"
+      data-bs-backdrop="static"
       id="meal-info"
       tabindex="-1"
       aria-labelledby="meal-info-label"
@@ -113,6 +212,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onclick="cancelEdit(this)"
             ></button>
           </div>
           <div class="modal-body" style="display: flex; flex-direction: column">

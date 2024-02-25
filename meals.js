@@ -1,8 +1,71 @@
-document.getElementById("username").textContent = localStorage.getItem("this_user");
+let mode = "Breakfast";
+
+function changeMode(element){
+    mode = element.textContent.trim();
+}
+
+function loadMeals(){
+    document.getElementById("username").textContent = localStorage.getItem("this_user");
+
+    let breakfast_container = document.getElementById("Breakfast").children[0];
+    let lunch_container = document.getElementById("Lunch").children[0];
+    let dinner_container = document.getElementById("Dinner").children[0];
+
+    for (var i in localStorage) {
+
+        if(typeof localStorage[i] != "string"){continue;}
+        item = JSON.parse(localStorage[i]);
+        
+        if(!item.hasOwnProperty("type")){
+            continue;
+        }
+        if(item.type == "Breakfast"){
+            createCard(item, breakfast_container);
+        }
+        else if(item.type == "Lunch"){
+            createCard(item, lunch_container);
+        }
+        else if(item.type == "Dinner"){
+            createCard(item, dinner_container);
+        }
+    }
+}
+
+function createCard(item, container){
+
+    let card = document.createElement("div");
+    card.className = "card";
+
+    let html_img = document.createElement("img");
+    
+    let body = document.createElement("div");
+    body.className = "card-body";
+    
+    let meal_name = document.createElement("h5");
+    meal_name.textContent = item.name;
+
+    let meal_desc = document.createElement("p");
+    meal_desc.className = "card-text";
+    meal_desc.textContent = item.description;
+
+    let button = document.createElement("button");
+    button.className = "btn btn-info";
+    button.setAttribute("data-bs-target", "#meal-info");
+    button.setAttribute("data-bs-toggle", "modal");
+    button.setAttribute("onclick", "getInfo(this)");
+    button.textContent = "Info";
+
+    card.appendChild(html_img);
+    card.appendChild(body);
+    body.appendChild(meal_name);
+    body.appendChild(meal_desc);
+    body.appendChild(button);
+
+    container.appendChild(card);
+}
+
 
 function saveMeal(){
-    let container = document.getElementById("add-meal-container");
-
     let name = document.getElementById("name");
     let desc = document.getElementById("desc");
     let calories = document.getElementById("cals");
@@ -12,7 +75,7 @@ function saveMeal(){
     let img = document.getElementById("meal-img");
 
     if(name.value && desc.value && calories.value && protein.value && fat.value && carbs.value){
-        let card_container = document.getElementById("card-container");
+        let card_container = document.getElementById(mode).children[0];
 
         let card = document.createElement("div");
         card.className = "card";
@@ -45,24 +108,33 @@ function saveMeal(){
         card_container.appendChild(card);
 
         localStorage.setItem(name.value, JSON.stringify({
+            "type" : mode,
+            "name" : name.value,
+            "description" : desc.value,
             "calories" : calories.value,
             "protein" : protein.value,
             "fat" : fat.value,
             "carbs" : carbs.value
         }))
-        
+
+        name.textContent = "";
+        desc.textContent = "";
+        calories.textContent = "";
+        protein.textContent = "";
+        fat.textContent = "";
+        carbs.textContent = "";
     }
     else{
         alert();
     }
 }
 
-async function alert(){
+function alert(){
     meal_alert = document.getElementById("meal-alert");
     meal_alert.style.display = "block";
     meal_alert.textContent = "Please fill out all the fields!"
 
-    await setTimeout(() => {meal_alert.style.display = "none";}, 2500);
+    setTimeout(() => {meal_alert.style.display = "none";}, 2500);
 }
 
 function getInfo(element){
@@ -118,10 +190,47 @@ function editInfo(element){
     body.replaceChild(carb_input, carb_info);
 }
 
+function cancelEdit(element){
+    if(document.getElementById("save-info-button").style.display === "none") return;
+
+    document.getElementById("edit-button").style.display = "block";
+    document.getElementById("save-info-button").style.display = "none";
+
+    let name = document.getElementById("meal-info-label");
+    let info = JSON.parse(localStorage[name.textContent])
+
+    let calories = document.createElement("p");
+    calories.setAttribute("id", "info-cals");
+    calories.textContent = info.calories;
+
+    let protein = document.createElement("p");
+    protein.setAttribute("id", "info-protein");
+    protein.textContent = info.protein;
+
+    let fat = document.createElement("p");
+    fat.setAttribute("id", "info-fat");
+    fat.textContent = info.fat;
+
+    let carbs = document.createElement("p");
+    carbs.setAttribute("id", "info-carbs");
+    carbs.textContent = info.carbs;
+
+    let body = element.parentElement.parentElement.children[1];
+
+    let calorie_input = document.getElementById("cal-in");
+    let protein_input = document.getElementById("protein-in");
+    let fat_input = document.getElementById("fat-in");
+    let carb_input = document.getElementById("carb-in");
+
+    body.replaceChild(calories, calorie_input);
+    body.replaceChild(protein, protein_input);
+    body.replaceChild(fat, fat_input);
+    body.replaceChild(carbs, carb_input);
+}
+
 function saveInfo(element){
     document.getElementById("edit-button").style.display = "block";
     element.style.display = "none";
-
 
     let name = document.getElementById("meal-info-label");
     let calorie_input = document.getElementById("cal-in");
@@ -129,7 +238,12 @@ function saveInfo(element){
     let fat_input = document.getElementById("fat-in");
     let carb_input = document.getElementById("carb-in");
 
+    let old_item = JSON.parse(localStorage.getItem(name.textContent));
+
     localStorage.setItem(name.textContent, JSON.stringify({
+            "type" : mode,
+            "name" : name.textContent,
+            "description" : old_item.description,
             "calories" : calorie_input.value,
             "protein" : protein_input.value,
             "fat" : fat_input.value,
