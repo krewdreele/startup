@@ -13,8 +13,12 @@ function loadMeals(){
 
     for (var i in localStorage) {
 
-        if(typeof localStorage[i] != "string"){continue;}
-        item = JSON.parse(localStorage[i]);
+        try{
+            item = JSON.parse(localStorage[i]);
+        }
+        catch(error){
+            continue;
+        }
         
         if(!item.hasOwnProperty("type")){
             continue;
