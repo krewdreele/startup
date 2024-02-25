@@ -163,3 +163,7 @@ input {
     max-height: 50%;
 }
 
+#total-protein, #total-fat, #total-carbs {
+    margin: 0 5px;
+}
+

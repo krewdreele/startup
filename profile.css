@@ -45,9 +45,11 @@ p {
     list-style: none;
 }
 
-#friends-list>li>img,
-a {
+#friends-list>li>a {
+    margin: 5px;
+}
 
+#friends-list>li>img {
     margin: 5px;
 }
 
