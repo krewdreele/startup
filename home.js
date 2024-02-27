@@ -46,6 +46,7 @@ function selectMeal(element){
     }
     element.className = "btn btn-info";
     selectedMeal = element;
+    input.value = element.textContent;
 }
 
 function addMeal(){

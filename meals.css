@@ -42,12 +42,12 @@ main {
     align-items: left;
 }
 
-#add-meal-container>div>input{
-    margin: 15px;
+#add-meal-container>div>label{
+    margin: 0px 0px 10px;
 }
 
 #add-meal-container>div>form {
-    margin: 15px;
+    margin: 15px 0px;
     width: 50%;
 }
 

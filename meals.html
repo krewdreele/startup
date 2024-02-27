@@ -221,17 +221,25 @@
                 <label for="protein"
                   >Protein:<input type="text" id="protein"
                 /></label>
-                <label for="fat">Fat:<input type="text" id="fat" /></label>
+                <label for="fat" style="width: 55%"
+                  >Fat:<input type="text" id="fat"
+                /></label>
                 <label for="carbs"
                   >Carbs:<input type="text" id="carbs"
                 /></label>
                 <form action="/action_page.php">
+                  <label for="filename">Image</label>
                   <input type="file" id="meal-image" name="filename" />
                 </form>
               </div>
               <div>
+                <label>Search for food:</label>
                 <input type="text" placeholder="search" />
-                <button type="button" class="btn btn-outline-primary">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 50%"
+                >
                   &#128269;
                 </button>
                 <ul>

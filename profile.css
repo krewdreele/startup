@@ -21,8 +21,11 @@
     flex: 1;
 }
 
-#profile-header > div >img,
-p {
+#profile-header > div > img{
+    margin: 10px;
+}
+
+#profile-header>div>p{
     margin: 10px;
 }
 
@@ -52,4 +55,28 @@ p {
 #friends-list>li>img {
     margin: 5px;
 }
+
+#create-post-container {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+#create-post-container > input, textarea {
+    margin: 0px 0px 20px;
+}
+
+#post-image-button {
+    margin: 0px;
+    font-size: medium;
+}
+
+label {
+    display: block;
+}
+
+p{
+    margin: 0px;
+}
+
 
