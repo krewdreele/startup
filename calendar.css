@@ -51,6 +51,11 @@
     font-weight: 600;
 }
 
+.week{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
 @media screen and (min-width: 650px) {
     .datepicker-calendar {
             display: grid;

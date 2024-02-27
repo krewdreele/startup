@@ -34,7 +34,7 @@
         <a href="log.html">Log</a>
       </nav>
       <div>
-        <a href="profile.html">username</a>
+        <a href="profile.html" id="username">username</a>
         <img src="Portrait.png" />
       </div>
     </header>
@@ -43,16 +43,16 @@
         <div class="datepicker-top">
           <div class="btn-group"></div>
           <div class="month-selector">
-            <button class="arrow">
+            <button class="arrow" onclick="prevMonth()">
               <i class="material-icons">&leftarrow;</i>
             </button>
-            <span id="month-name">December</span>
-            <button class="arrow">
+            <span id="month-name"></span>
+            <button class="arrow" onclick="nextMonth()">
               <i class="material-icons">&rightarrow;</i>
             </button>
           </div>
         </div>
-        <div class="datepicker-calendar" id="calendar">
+        <div class="week">
           <span class="day">Mo</span>
           <span class="day">Tu</span>
           <span class="day">We</span>
@@ -60,223 +60,8 @@
           <span class="day">Fr</span>
           <span class="day">Sa</span>
           <span class="day">Su</span>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            1
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            2
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            3
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            4
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            5
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            6
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            7
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            8
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            9
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            10
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            11
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            12
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            13
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            14
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            15
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            16
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            17
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            18
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            19
-          </button>
-          <button
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            20
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            21
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            22
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            23
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            24
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            25
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            26
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            27
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            28
-          </button>
-          <button
-            class="btn btn-outline-success"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            29
-          </button>
-          <button
-            class="date current day"
-            data-bs-toggle="modal"
-            data-bs-target="#calendar-date"
-          >
-            30
-          </button>
-          <button class="btn btn-outline-secondary">31</button>
-          <button class="btn btn-outline-secondary">1</button>
-          <button class="btn btn-outline-secondary">2</button>
-          <button class="btn btn-outline-secondary">3</button>
         </div>
+        <div class="datepicker-calendar" id="calendar"></div>
       </div>
 
       <div
@@ -290,7 +75,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="calendar-date-label">Date...</h5>
+              <h5 class="modal-title" id="calendar-date-label"></h5>
               <button
                 type="button"
                 class="btn-close"
