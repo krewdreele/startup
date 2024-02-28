@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="goals.css" />
     <title>Goals</title>
   </head>
-  <body>
+  <body onload="loadGoals()">
     <header>
       <h1>Tracker</h1>
       <nav>
@@ -42,10 +42,10 @@
       <div class="section-container">
         <section id="main-goal-section">
           <h2>Main Goal</h2>
-          <p id="start-weight">Start weight: 245 lbs</p>
-          <p id="start-date">Start date: Janurary 1st, 2024</p>
-          <p id="goal-weight">Goal weight: 200 lbs</p>
-          <p id="goal-date">Goal date: June 1st, 2024</p>
+          <p id="start-weight">Start weight:</p>
+          <p id="start-date">Start date:</p>
+          <p id="goal-weight">Goal weight:</p>
+          <p id="goal-date">Goal date:</p>
           <button
             type="button"
             class="btn btn-info"
@@ -60,15 +60,16 @@
       <div class="section-container">
         <section>
           <h2>Daily Goals</h2>
-          <p id="calorie-daily-goal">Calories: 2400</p>
-          <p id="protein-daily-goal">Protein: 150g</p>
-          <p id="fat-daily-goal">Fat: 45g</p>
-          <p id="carb-daily-goal">Carbs: 100g</p>
+          <p id="calorie-daily-goal">Calories:</p>
+          <p id="protein-daily-goal">Protein:</p>
+          <p id="fat-daily-goal">Fat:</p>
+          <p id="carb-daily-goal">Carbs:</p>
           <button
             type="button"
             class="btn btn-info"
             data-bs-toggle="modal"
             data-bs-target="#edit-daily-goal"
+            onclick="editDailyGoal()"
           >
             Edit
           </button>
