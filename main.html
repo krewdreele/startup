@@ -23,7 +23,7 @@
     <script defer src="home.js"></script>
     <title>Home</title>
   </head>
-  <body>
+  <body onload="onStart()">
     <header>
       <h1>Tracker</h1>
       <nav>
@@ -103,6 +103,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onclick="clear()"
             ></button>
           </div>
           <div class="modal-body">
@@ -121,6 +122,7 @@
               type="button"
               class="btn btn-outline-secondary"
               data-bs-dismiss="modal"
+              onclick="clear()"
             >
               Cancel
             </button>

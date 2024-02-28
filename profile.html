@@ -21,10 +21,11 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
+    <script defer src="home.js"></script>
     <script defer src="profile.js"></script>
     <title>Profile</title>
   </head>
-  <body>
+  <body onload="loadPosts()">
     <header>
       <h1>Tracker</h1>
       <nav>
@@ -75,7 +76,7 @@
       <div class="section-container" id="profile-content">
         <section>
           <h2>Posts</h2>
-          <p>Looks like you don't have any posts yet...</p>
+          <div id="posts"></div>
           <button
             type="button"
             class="btn btn-info"
@@ -86,6 +87,12 @@
           </button>
         </section>
       </div>
+      <div
+        class="alert alert-danger"
+        role="alert"
+        id="post-alert"
+        style="display: none; font-size: medium"
+      ></div>
     </main>
     <div
       class="modal fade"
@@ -104,6 +111,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onclick="clearPostInput()"
             ></button>
           </div>
           <div class="modal-body" id="create-post-container">
@@ -129,10 +137,16 @@
               type="button"
               class="btn btn-outline-secondary"
               data-bs-dismiss="modal"
+              onclick="clearPostInput()"
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-success" onclick="post()">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              onclick="post()"
+            >
               Post
             </button>
           </div>
@@ -282,6 +296,39 @@
           Cancel
         </button>
         <a class="btn btn-success" href="index.html">Logout</a>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      data-bs-backdrop="static"
+      id="meal-info"
+      tabindex="-1"
+      aria-labelledby="meal-info-label"
+      style="display: none"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="meal-info-label">Info</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" style="display: flex; flex-direction: column">
+            Calories:
+            <p id="info-cals"></p>
+            Protein:
+            <p id="info-protein"></p>
+            Fat:
+            <p id="info-fat"></p>
+            Carbs:
+            <p id="info-carbs"></p>
+          </div>
+        </div>
       </div>
     </div>
 
