@@ -66,3 +66,21 @@ Styled the website into its final appearance using CSS and Bootstrap.
 - Application elements have good contrast and whitespace
 - Consistent font used throughout the whole website
 - Images will be uploaded by the user but there are a few example images throughout the website
+
+## JavaScript Deliverable
+
+Added the basic functionality to the website using javascript.
+
+- Create account with password verification
+- Login with username and password
+- Feed will contain websocket posts from other user's (friends)
+- Add food to your daily calorie / macro counter by clicking the plus sign and searching through your meals
+- Update main goal and daily goals
+- Add a meal for breakfast, lunch or dinner
+- Third party service will provide info automatically for different foods
+- Calendar is now automated and set to this year (2024)
+- Still need to have the log pull up the actual goals achieved (will implement with database)
+- Profile can now add posts
+- Still need to figure out how to add pictures (to meals or posts)
+- Profile still needs a few things (edit, light/dark mode, add a friend)
+- Need to figure out how to navigate to other user's profiles (fill out new html doc for user?)
