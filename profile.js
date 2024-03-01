@@ -18,6 +18,9 @@ function loadPosts() {
       posts.appendChild(post);
     }
   }
+
+  document.getElementById("username").textContent =
+    localStorage.getItem("this_user");
 }
 
 function createPostHtml(description, meal, new_post) {

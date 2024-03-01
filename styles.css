@@ -59,6 +59,7 @@ h1 {
 
 nav {
     flex: 1;
+    display: flex;
 }
 
 img {
@@ -66,8 +67,8 @@ img {
     background-color: lightgray;
 }
 
-header>a {
-    margin: 10px;
+header>nav>a {
+    margin: 0px 20px;
 }
 
 header > div >img {
@@ -125,7 +126,6 @@ button {
 }
 
 a {
-    margin: 20px;
     text-decoration: none;
 }
 
