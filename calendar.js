@@ -1,6 +1,5 @@
-document.getElementById("username").textContent =
-  localStorage.getItem("this_user");
-
+let user = JSON.parse(localStorage.getItem("this-user"));
+document.getElementById("username").textContent = user.username;
 class Month {
   constructor(name, start_day, num_days, id) {
     this.name = name;

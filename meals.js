@@ -1,27 +1,19 @@
 let mode = "Breakfast";
+let user = JSON.parse(localStorage.getItem("this-user"));
 
 function changeMode(element) {
   mode = element.textContent.trim();
 }
 
 function loadMeals() {
-  document.getElementById("username").textContent =
-    localStorage.getItem("this_user");
+  document.getElementById("username").textContent = user.username;
 
   let breakfast_container = document.getElementById("Breakfast").children[0];
   let lunch_container = document.getElementById("Lunch").children[0];
   let dinner_container = document.getElementById("Dinner").children[0];
 
-  for (var i in localStorage) {
-    try {
-      item = JSON.parse(localStorage[i]);
-    } catch (error) {
-      continue;
-    }
-
-    if (!item.hasOwnProperty("type")) {
-      continue;
-    }
+  for (let i in user.meals) {
+    item = JSON.parse(user.meals[i]);
     if (item.type == "Breakfast") {
       createCard(item, breakfast_container);
     } else if (item.type == "Lunch") {
@@ -113,8 +105,7 @@ function saveMeal() {
 
     card_container.appendChild(card);
 
-    localStorage.setItem(
-      name.value,
+    user.meals.push(
       JSON.stringify({
         type: mode,
         name: name.value,
@@ -125,6 +116,8 @@ function saveMeal() {
         carbs: carbs.value,
       })
     );
+
+    localStorage.setItem("this-user", JSON.stringify(user));
 
     name.value = "";
     desc.value = "";
@@ -253,20 +246,23 @@ function saveInfo(element) {
   let fat_input = document.getElementById("fat-in");
   let carb_input = document.getElementById("carb-in");
 
-  let old_item = JSON.parse(localStorage.getItem(name.textContent));
+  for (let i in user.meals) {
+    let item = user.meals[i];
+    let old_item = 0;
+    if (item.name === name.textContent) {
+      old_item = i;
+    }
+  }
 
-  localStorage.setItem(
-    name.textContent,
-    JSON.stringify({
-      type: mode,
-      name: name.textContent,
-      description: old_item.description,
-      calories: calorie_input.value,
-      protein: protein_input.value,
-      fat: fat_input.value,
-      carbs: carb_input.value,
-    })
-  );
+  user.meals[old_item].push({
+    type: mode,
+    name: name.textContent,
+    description: old_item.description,
+    calories: calorie_input.value,
+    protein: protein_input.value,
+    fat: fat_input.value,
+    carbs: carb_input.value,
+  });
 
   let calories = document.createElement("p");
   calories.setAttribute("id", "info-cals");

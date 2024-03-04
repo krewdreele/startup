@@ -1,32 +1,21 @@
-function onStart() {
-  document.getElementById("username").textContent =
-    localStorage.getItem("this_user");
-  updateTotals();
-}
-
+let user = JSON.parse(localStorage.getItem("this-user"));
 let date = new Date();
 
 let input = document.getElementById("search-input");
 let meals = [];
 let selectedMeal = null;
 
-for (var i in localStorage) {
-  item = localStorage[i];
-
-  try {
-    item = JSON.parse(item);
-  } catch (error) {
-    continue;
-  }
-
-  if (!item.hasOwnProperty("type")) {
-    continue;
-  }
-
+for (let i in user.meals) {
+  item = JSON.parse(user.meals[i]);
   meals.push(item);
 }
 
 input.onkeyup = searchMeals;
+
+function onStart() {
+  document.getElementById("username").textContent = user.username;
+  updateTotals();
+}
 
 function searchMeals() {
   let searchList = meals.filter((meal) => {
@@ -34,7 +23,7 @@ function searchMeals() {
   });
   let container = document.getElementById("meal-search-container");
   container.innerText = "";
-  for (var i in searchList) {
+  for (let i in searchList) {
     let el = document.createElement("button");
     el.textContent = searchList[i].name;
     el.className = "btn btn-outline-info";
@@ -45,7 +34,7 @@ function searchMeals() {
 
 function selectMeal(element) {
   let container = document.getElementById("meal-search-container");
-  for (var i in container.children) {
+  for (let i in container.children) {
     container.children[i].className = "btn btn-outline-info";
   }
   element.className = "btn btn-info";
@@ -55,22 +44,17 @@ function selectMeal(element) {
 
 function addMeal() {
   if (selectedMeal != null) {
-    let meal_info = JSON.parse(localStorage.getItem(selectedMeal.textContent));
+    let meal_info = meals.find(
+      (meal) => meal.name === selectedMeal.textContent
+    );
 
-    let total_calories = localStorage.getItem("total-cals") ?? 0;
-    let total_protein = localStorage.getItem("total-protein") ?? 0;
-    let total_fat = localStorage.getItem("total-fat") ?? 0;
-    let total_carbs = localStorage.getItem("total-carbs") ?? 0;
+    user.total_calories =
+      Number(user.total_calories) + Number(meal_info.calories);
+    user.total_protein = Number(user.total_protein) + Number(meal_info.protein);
+    user.total_fat = Number(user.total_fat) + Number(meal_info.fat);
+    user.total_carbs = Number(user.total_carbs) + Number(meal_info.carbs);
 
-    total_calories = Number(total_calories) + Number(meal_info.calories);
-    total_protein = Number(total_protein) + Number(meal_info.protein);
-    total_fat = Number(total_fat) + Number(meal_info.fat);
-    total_carbs = Number(total_carbs) + Number(meal_info.carbs);
-
-    localStorage.setItem("total-cals", total_calories);
-    localStorage.setItem("total-protein", total_protein);
-    localStorage.setItem("total-fat", total_fat);
-    localStorage.setItem("total-carbs", total_carbs);
+    localStorage.setItem("this-user", JSON.stringify(user));
 
     updateTotals();
     clear();
@@ -78,14 +62,10 @@ function addMeal() {
 }
 
 function updateTotals() {
-  document.getElementById("total-cals").textContent =
-    localStorage.getItem("total-cals") ?? 0;
-  document.getElementById("total-protein").textContent =
-    localStorage.getItem("total-protein") ?? 0;
-  document.getElementById("total-fat").textContent =
-    localStorage.getItem("total-fat") ?? 0;
-  document.getElementById("total-carbs").textContent =
-    localStorage.getItem("total-carbs") ?? 0;
+  document.getElementById("total-cals").textContent = user.total_calories;
+  document.getElementById("total-protein").textContent = user.total_protein;
+  document.getElementById("total-fat").textContent = user.total_fat;
+  document.getElementById("total-carbs").textContent = user.total_carbs;
 }
 
 function clear() {

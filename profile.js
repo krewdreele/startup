@@ -1,14 +1,15 @@
-function loadPosts() {
+function loadProfile() {
   let posts = document.getElementById("posts");
-  let num_posts = localStorage.getItem("num-posts");
-  if (num_posts == 0) {
-    posts.appendChild(
-      (document.createElement("p").textContent =
-        "Looks like you don't have any posts yet...")
-    );
+  let num_posts = user.posts.length;
+
+  if (num_posts === 0) {
+    let no_posts = document.createElement("p");
+    no_posts.setAttribute("id", "no-posts");
+    no_posts.textContent = "Looks like you don't have any posts yet...";
+    posts.appendChild(no_posts);
   } else {
-    for (let i = 1; i <= num_posts; i++) {
-      let post_info = JSON.parse(localStorage.getItem(i));
+    for (let i = 0; i < num_posts; i++) {
+      let post_info = JSON.parse(user.posts[i]);
       let post = createPostHtml(
         post_info.desc,
         post_info?.meal ?? "none",
@@ -19,8 +20,10 @@ function loadPosts() {
     }
   }
 
-  document.getElementById("username").textContent =
-    localStorage.getItem("this_user");
+  document.getElementById("username").textContent = user.username;
+
+  document.getElementById("biography").textContent =
+    user.biography ?? "No biography found. Please create one!";
 }
 
 function createPostHtml(description, meal, new_post) {
@@ -28,7 +31,7 @@ function createPostHtml(description, meal, new_post) {
   post.className = "post";
 
   let username = document.createElement("a");
-  username.textContent = localStorage.getItem("this_user");
+  username.textContent = user.username;
   username.setAttribute("href", "profile.html"); // this will need to be fixed later
   post.appendChild(username);
 
@@ -37,23 +40,21 @@ function createPostHtml(description, meal, new_post) {
   post.appendChild(desc);
 
   if (meal != "none") {
-    let item = JSON.parse(localStorage.getItem(meal));
+    let item = meals.find((x) => x.name === meal);
+    console.log(item);
     createCard(item, post);
   }
 
   if (new_post) {
-    let num_posts = Number(localStorage.getItem("num-posts") ?? 0);
-    num_posts += 1;
-    localStorage.setItem("num-posts", num_posts);
-
-    localStorage.setItem(
-      num_posts,
+    user.posts.push(
       JSON.stringify({
-        user: username.textContent,
+        name: username.textContent,
         desc: desc.textContent,
         meal: meal ?? "none",
       })
     );
+
+    localStorage.setItem("this-user", JSON.stringify(user));
   }
 
   return post;
@@ -71,13 +72,16 @@ function post() {
       alert.style.display = "none";
     }, 2500);
   } else {
-    if (selectedMeal != null) {
-      var meal_info = JSON.parse(
-        localStorage.getItem(selectedMeal.textContent)
-      );
-    }
-    let post = createPostHtml(post_desc.value, meal_info?.name ?? "none", true);
     let posts = document.getElementById("posts");
+    if (document.getElementById("no-posts")) {
+      document.getElementById("no-posts").style.display = "none";
+    }
+
+    let post = createPostHtml(
+      post_desc.value,
+      selectedMeal?.textContent ?? "none",
+      true
+    );
     posts.appendChild(post);
 
     clearPostInput();
@@ -119,7 +123,7 @@ function createCard(item, container) {
 function getInfo(element) {
   let name = element.parentElement.children[0];
 
-  let info = JSON.parse(localStorage.getItem(name.textContent));
+  let info = meals.find((x) => x.name === name.textContent);
 
   document.getElementById("meal-info-label").textContent = name.textContent;
   document.getElementById("info-cals").textContent = `${
@@ -136,4 +140,33 @@ function clearPostInput() {
   document.getElementById("post-desc").value = "";
   input.value = "";
   document.getElementById("meal-search-container").textContent = "";
+}
+
+function editProfile() {
+  let user_in = document.getElementById("username-input");
+  let bio_in = document.getElementById("bio-input");
+
+  user_in.value = user.username;
+  if (user.biography) {
+    bio_in.textContent = user.biography;
+  } else {
+    bio_in.setAttribute("placeholder", "Enter your bio here...");
+  }
+}
+
+function saveEdit() {
+  let user_in = document.getElementById("username-input");
+  let bio_in = document.getElementById("bio-input");
+
+  user.username = user_in.value;
+  user.biography = bio_in.value;
+
+  localStorage.setItem("this-user", JSON.stringify(user));
+
+  document.getElementById("username").textContent = user_in.value;
+  document.getElementById("biography").textContent = bio_in.value;
+
+  let num_posts = localStorage.getItem("num-posts") ?? 0;
+
+  for (let i = 1; i <= num_posts; i++) {}
 }
