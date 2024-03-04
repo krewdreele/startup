@@ -10,8 +10,7 @@
     align-items: center;
 }
 
-#profile-header,
-#profile-content {
+#profile-header{
     max-width: 90%;
     display: flex;
     flex-direction: column;
@@ -38,8 +37,7 @@
 #posts {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
-    max-width: 100%;
+    justify-content: space-evenly;
 }
 
 #posts>div {
