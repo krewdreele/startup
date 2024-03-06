@@ -108,7 +108,6 @@ function loadGoals() {
     goal_date: "none",
   };
 
-  console.log(main_goal);
   document.getElementById("start-date").textContent =
     "Start date: " + main_goal.start_date;
   document.getElementById("start-weight").textContent =
