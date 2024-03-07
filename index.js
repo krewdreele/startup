@@ -1,3 +1,22 @@
+class User {
+  constructor(first, last, username, password) {
+    this.first = first;
+    this.last = last;
+    this.username = username;
+    this.password = password;
+    this.biography = "";
+    this.meals = [];
+    this.log = [];
+    this.posts = [];
+    this.main_goal = null;
+    this.daily_goal = null;
+    this.total_calories = 0;
+    this.total_protein = 0;
+    this.total_fat = 0;
+    this.total_carbs = 0;
+  }
+}
+
 const express = require("express");
 const app = express();
 
@@ -20,7 +39,7 @@ app.use(`/api`, apiRouter);
     -- Endpoints --
 
     create account (post/user)
-    login (get/auth)
+    login (create auth token) (post/auth)
     get user (get/user)
 
     create meal (post/meal)
@@ -45,15 +64,21 @@ apiRouter.post("/user", (_req, res) => {
   res.status(200).send();
 });
 
-// GetScores
-apiRouter.get("/scores", (_req, res) => {
-  res.send(scores);
-});
+// Login
+apiRouter.post("/auth", (_req, res) => {
+  user = users.find((el) => {
+    if (el.username === _req.body.username) {
+      return el;
+    }
+  });
 
-// SubmitScore
-apiRouter.post("/score", (req, res) => {
-  scores = updateScores(req.body, scores);
-  res.send(scores);
+  if (!user) {
+    res.status(400).send("bad request");
+  } else if (_req.body.password === user.password) {
+    res.status(200).send("token");
+  } else {
+    res.status(400).send("bad request");
+  }
 });
 
 // Return the application's default page if the path is unknown

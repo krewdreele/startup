@@ -17,17 +17,28 @@ class User {
   }
 }
 
-function authenticateUser() {
-  let username = document.getElementById("username");
-  let password = document.getElementById("password");
-  let pw = password.value; //Get password from database
+async function authenticateUser() {
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
   let login_alert = document.getElementById("login-alert");
   login_alert.style.display = "none";
 
-  if (password.value != pw || password.value == "" || pw == null) {
+  if (password === "" || username === "") {
+    login_alert.style.display = "block";
+    login_alert.textContent = "Please enter your username and password!";
+    return;
+  }
+
+  const response = await fetch("api/auth", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username: username, password: password }),
+  });
+
+  if (response.status === 400) {
     login_alert.style.display = "block";
     login_alert.textContent = "Incorrect username or password";
-  } else {
+  } else if (response.status === 200) {
     document.location.href = "main.html";
   }
 }
