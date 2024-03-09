@@ -5,21 +5,27 @@ function changeMode(element) {
   mode = element.textContent.trim();
 }
 
-function loadMeals() {
+async function loadMeals() {
   document.getElementById("username").textContent = user.username;
 
   let breakfast_container = document.getElementById("Breakfast").children[0];
   let lunch_container = document.getElementById("Lunch").children[0];
   let dinner_container = document.getElementById("Dinner").children[0];
 
-  for (let i in user.meals) {
-    item = JSON.parse(user.meals[i]);
-    if (item.type == "Breakfast") {
-      createCard(item, breakfast_container);
-    } else if (item.type == "Lunch") {
-      createCard(item, lunch_container);
-    } else if (item.type == "Dinner") {
-      createCard(item, dinner_container);
+  let response = await fetch(`api/meals?user=${user.username}`);
+
+  if (response.status === 200) {
+    let meals = await response.json();
+
+    for (let i in meals) {
+      item = meals[i];
+      if (item.type == "Breakfast") {
+        createCard(item, breakfast_container);
+      } else if (item.type == "Lunch") {
+        createCard(item, lunch_container);
+      } else if (item.type == "Dinner") {
+        createCard(item, dinner_container);
+      }
     }
   }
 }
@@ -56,7 +62,7 @@ function createCard(item, container) {
   container.appendChild(card);
 }
 
-function saveMeal() {
+async function saveMeal() {
   let name = document.getElementById("name");
   let desc = document.getElementById("desc");
   let calories = document.getElementById("cals");
@@ -105,19 +111,21 @@ function saveMeal() {
 
     card_container.appendChild(card);
 
-    user.meals.push(
-      JSON.stringify({
-        type: mode,
-        name: name.value,
-        description: desc.value,
-        calories: calories.value,
-        protein: protein.value,
-        fat: fat.value,
-        carbs: carbs.value,
-      })
-    );
+    let request = {
+      type: mode,
+      name: name.value,
+      description: desc.value,
+      calories: calories.value,
+      protein: protein.value,
+      fat: fat.value,
+      carbs: carbs.value,
+    };
 
-    localStorage.setItem("this-user", JSON.stringify(user));
+    const response = await fetch(`api/meal?user=${user.username}`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(request),
+    });
 
     name.value = "";
     desc.value = "";
@@ -140,10 +148,14 @@ function alert() {
   }, 2500);
 }
 
-function getInfo(element) {
+async function getInfo(element) {
   let name = element.parentElement.children[0];
 
-  let info = JSON.parse(localStorage.getItem(name.textContent));
+  const response = await fetch(
+    `api/meal?user=${user.username}&name=${name.textContent}`
+  );
+
+  let info = await response.json();
 
   document.getElementById("meal-info-label").textContent = name.textContent;
   document.getElementById("info-cals").textContent = `${
@@ -236,7 +248,7 @@ function cancelEdit(element) {
   body.replaceChild(carbs, carb_input);
 }
 
-function saveInfo(element) {
+async function saveInfo(element) {
   document.getElementById("edit-button").style.display = "block";
   element.style.display = "none";
 
@@ -246,22 +258,20 @@ function saveInfo(element) {
   let fat_input = document.getElementById("fat-in");
   let carb_input = document.getElementById("carb-in");
 
-  for (let i in user.meals) {
-    let item = user.meals[i];
-    let old_item = 0;
-    if (item.name === name.textContent) {
-      old_item = i;
-    }
-  }
-
-  user.meals[old_item].push({
+  let new_meal = {
     type: mode,
     name: name.textContent,
-    description: old_item.description,
+    description: "none",
     calories: calorie_input.value,
     protein: protein_input.value,
     fat: fat_input.value,
     carbs: carb_input.value,
+  };
+
+  const response = await fetch(`api/meal?user=${user.username}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(new_meal),
   });
 
   let calories = document.createElement("p");

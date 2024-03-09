@@ -1,21 +1,23 @@
-class User {
-  constructor(first, last, username, password) {
-    this.first = first;
-    this.last = last;
-    this.username = username;
-    this.password = password;
-    this.biography = "";
-    this.meals = [];
-    this.log = [];
-    this.posts = [];
-    this.main_goal = null;
-    this.daily_goal = null;
-    this.total_calories = 0;
-    this.total_protein = 0;
-    this.total_fat = 0;
-    this.total_carbs = 0;
-  }
-}
+let confirm_pw = document.getElementById("confirm");
+let password = document.getElementById("pw");
+
+let first = document.getElementById("fn");
+let last = document.getElementById("ln");
+let username = document.getElementById("un");
+let create_alert = document.getElementById("create-profile-alert");
+let alert_color = "#DC143C";
+
+first.onkeyup = () => {
+  if (first.value != "") first.style.background = "white";
+};
+last.onkeyup = () => {
+  if (last.value != "") last.style.background = "white";
+};
+username.onkeyup = () => {
+  if (username.value != "") username.style.background = "white";
+};
+password.onchange = confirmPassword;
+confirm_pw.onkeyup = confirmPassword;
 
 async function authenticateUser() {
   let username = document.getElementById("username").value;
@@ -39,30 +41,11 @@ async function authenticateUser() {
     login_alert.style.display = "block";
     login_alert.textContent = "Incorrect username or password";
   } else if (response.status === 200) {
+    let body = await response.json();
+    localStorage.setItem("this-user", JSON.stringify(body));
     document.location.href = "main.html";
   }
 }
-
-let confirm_pw = document.getElementById("confirm");
-let password = document.getElementById("pw");
-
-let first = document.getElementById("fn");
-let last = document.getElementById("ln");
-let username = document.getElementById("un");
-let create_alert = document.getElementById("create-profile-alert");
-let alert_color = "#DC143C";
-
-first.onkeyup = () => {
-  if (first.value != "") first.style.background = "white";
-};
-last.onkeyup = () => {
-  if (last.value != "") last.style.background = "white";
-};
-username.onkeyup = () => {
-  if (username.value != "") username.style.background = "white";
-};
-password.onchange = confirmPassword;
-confirm_pw.onkeyup = confirmPassword;
 
 async function addUser() {
   create_alert.innerText = "";
@@ -71,17 +54,18 @@ async function addUser() {
   let create = validateCreateAccount();
 
   if (create) {
-    user = new User(first.value, last.value, username.value, password.value);
+    user = {
+      first: first.value,
+      last: last.value,
+      username: username.value,
+      password: password.value,
+    };
 
     const response = await fetch("api/user", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(user),
     });
-
-    console.log(response);
-
-    localStorage.setItem("this-user", JSON.stringify(user));
 
     create_alert.style.display = "none";
     let modalEl = document.getElementById("create-account-modal");

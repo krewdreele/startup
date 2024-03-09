@@ -1,26 +1,7 @@
-class User {
-  constructor(first, last, username, password) {
-    this.first = first;
-    this.last = last;
-    this.username = username;
-    this.password = password;
-    this.biography = "";
-    this.meals = [];
-    this.log = [];
-    this.posts = [];
-    this.main_goal = null;
-    this.daily_goal = null;
-    this.total_calories = 0;
-    this.total_protein = 0;
-    this.total_fat = 0;
-    this.total_carbs = 0;
-  }
-}
-
 const express = require("express");
 const app = express();
 
-let users = [];
+let users = [{ username: "admin", password: "h" }];
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -53,7 +34,6 @@ app.use(`/api`, apiRouter);
     create daily goal (post/daily)
     update daily goal (put/daily)
     get daily goal info (get/daily)
-
     .
     .
     .
@@ -66,21 +46,106 @@ apiRouter.post("/user", (_req, res) => {
 
 // Login
 apiRouter.post("/auth", (_req, res) => {
-  user = users.find((el) => {
+  let user = users.find((el) => {
     if (el.username === _req.body.username) {
       return el;
     }
   });
 
   if (!user) {
-    res.status(400).send("bad request");
+    res.sendStatus(400);
   } else if (_req.body.password === user.password) {
-    res.status(200).send("token");
+    res.status(200).send({ username: user.username, auth: "1234" });
   } else {
-    res.status(400).send("bad request");
+    res.sendStatus(400);
   }
 });
 
+// Get User
+apiRouter.get("/user/*", (_req, res) => {
+  let user = users.find((el) => {
+    if (el.username === _req.body.username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    res.send(user);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Create meal or save meal info
+apiRouter.post("/meal", (_req, res) => {
+  let params = _req.url.split("?")[1];
+  let username = params.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (!user.meals) {
+      user["meals"] = [];
+    }
+    let index = user.meals.findIndex((el) => {
+      return el.name === _req.body.name;
+    });
+    if (index >= 0) {
+      user.meals[index] = _req.body;
+    } else {
+      user.meals.push(_req.body);
+    }
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Get all meals
+apiRouter.get("/meals", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user && user.meals) {
+    res.status(200).send(user.meals);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Get meal info
+apiRouter.get("/meal", (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let mealname = params[1].split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    let meal = user.meals.find((el) => {
+      if (el.name === mealname) {
+        return el;
+      }
+    });
+    if (meal) {
+      res.send(meal);
+    } else {
+      res.sendStatus(404);
+    }
+  } else {
+    res.sendStatus(400);
+  }
+});
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile("index.html", { root: "public" });
