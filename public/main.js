@@ -1,18 +1,23 @@
 let user = JSON.parse(localStorage.getItem("this-user"));
-let date = new Date();
-
-let input = document.getElementById("search-input");
-let meals = [];
 let selectedMeal = null;
+let meals = [];
+let date = new Date();
+let input = document.getElementById("search-input");
+window.onload = onLoad;
 
-for (let i in user.meals) {
-  item = JSON.parse(user.meals[i]);
-  meals.push(item);
-}
+async function onLoad() {
+  let response = await fetch(`api/meals?user=${user.username}`);
 
-input.onkeyup = searchMeals;
+  if (response.status === 200) {
+    let response_meals = await response.json();
+    for (let i in response_meals) {
+      item = response_meals[i];
+      meals.push(item);
+    }
+  }
 
-function onStart() {
+  input.onkeyup = searchMeals;
+
   document.getElementById("username").textContent = user.username;
   updateTotals();
 }
@@ -42,30 +47,44 @@ function selectMeal(element) {
   input.value = element.textContent;
 }
 
-function addMeal() {
+async function addMeal() {
   if (selectedMeal != null) {
     let meal_info = meals.find(
       (meal) => meal.name === selectedMeal.textContent
     );
 
-    user.total_calories =
-      Number(user.total_calories) + Number(meal_info.calories);
-    user.total_protein = Number(user.total_protein) + Number(meal_info.protein);
-    user.total_fat = Number(user.total_fat) + Number(meal_info.fat);
-    user.total_carbs = Number(user.total_carbs) + Number(meal_info.carbs);
+    add = {
+      date: `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`,
+      calories: meal_info.calories,
+      protein: meal_info.protein,
+      fat: meal_info.fat,
+      carbs: meal_info.carbs,
+    };
 
-    localStorage.setItem("this-user", JSON.stringify(user));
+    const response = await fetch(`api/totals?user=${user.username}`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(add),
+    });
 
     updateTotals();
     clear();
   }
 }
 
-function updateTotals() {
-  document.getElementById("total-cals").textContent = user.total_calories;
-  document.getElementById("total-protein").textContent = user.total_protein;
-  document.getElementById("total-fat").textContent = user.total_fat;
-  document.getElementById("total-carbs").textContent = user.total_carbs;
+async function updateTotals() {
+  let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+  const response = await fetch(
+    `api/totals?user=${user.username}&date=${date_str}`
+  );
+
+  if (response.status === 200) {
+    let totals = await response.json();
+    document.getElementById("total-cals").textContent = totals.calories;
+    document.getElementById("total-protein").textContent = totals.protein;
+    document.getElementById("total-fat").textContent = totals.fat;
+    document.getElementById("total-carbs").textContent = totals.carbs;
+  }
 }
 
 function clear() {

@@ -194,6 +194,57 @@ apiRouter.post("/goal", (_req, res) => {
     res.sendStatus(400);
   }
 });
+
+// Get the totals for a specific day (includes today)
+apiRouter.get("/totals", (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let date = params[1].split("=")[1];
+
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (!user.log) {
+      user.log = {};
+      user.log[date] = {
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      };
+    }
+    res.status(200).send(user.log[date]);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+//update daily totals
+apiRouter.put("/totals", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    let totals = user.log[_req.body.date];
+
+    totals.calories += Number(_req.body.calories);
+    totals.protein += Number(_req.body.protein);
+    totals.fat += Number(_req.body.fat);
+    totals.carbs += Number(_req.body.carbs);
+
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile("index.html", { root: "public" });

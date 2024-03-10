@@ -37,7 +37,16 @@ let months = [
 let date = new Date();
 let current_month = months[date.getMonth()];
 let current_day = date.getDate();
-setCalendar();
+window.onload = onLoad;
+
+async function onLoad() {
+  const response = await fetch(`api/goal?user=${user.username}&type=daily`);
+
+  if (response.status === 200) {
+    const daily_goal = await response.json();
+  }
+  setCalendar();
+}
 
 function setCalendar() {
   document.getElementById("month-name").textContent = current_month.name;
@@ -96,7 +105,24 @@ function prevMonth() {
   setCalendar();
 }
 
-function dateClicked(element) {
-  let date = current_month.name + " " + element.textContent;
-  document.getElementById("calendar-date-label").textContent = date;
+async function dateClicked(element) {
+  let title = current_month.name + " " + element.textContent;
+  document.getElementById("calendar-date-label").textContent = title;
+
+  let date_str = `${current_month.id}/${
+    element.textContent
+  }/${date.getFullYear()}`;
+
+  const response = await fetch(
+    `api/totals?user=${user.username}&date=${date_str}`
+  );
+
+  if (response.status === 200) {
+    let totals = await response.json();
+
+    document.getElementById("log-calories").textContent = totals.calories;
+    document.getElementById("log-protein").textContent = totals.protein;
+    document.getElementById("log-fat").textContent = totals.fat;
+    document.getElementById("log-carbs").textContent = totals.carbs;
+  }
 }
