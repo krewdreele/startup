@@ -2,20 +2,24 @@ let user = JSON.parse(localStorage.getItem("this-user"));
 
 document.getElementById("username").textContent = user.username;
 
-function saveMainGoal() {
+async function saveMainGoal() {
   let start_date_in = document.getElementById("start-date-in").value;
   let start_weight_in = document.getElementById("start-weight-in").value;
   let goal_date_in = document.getElementById("goal-date-in").value;
   let goal_weight_in = document.getElementById("goal-weight-in").value;
 
-  user.main_goal = {
+  let main_goal = {
     start_date: start_date_in,
     start_weight: start_weight_in,
     goal_weight: goal_weight_in,
     goal_date: goal_date_in,
   };
 
-  localStorage.setItem("this-user", JSON.stringify(user));
+  const response = await fetch(`api/main-goal?user=${user.username}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(main_goal),
+  });
 
   document.getElementById("start-date").textContent =
     "Start date: " + start_date_in;
@@ -27,10 +31,12 @@ function saveMainGoal() {
     "Goal weight: " + goal_weight_in + " lbs";
 }
 
-function editMainGoal() {
-  let goal = user.main_goal;
+async function editMainGoal() {
+  const response = await fetch(`api/main-goal?user=${user.username}`);
 
-  if (goal) {
+  let goal = await response.json();
+
+  if (goal !== "none") {
     let start_date_in = document.getElementById("start-date-in");
     let start_weight_in = document.getElementById("start-weight-in");
     let goal_date_in = document.getElementById("goal-date-in");
@@ -100,13 +106,19 @@ function saveDailyGoal() {
   localStorage.setItem("this-user", JSON.stringify(user));
 }
 
-function loadGoals() {
-  let main_goal = user.main_goal ?? {
-    start_date: "none",
-    start_weight: "none",
-    goal_weight: "none",
-    goal_date: "none",
-  };
+async function loadGoals() {
+  const response = await fetch(`api/main-goal?user=${user.username}`);
+
+  let main_goal = await response.json();
+
+  if (main_goal === "none") {
+    main_goal = {
+      start_date: "none",
+      start_weight: "none",
+      goal_weight: "none",
+      goal_date: "none",
+    };
+  }
 
   document.getElementById("start-date").textContent =
     "Start date: " + main_goal.start_date;

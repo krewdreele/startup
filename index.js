@@ -146,6 +146,40 @@ apiRouter.get("/meal", (_req, res) => {
     res.sendStatus(400);
   }
 });
+
+// Get main goal
+apiRouter.get("/main-goal", (_req, res) => {
+  let username = _req.url.split("?")[1].split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    goal = user.main_goal ?? "none";
+    res.status(200).send(goal);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Save main goal
+apiRouter.post("/main-goal", (_req, res) => {
+  let username = _req.url.split("?")[1].split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    user.main_goal = _req.body;
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile("index.html", { root: "public" });
