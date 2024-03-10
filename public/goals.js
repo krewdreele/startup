@@ -15,7 +15,7 @@ async function saveMainGoal() {
     goal_date: goal_date_in,
   };
 
-  const response = await fetch(`api/main-goal?user=${user.username}`, {
+  const response = await fetch(`api/goal?user=${user.username}&type=main`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(main_goal),
@@ -32,27 +32,28 @@ async function saveMainGoal() {
 }
 
 async function editMainGoal() {
-  const response = await fetch(`api/main-goal?user=${user.username}`);
+  const response = await fetch(`api/goal?user=${user.username}&type=main`);
+  if (response.status === 200) {
+    let main_goal = await response.json();
 
-  let goal = await response.json();
-
-  if (goal !== "none") {
     let start_date_in = document.getElementById("start-date-in");
     let start_weight_in = document.getElementById("start-weight-in");
     let goal_date_in = document.getElementById("goal-date-in");
     let goal_weight_in = document.getElementById("goal-weight-in");
 
-    start_date_in.textContent = goal.start_date;
-    start_weight_in.textContent = goal.start_weight;
-    goal_date_in.textContent = goal.goal_date;
-    goal_weight_in.textContent = goal.goal_weight;
+    start_date_in.textContent = main_goal.start_date;
+    start_weight_in.textContent = main_goal.start_weight;
+    goal_date_in.textContent = main_goal.goal_date;
+    goal_weight_in.textContent = main_goal.goal_weight;
   }
 }
 
-function editDailyGoal() {
-  let daily_goal = user.daily_goal;
+async function editDailyGoal() {
+  const response = await fetch(`api/goal?user=${user.username}&type=daily`);
 
-  if (daily_goal) {
+  if (response.status === 200) {
+    let daily_goal = await response.json();
+
     let ltgt_calorie = document.getElementById("ltgt-calorie");
     let ltgt_protein = document.getElementById("ltgt-protein");
     let ltgt_fat = document.getElementById("ltgt-fat");
@@ -75,7 +76,7 @@ function editDailyGoal() {
   }
 }
 
-function saveDailyGoal() {
+async function saveDailyGoal() {
   let ltgt_calorie = document.getElementById("ltgt-calorie");
   let ltgt_protein = document.getElementById("ltgt-protein");
   let ltgt_fat = document.getElementById("ltgt-fat");
@@ -96,22 +97,26 @@ function saveDailyGoal() {
   fat_goal.textContent = `Fat: ${ltgt_fat.value} ${fat_in.value}`;
   carb_goal.textContent = `Carbs: ${ltgt_carb.value} ${carb_in.value}`;
 
-  user.daily_goal = {
+  let daily_goal = {
     calories: calorie_goal.textContent,
     protein: protein_goal.textContent,
     fat: fat_goal.textContent,
     carbs: carb_goal.textContent,
   };
 
-  localStorage.setItem("this-user", JSON.stringify(user));
+  const response = await fetch(`api/goal?user=${user.username}&type=daily`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(daily_goal),
+  });
 }
 
 async function loadGoals() {
-  const response = await fetch(`api/main-goal?user=${user.username}`);
-
-  let main_goal = await response.json();
-
-  if (main_goal === "none") {
+  const response = await fetch(`api/goal?user=${user.username}&type=main`);
+  let main_goal = null;
+  if (response.status === 200) {
+    main_goal = await response.json();
+  } else {
     main_goal = {
       start_date: "none",
       start_weight: "none",
@@ -119,7 +124,6 @@ async function loadGoals() {
       goal_date: "none",
     };
   }
-
   document.getElementById("start-date").textContent =
     "Start date: " + main_goal.start_date;
   document.getElementById("start-weight").textContent =
@@ -129,12 +133,19 @@ async function loadGoals() {
   document.getElementById("goal-weight").textContent =
     "Goal weight: " + main_goal.goal_weight + " lbs";
 
-  let daily_goal = user.daily_goal ?? {
-    calories: "none",
-    protein: "none",
-    fat: "none",
-    carbs: "none",
-  };
+  const response2 = await fetch(`api/goal?user=${user.username}&type=daily`);
+  let daily_goal = null;
+
+  if (response2.status === 200) {
+    daily_goal = await response2.json();
+  } else {
+    daily_goal = {
+      calories: "none",
+      protein: "none",
+      fat: "none",
+      carbs: "none",
+    };
+  }
 
   let calorie_goal = document.getElementById("calorie-daily-goal");
   let protein_goal = document.getElementById("protein-daily-goal");

@@ -147,9 +147,12 @@ apiRouter.get("/meal", (_req, res) => {
   }
 });
 
-// Get main goal
-apiRouter.get("/main-goal", (_req, res) => {
-  let username = _req.url.split("?")[1].split("=")[1];
+// Get main or daily goal
+apiRouter.get("/goal", (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let type = params[1].split("=")[1];
+
   let user = users.find((el) => {
     if (el.username === username) {
       return el;
@@ -157,16 +160,23 @@ apiRouter.get("/main-goal", (_req, res) => {
   });
 
   if (user) {
-    goal = user.main_goal ?? "none";
-    res.status(200).send(goal);
+    goal = type === "main" ? user.main_goal : user.daily_goal;
+    if (goal) {
+      res.status(200).send(goal);
+    } else {
+      res.sendStatus(404);
+    }
   } else {
     res.sendStatus(400);
   }
 });
 
-// Save main goal
-apiRouter.post("/main-goal", (_req, res) => {
-  let username = _req.url.split("?")[1].split("=")[1];
+// Save main or daily goal
+apiRouter.post("/goal", (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let type = params[1].split("=")[1];
+
   let user = users.find((el) => {
     if (el.username === username) {
       return el;
@@ -174,7 +184,11 @@ apiRouter.post("/main-goal", (_req, res) => {
   });
 
   if (user) {
-    user.main_goal = _req.body;
+    if (type === "main") {
+      user.main_goal = _req.body;
+    } else {
+      user.daily_goal = _req.body;
+    }
     res.sendStatus(200);
   } else {
     res.sendStatus(400);
