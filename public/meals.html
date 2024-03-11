@@ -211,42 +211,45 @@
           <div class="modal-body">
             <div id="add-meal-container">
               <div>
-                <label for="name">Name:<input type="text" id="name" /></label>
-                <label for="desc"
-                  >Description:<textarea type="text" id="desc"></textarea>
-                </label>
-                <label for="cals"
-                  >Calories:<input type="text" id="cals"
-                /></label>
-                <label for="protein"
-                  >Protein:<input type="text" id="protein"
-                /></label>
-                <label for="fat" style="width: 55%"
-                  >Fat:<input type="text" id="fat"
-                /></label>
-                <label for="carbs"
-                  >Carbs:<input type="text" id="carbs"
-                /></label>
+                Name:<input type="text" id="name" /> Description:<textarea
+                  type="text"
+                  id="desc"
+                ></textarea>
+                Calories:<input type="text" id="cals" /> Protein:<input
+                  type="text"
+                  id="protein"
+                />
+                Fat:<input type="text" id="fat" /> Carbs:<input
+                  type="text"
+                  id="carbs"
+                />
                 <form action="/action_page.php">
                   <label for="filename">Image</label>
                   <input type="file" id="meal-image" name="filename" />
                 </form>
               </div>
               <div>
-                <label>Search for food:</label>
-                <input type="text" placeholder="search" />
+                <label>Search for ingredient:</label>
+                <input
+                  type="text"
+                  placeholder="ex: 1oz rice"
+                  id="third-party-search"
+                />
                 <button
                   type="button"
                   class="btn btn-outline-primary"
                   style="width: 50%"
+                  onclick="getThirdPartyMeal()"
+                  id="search-button"
                 >
                   &#128269;
                 </button>
-                <ul>
-                  <li>Third party food</li>
-                  <li>Third party food</li>
-                  <li>Third party food</li>
-                </ul>
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  id="search-alert"
+                  style="display: none; font-size: medium"
+                ></div>
               </div>
             </div>
           </div>

@@ -1,8 +1,82 @@
 let mode = "Breakfast";
 let user = JSON.parse(localStorage.getItem("this-user"));
+addEventListeners();
 
 function changeMode(element) {
   mode = element.textContent.trim();
+}
+
+function addEventListeners() {
+  let input = document.getElementById("third-party-search");
+  let btn = document.getElementById("search-button");
+
+  input.addEventListener("keypress", function (event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      btn.click();
+    }
+  });
+}
+async function getThirdPartyMeal() {
+  /*
+  ID - 37ab6c8a
+  key - 6bd1526b7c00fd3d34cdf6b579bc8a89	
+  */
+
+  let alert = document.getElementById("search-alert");
+  alert.style.display = "none";
+  let search = document.getElementById("third-party-search").value;
+  const response = await fetch(
+    `https://api.edamam.com/api/nutrition-data?app_id=37ab6c8a&app_key=6bd1526b7c00fd3d34cdf6b579bc8a89&ingr=${search}`
+  );
+
+  search = "";
+
+  try {
+    let food = await response.json();
+
+    let calories = document.getElementById("cals");
+    let protein = document.getElementById("protein");
+    let fat = document.getElementById("fat");
+    let carbs = document.getElementById("carbs");
+    let desc = document.getElementById("desc");
+
+    if (
+      food &&
+      food.ingredients &&
+      food.calories &&
+      food.totalNutrients["PROCNT"].quantity &&
+      food.totalNutrients["FAT"].quantity &&
+      food.totalNutrients["CHOCDF.net"].quantity
+    ) {
+      for (let i in food.ingredients) {
+        desc.textContent = desc.textContent.concat(
+          `${food.ingredients[i].text}\n`
+        );
+      }
+
+      calories.value = Number(calories.value) + food.calories;
+
+      protein.value =
+        Number(protein.value) +
+        Math.round(food.totalNutrients["PROCNT"].quantity);
+
+      fat.value =
+        Number(fat.value) + Math.round(food.totalNutrients["FAT"].quantity);
+
+      carbs.value =
+        Number(carbs.value) +
+        Math.round(food.totalNutrients["CHOCDF.net"].quantity);
+    } else {
+      throw new Error("Couldn't find food");
+    }
+  } catch (error) {
+    alert.style.display = "block";
+    alert.textContent = error;
+  }
 }
 
 async function loadMeals() {

@@ -6,8 +6,7 @@ let input = document.getElementById("search-input");
 window.onload = onLoad;
 
 async function onLoad() {
-  let response = await fetch(`api/meals?user=${user.username}`);
-
+  const response = await fetch(`api/meals?user=${user.username}`);
   if (response.status === 200) {
     let response_meals = await response.json();
     for (let i in response_meals) {
@@ -15,7 +14,6 @@ async function onLoad() {
       meals.push(item);
     }
   }
-
   input.onkeyup = searchMeals;
 
   document.getElementById("username").textContent = user.username;
@@ -74,6 +72,7 @@ async function addMeal() {
 
 async function updateTotals() {
   let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+
   const response = await fetch(
     `api/totals?user=${user.username}&date=${date_str}`
   );

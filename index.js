@@ -52,10 +52,21 @@ apiRouter.post("/auth", (_req, res) => {
     }
   });
 
-  if (!user) {
-    res.sendStatus(400);
-  } else if (_req.body.password === user.password) {
-    res.status(200).send({ username: user.username, auth: "1234" });
+  if (user) {
+    if (!user.log) {
+      let date = new Date();
+      let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+      user.log = {};
+      user.log[date_str] = {
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      };
+    }
+    if (_req.body.password === user.password) {
+      res.status(200).send({ username: user.username, auth: "1234" });
+    }
   } else {
     res.sendStatus(400);
   }
@@ -113,8 +124,12 @@ apiRouter.get("/meals", (_req, res) => {
     }
   });
 
-  if (user && user.meals) {
-    res.status(200).send(user.meals);
+  if (user) {
+    if (user.meals) {
+      res.status(200).send(user.meals);
+    } else {
+      res.sendStatus(404);
+    }
   } else {
     res.sendStatus(400);
   }
@@ -223,15 +238,6 @@ apiRouter.get("/totals", (_req, res) => {
   });
 
   if (user) {
-    if (!user.log) {
-      user.log = {};
-      user.log[date] = {
-        calories: 0,
-        protein: 0,
-        fat: 0,
-        carbs: 0,
-      };
-    }
     if (user.log[date]) {
       res.status(200).send(user.log[date]);
     } else {
