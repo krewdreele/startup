@@ -64,15 +64,15 @@ async function editDailyGoal() {
     let fat_in = document.getElementById("fat-in");
     let carb_in = document.getElementById("carb-in");
 
-    ltgt_calorie.value = daily_goal.calories.substring(10, 19);
-    ltgt_protein.value = daily_goal.protein.substring(9, 18);
-    ltgt_fat.value = daily_goal.fat.substring(5, 14);
-    ltgt_carb.value = daily_goal.carbs.substring(7, 16);
+    ltgt_calorie.value = daily_goal.calories.substring(0, 1);
+    ltgt_protein.value = daily_goal.protein.substring(0, 1);
+    ltgt_fat.value = daily_goal.fat.substring(0, 1);
+    ltgt_carb.value = daily_goal.carbs.substring(0, 1);
 
-    calorie_in.value = daily_goal.calories.substring(20);
-    protein_in.value = daily_goal.protein.substring(19);
-    fat_in.value = daily_goal.fat.substring(15);
-    carb_in.value = daily_goal.carbs.substring(17);
+    calorie_in.value = daily_goal.calories.substring(2);
+    protein_in.value = daily_goal.protein.substring(2);
+    fat_in.value = daily_goal.fat.substring(2);
+    carb_in.value = daily_goal.carbs.substring(2);
   }
 }
 
@@ -92,16 +92,45 @@ async function saveDailyGoal() {
   let fat_goal = document.getElementById("fat-daily-goal");
   let carb_goal = document.getElementById("carb-daily-goal");
 
-  calorie_goal.textContent = `Calories: ${ltgt_calorie.value} ${calorie_in.value}`;
-  protein_goal.textContent = `Protein: ${ltgt_protein.value} ${protein_in.value}`;
-  fat_goal.textContent = `Fat: ${ltgt_fat.value} ${fat_in.value}`;
-  carb_goal.textContent = `Carbs: ${ltgt_carb.value} ${carb_in.value}`;
+  let calorie_str = null;
+  let protein_str = null;
+  let fat_str = null;
+  let carb_str = null;
+
+  if (ltgt_calorie.value === "less than") {
+    calorie_str = `< ${calorie_in.value}`;
+  } else {
+    calorie_str = `> ${calorie_in.value}`;
+  }
+
+  if (ltgt_protein.value === "less than") {
+    protein_str = `< ${protein_in.value}`;
+  } else {
+    protein_str = `> ${protein_in.value}`;
+  }
+
+  if (ltgt_fat.value === "less than") {
+    fat_str = `< ${fat_in.value}`;
+  } else {
+    fat_str = `> ${fat_in.value}`;
+  }
+
+  if (ltgt_carb.value === "less than") {
+    carb_str = `< ${carb_in.value}`;
+  } else {
+    carb_str = `> ${carb_in.value}`;
+  }
+
+  calorie_goal.textContent = `Calories: ${calorie_str}`;
+  protein_goal.textContent = `Protein: ${protein_str}`;
+  fat_goal.textContent = `Fat: ${fat_str}`;
+  carb_goal.textContent = `Carbs: ${carb_str}`;
 
   let daily_goal = {
-    calories: calorie_goal.textContent,
-    protein: protein_goal.textContent,
-    fat: fat_goal.textContent,
-    carbs: carb_goal.textContent,
+    calories: calorie_str,
+    protein: protein_str,
+    fat: fat_str,
+    carbs: carb_str,
   };
 
   const response = await fetch(`api/goal?user=${user.username}&type=daily`, {
@@ -116,44 +145,31 @@ async function loadGoals() {
   let main_goal = null;
   if (response.status === 200) {
     main_goal = await response.json();
-  } else {
-    main_goal = {
-      start_date: "none",
-      start_weight: "none",
-      goal_weight: "none",
-      goal_date: "none",
-    };
+
+    document.getElementById("start-date").textContent =
+      "Start date: " + main_goal.start_date;
+    document.getElementById("start-weight").textContent =
+      "Start weight: " + main_goal.start_weight + " lbs";
+    document.getElementById("goal-date").textContent =
+      "Goal date: " + main_goal.goal_date;
+    document.getElementById("goal-weight").textContent =
+      "Goal weight: " + main_goal.goal_weight + " lbs";
   }
-  document.getElementById("start-date").textContent =
-    "Start date: " + main_goal.start_date;
-  document.getElementById("start-weight").textContent =
-    "Start weight: " + main_goal.start_weight + " lbs";
-  document.getElementById("goal-date").textContent =
-    "Goal date: " + main_goal.goal_date;
-  document.getElementById("goal-weight").textContent =
-    "Goal weight: " + main_goal.goal_weight + " lbs";
 
   const response2 = await fetch(`api/goal?user=${user.username}&type=daily`);
   let daily_goal = null;
 
   if (response2.status === 200) {
     daily_goal = await response2.json();
-  } else {
-    daily_goal = {
-      calories: "none",
-      protein: "none",
-      fat: "none",
-      carbs: "none",
-    };
+
+    let calorie_goal = document.getElementById("calorie-daily-goal");
+    let protein_goal = document.getElementById("protein-daily-goal");
+    let fat_goal = document.getElementById("fat-daily-goal");
+    let carb_goal = document.getElementById("carb-daily-goal");
+
+    calorie_goal.textContent = `Calories: ${daily_goal.calories}`;
+    protein_goal.textContent = `Protein: ${daily_goal.protein}`;
+    fat_goal.textContent = `Fat: ${daily_goal.fat}`;
+    carb_goal.textContent = `Carbs: ${daily_goal.carbs}`;
   }
-
-  let calorie_goal = document.getElementById("calorie-daily-goal");
-  let protein_goal = document.getElementById("protein-daily-goal");
-  let fat_goal = document.getElementById("fat-daily-goal");
-  let carb_goal = document.getElementById("carb-daily-goal");
-
-  calorie_goal.textContent = daily_goal.calories;
-  protein_goal.textContent = daily_goal.protein;
-  fat_goal.textContent = daily_goal.fat;
-  carb_goal.textContent = daily_goal.carbs;
 }

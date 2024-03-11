@@ -37,18 +37,19 @@ let months = [
 let date = new Date();
 let current_month = months[date.getMonth()];
 let current_day = date.getDate();
+let daily_goal = null;
 window.onload = onLoad;
 
 async function onLoad() {
   const response = await fetch(`api/goal?user=${user.username}&type=daily`);
 
   if (response.status === 200) {
-    const daily_goal = await response.json();
+    daily_goal = await response.json();
   }
   setCalendar();
 }
 
-function setCalendar() {
+async function setCalendar() {
   document.getElementById("month-name").textContent = current_month.name;
   let calendar = document.getElementById("calendar");
   calendar.textContent = "";
@@ -60,23 +61,56 @@ function setCalendar() {
   }
 
   for (let i = 1; i <= current_month.num_days; i++) {
-    let date_string = current_month.name + " " + i;
-
-    let log_info = localStorage.getItem(date_string) ?? "";
-    if (log_info) {
-      log_info = JSON.parse(log_info);
-    }
-
-    let hit_goal = log_info?.hit_goal ?? 2;
-
+    let date_str = `${current_month.id}/${i}/${date.getFullYear()}`;
     let day = document.createElement("button");
 
-    if (hit_goal === 1) {
-      day.className = "btn btn-outline-success";
-    } else if (hit_goal === 0) {
-      day.className = "btn btn-outline-danger";
-    } else if (hit_goal === 2) {
+    const response = await fetch(
+      `api/totals?user=${user.username}&date=${date_str}`
+    );
+
+    let totals = null;
+    if (response.status === 201) {
       day.className = "btn btn-light";
+    } else if (response.status === 200) {
+      totals = await response.json();
+      let hit_cals = false;
+      let hit_protein = false;
+      let hit_fat = false;
+      let hit_carbs = false;
+
+      let parts = daily_goal.calories.split(" ");
+      if (parts[0] === "<") {
+        hit_cals = totals.calories <= parts[1] ? true : false;
+      } else {
+        hit_cals = totals.calories >= parts[1] ? true : false;
+      }
+
+      parts = daily_goal.protein.split(" ");
+      if (parts[0] === "<") {
+        hit_protein = totals.protein <= parts[1] ? true : false;
+      } else {
+        hit_protein = totals.protein >= parts[1] ? true : false;
+      }
+
+      parts = daily_goal.fat.split(" ");
+      if (parts[0] === "<") {
+        hit_fat = totals.fat <= parts[1] ? true : false;
+      } else {
+        hit_fat = totals.fat >= parts[1] ? true : false;
+      }
+
+      parts = daily_goal.carbs.split(" ");
+      if (parts[0] === "<") {
+        hit_carbs = totals.carbs <= parts[1] ? true : false;
+      } else {
+        hit_carbs = totals.carbs >= parts[1] ? true : false;
+      }
+
+      if (hit_cals && hit_carbs && hit_fat && hit_protein) {
+        day.className = "btn btn-success";
+      } else {
+        day.className = "btn btn-danger";
+      }
     }
 
     day.setAttribute("data-bs-toggle", "modal");

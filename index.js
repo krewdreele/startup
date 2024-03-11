@@ -160,11 +160,26 @@ apiRouter.get("/goal", (_req, res) => {
   });
 
   if (user) {
-    goal = type === "main" ? user.main_goal : user.daily_goal;
-    if (goal) {
-      res.status(200).send(goal);
+    if (type === "main") {
+      if (!user.main_goal) {
+        user.main_goal = {
+          start_date: "01/01/2024",
+          start_weight: "0",
+          goal_weight: "01/01/2024",
+          goal_date: "0",
+        };
+      }
+      res.status(200).send(user.main_goal);
     } else {
-      res.sendStatus(404);
+      if (!user.daily_goal) {
+        user.daily_goal = {
+          calories: "< 0",
+          protein: "< 0",
+          fat: "< 0",
+          carbs: "< 0",
+        };
+      }
+      res.status(200).send(user.daily_goal);
     }
   } else {
     res.sendStatus(400);
@@ -217,7 +232,11 @@ apiRouter.get("/totals", (_req, res) => {
         carbs: 0,
       };
     }
-    res.status(200).send(user.log[date]);
+    if (user.log[date]) {
+      res.status(200).send(user.log[date]);
+    } else {
+      res.sendStatus(201);
+    }
   } else {
     res.sendStatus(400);
   }
