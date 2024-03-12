@@ -88,6 +88,11 @@ Added the basic functionality to the website using javascript.
 ## Services Deliverable
 
 Created a backend service using express and node.js. Called backend and third party services in front end.
+(You can login with -u 'admin' -p 'h' if you don't want to create a profile)
+
+Third party service:
+
+- Edamam api calls to get food information (when adding a meal on the "meals" page)
 
 Endpoints:
 
