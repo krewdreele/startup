@@ -258,6 +258,17 @@ apiRouter.put("/totals", (_req, res) => {
   });
 
   if (user) {
+    if (!user.log) {
+      let date = new Date();
+      let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+      user.log = {};
+      user.log[date_str] = {
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      };
+    }
     let totals = user.log[_req.body.date];
 
     totals.calories += Number(_req.body.calories);
