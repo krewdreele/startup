@@ -1,29 +1,79 @@
-function loadProfile() {
-  let posts = document.getElementById("posts");
-  let num_posts = user.posts.length;
+let user = JSON.parse(localStorage.getItem("this-user"));
+let selectedMeal = null;
+let meals = [];
+let date = new Date();
+let input = document.getElementById("search-input");
+window.onload = onLoad;
 
-  if (num_posts === 0) {
+async function onLoad() {
+  const response = await fetch(`api/meals?user=${user.username}`);
+  let response_meals = await response.json();
+
+  for (let i in response_meals) {
+    item = response_meals[i];
+    meals.push(item);
+  }
+
+  input.onkeyup = searchMeals;
+  loadProfile();
+}
+
+function searchMeals() {
+  let searchList = meals.filter((meal) => {
+    return meal.name.toLowerCase().startsWith(input.value.toLowerCase());
+  });
+  let container = document.getElementById("meal-search-container");
+  container.innerText = "";
+  for (let i in searchList) {
+    let el = document.createElement("button");
+    el.textContent = searchList[i].name;
+    el.className = "btn btn-outline-info";
+    el.setAttribute("onclick", "selectMeal(this)");
+    container.appendChild(el);
+  }
+}
+
+function selectMeal(element) {
+  let container = document.getElementById("meal-search-container");
+  for (let i in container.children) {
+    container.children[i].className = "btn btn-outline-info";
+  }
+  element.className = "btn btn-info";
+  selectedMeal = element;
+  input.value = element.textContent;
+}
+
+async function loadProfile() {
+  document.getElementById("username").textContent = user.username;
+  let posts_html = document.getElementById("posts");
+  posts_html.children = "";
+
+  const response = await fetch(`api/posts?user=${user.username}`);
+  let posts = await response.json();
+
+  if (posts.length === 0) {
     let no_posts = document.createElement("p");
     no_posts.setAttribute("id", "no-posts");
     no_posts.textContent = "Looks like you don't have any posts yet...";
-    posts.appendChild(no_posts);
+    posts_html.appendChild(no_posts);
   } else {
-    for (let i = 0; i < num_posts; i++) {
-      let post_info = JSON.parse(user.posts[i]);
+    for (let i = 0; i < posts.length; i++) {
+      let post_info = posts[i];
       let post = createPostHtml(
         post_info.desc,
         post_info?.meal ?? "none",
         false
       );
 
-      posts.appendChild(post);
+      posts_html.appendChild(post);
     }
   }
 
-  document.getElementById("username").textContent = user.username;
+  const response2 = await fetch(`api/profile?user=${user.username}`);
+  let profile_info = await response2.json();
 
-  document.getElementById("biography").textContent =
-    user.biography ?? "No biography found. Please create one!";
+  document.getElementById("username").textContent = user.username;
+  document.getElementById("biography").textContent = profile_info.biography;
 }
 
 function createPostHtml(description, meal, new_post) {
@@ -41,23 +91,28 @@ function createPostHtml(description, meal, new_post) {
 
   if (meal != "none") {
     let item = meals.find((x) => x.name === meal);
-    console.log(item);
     createCard(item, post);
   }
 
   if (new_post) {
-    user.posts.push(
-      JSON.stringify({
-        name: username.textContent,
-        desc: desc.textContent,
-        meal: meal ?? "none",
-      })
-    );
-
-    localStorage.setItem("this-user", JSON.stringify(user));
+    savePost(username.textContent, desc.textContent, meal);
   }
 
   return post;
+}
+
+async function savePost(username, desc, meal) {
+  let post_json = JSON.stringify({
+    name: username,
+    desc: desc,
+    meal: meal ?? "none",
+  });
+
+  const response = await fetch(`api/post?user=${user.username}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: post_json,
+  });
 }
 
 function post() {
@@ -154,19 +209,24 @@ function editProfile() {
   }
 }
 
-function saveEdit() {
+async function saveEdit() {
   let user_in = document.getElementById("username-input");
   let bio_in = document.getElementById("bio-input");
 
-  user.username = user_in.value;
-  user.biography = bio_in.value;
+  let body = {
+    username: user_in.value,
+    profile: { biography: bio_in.value },
+  };
 
+  const response = await fetch(`api/profile?user=${user.username}`, {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  user.username = user_in.value;
   localStorage.setItem("this-user", JSON.stringify(user));
 
-  document.getElementById("username").textContent = user_in.value;
+  document.getElementById("username").textContent = user.username;
   document.getElementById("biography").textContent = bio_in.value;
-
-  let num_posts = localStorage.getItem("num-posts") ?? 0;
-
-  for (let i = 1; i <= num_posts; i++) {}
 }

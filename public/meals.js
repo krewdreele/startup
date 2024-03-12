@@ -33,7 +33,7 @@ async function getThirdPartyMeal() {
     `https://api.edamam.com/api/nutrition-data?app_id=37ab6c8a&app_key=6bd1526b7c00fd3d34cdf6b579bc8a89&ingr=${search}`
   );
 
-  search = "";
+  document.getElementById("third-party-search").value = "";
 
   try {
     let food = await response.json();
@@ -88,18 +88,16 @@ async function loadMeals() {
 
   let response = await fetch(`api/meals?user=${user.username}`);
 
-  if (response.status === 200) {
-    let meals = await response.json();
+  let meals = await response.json();
 
-    for (let i in meals) {
-      item = meals[i];
-      if (item.type == "Breakfast") {
-        createCard(item, breakfast_container);
-      } else if (item.type == "Lunch") {
-        createCard(item, lunch_container);
-      } else if (item.type == "Dinner") {
-        createCard(item, dinner_container);
-      }
+  for (let i in meals) {
+    item = meals[i];
+    if (item.type == "Breakfast") {
+      createCard(item, breakfast_container);
+    } else if (item.type == "Lunch") {
+      createCard(item, lunch_container);
+    } else if (item.type == "Dinner") {
+      createCard(item, dinner_container);
     }
   }
 }

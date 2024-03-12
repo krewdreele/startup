@@ -20,24 +20,25 @@ app.use(`/api`, apiRouter);
     -- Endpoints --
 
     create account (post/user)
-    login (create auth token) (post/auth)
+    login (post/auth)
     get user (get/user)
 
-    create meal (post/meal)
-    update meal (put/meal)
-    get meal info (get/meal)
+    create meal & update meal (post/meal?user='username')
+    get all meals (get/meals?user='username')
+    get meal info (get/meal?user='username'&meal='meal name')
 
-    create main goal (post/main)
-    update main goal (put/main)
-    get main goal info (get/main)
+    save main or daily goal (post/goal?user='username'&type='goal type')
+    get main or daily goal info (get/goal?user='username'&type='goal type')
 
-    create daily goal (post/daily)
-    update daily goal (put/daily)
-    get daily goal info (get/daily)
-    .
-    .
-    .
+    get totals for a specific day(get/totals?user='username'&date='1/2/2024')
+    update daily totals (put/totals?user='username')
+
+    create a post (post/post?user='username')
+    get all posts (get/posts?user='username')
+    get profile info (get/profile?user='username')
+    update profile (put/profile?user='username')
 */
+
 // Create Account
 apiRouter.post("/user", (_req, res) => {
   users.push(_req.body);
@@ -73,7 +74,7 @@ apiRouter.post("/auth", (_req, res) => {
 });
 
 // Get User
-apiRouter.get("/user/*", (_req, res) => {
+apiRouter.get("/user", (_req, res) => {
   let user = users.find((el) => {
     if (el.username === _req.body.username) {
       return el;
@@ -125,11 +126,10 @@ apiRouter.get("/meals", (_req, res) => {
   });
 
   if (user) {
-    if (user.meals) {
-      res.status(200).send(user.meals);
-    } else {
-      res.sendStatus(404);
+    if (!user.meals) {
+      user.meals = [];
     }
+    res.status(200).send(user.meals);
   } else {
     res.sendStatus(400);
   }
@@ -157,6 +157,30 @@ apiRouter.get("/meal", (_req, res) => {
     } else {
       res.sendStatus(404);
     }
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Save main or daily goal
+apiRouter.post("/goal", (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let type = params[1].split("=")[1];
+
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (type === "main") {
+      user.main_goal = _req.body;
+    } else {
+      user.daily_goal = _req.body;
+    }
+    res.sendStatus(200);
   } else {
     res.sendStatus(400);
   }
@@ -201,31 +225,7 @@ apiRouter.get("/goal", (_req, res) => {
   }
 });
 
-// Save main or daily goal
-apiRouter.post("/goal", (_req, res) => {
-  let params = _req.url.split("?")[1].split("&");
-  let username = params[0].split("=")[1];
-  let type = params[1].split("=")[1];
-
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
-
-  if (user) {
-    if (type === "main") {
-      user.main_goal = _req.body;
-    } else {
-      user.daily_goal = _req.body;
-    }
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(400);
-  }
-});
-
-// Get the totals for a specific day (includes today)
+// Get the totals
 apiRouter.get("/totals", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
@@ -237,7 +237,7 @@ apiRouter.get("/totals", (_req, res) => {
     }
   });
 
-  if (user) {
+  if (user && user.log) {
     if (user.log[date]) {
       res.status(200).send(user.log[date]);
     } else {
@@ -248,7 +248,7 @@ apiRouter.get("/totals", (_req, res) => {
   }
 });
 
-//update daily totals
+// Update daily totals
 apiRouter.put("/totals", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
@@ -270,6 +270,88 @@ apiRouter.put("/totals", (_req, res) => {
     res.sendStatus(400);
   }
 });
+
+// Create a post
+apiRouter.post("/post", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (!user.posts) {
+      user.posts = [];
+    }
+    user.posts.push(_req.body);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Get all the posts
+apiRouter.get("/posts", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (!user.posts) {
+      user.posts = [];
+    }
+    res.status(200).send(user.posts);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Get profile info
+apiRouter.get("/profile", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    if (!user.profile) {
+      user.profile = {
+        biography: "No biography found!",
+      };
+
+      user.friends = [];
+    }
+
+    res.status(200).send(user.profile);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// Update profile
+apiRouter.put("/profile", (_req, res) => {
+  let username = _req.url.split("=")[1];
+  let user = users.find((el) => {
+    if (el.username === username) {
+      return el;
+    }
+  });
+
+  if (user) {
+    user.profile = _req.body.profile;
+    user.username = _req.body.username;
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile("index.html", { root: "public" });

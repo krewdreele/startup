@@ -7,13 +7,13 @@ window.onload = onLoad;
 
 async function onLoad() {
   const response = await fetch(`api/meals?user=${user.username}`);
-  if (response.status === 200) {
-    let response_meals = await response.json();
-    for (let i in response_meals) {
-      item = response_meals[i];
-      meals.push(item);
-    }
+  let response_meals = await response.json();
+
+  for (let i in response_meals) {
+    item = response_meals[i];
+    meals.push(item);
   }
+
   input.onkeyup = searchMeals;
 
   document.getElementById("username").textContent = user.username;
