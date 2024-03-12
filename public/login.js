@@ -31,10 +31,17 @@ async function authenticateUser() {
     return;
   }
 
+  let date = new Date();
+  let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+
   const response = await fetch("api/auth", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ username: username, password: password }),
+    body: JSON.stringify({
+      username: username,
+      password: password,
+      date: date_str,
+    }),
   });
 
   if (response.status === 400) {
