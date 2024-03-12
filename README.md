@@ -84,3 +84,28 @@ Added the basic functionality to the website using javascript.
 - Still need to figure out how to add pictures (to meals or posts)
 - Profile still needs a few things (edit, light/dark mode, add a friend)
 - Need to figure out how to navigate to other user's profiles (fill out new html doc for user?)
+
+## Services Deliverable
+
+Created a backend service using express and node.js. Called backend and third party services in front end.
+
+Endpoints:
+
+- create account (post/user)
+- login (post/auth)
+- get user (get/user)
+
+- create meal & update meal (post/meal?user='username')
+- get all meals (get/meals?user='username')
+- get meal info (get/meal?user='username'&meal='meal name')
+
+- save main or daily goal (post/goal?user='username'&type='goal type')
+- get main or daily goal info (get/goal?user='username'&type='goal type')
+
+- get totals for a specific day(get/totals?user='username'&date='1/2/2024')
+- update daily totals (put/totals?user='username')
+
+- create a post (post/post?user='username')
+- get all posts (get/posts?user='username')
+- get profile info (get/profile?user='username')
+- update profile (put/profile?user='username')
