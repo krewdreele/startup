@@ -236,10 +236,16 @@ apiRouter.get("/totals", (_req, res) => {
   });
 
   if (user && user.log) {
-    if (user.log[date]) {
-      res.status(200).send(user.log[date]);
+    if (!user.log[date]) {
+      user.log[_req.body.date] = {
+        calories: 0,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      };
+      res.status(201).send(user.log[date]);
     } else {
-      res.sendStatus(201);
+      res.status(200).send(user.log[date]);
     }
   } else {
     res.sendStatus(400);
