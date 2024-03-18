@@ -77,7 +77,7 @@ async function updateTotals() {
     `api/totals?user=${user.username}&date=${date_str}`
   );
 
-  if (response.status === 200) {
+  if (response.status === 200 || response.status === 201) {
     let totals = await response.json();
     document.getElementById("total-cals").textContent = totals.calories;
     document.getElementById("total-protein").textContent = totals.protein;
