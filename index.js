@@ -1,48 +1,50 @@
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
+const DB = require("./database.js");
 
-let users = [{ username: "admin", password: "h" }];
+const authCookieName = "token";
 
-// The service port. In production the frontend code is statically hosted by the service on the same port.
+// The service port may be set on the command line
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
 
-// Serve up the frontend static content hosting
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
+
+// Serve up the applications static content
 app.use(express.static("public"));
+
+// Trust headers that are forwarded from the proxy so we can determine IP addresses
+app.set("trust proxy", true);
 
 // Router for service endpoints
 const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-/*  
-    -- Endpoints --
-
-    create account (post/user)
-    login (post/auth)
-    get user (get/user)
-
-    create meal & update meal (post/meal?user='username')
-    get all meals (get/meals?user='username')
-    get meal info (get/meal?user='username'&meal='meal name')
-
-    save main or daily goal (post/goal?user='username'&type='goal type')
-    get main or daily goal info (get/goal?user='username'&type='goal type')
-
-    get totals for a specific day(get/totals?user='username'&date='1/2/2024')
-    update daily totals (put/totals?user='username')
-
-    create a post (post/post?user='username')
-    get all posts (get/posts?user='username')
-    get profile info (get/profile?user='username')
-    update profile (put/profile?user='username')
-*/
+// Set the cookie response header with auth token
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: "strict",
+  });
+}
 
 // Create Account
-apiRouter.post("/user", (_req, res) => {
-  users.push(_req.body);
-  res.status(200).send();
+apiRouter.post("/user", async (_req, res) => {
+  if (await DB.getUser(_req.body.username)) {
+    res.status(409).send({ msg: "Existing user" });
+  } else {
+    const user = await DB.createUser(_req.body.username, _req.body.password);
+
+    // Set the cookie
+    setAuthCookie(res, user.token);
+    res.status(200).send();
+  }
 });
 
 // Login
