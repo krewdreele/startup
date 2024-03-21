@@ -86,7 +86,7 @@ secureApiRouter.use(async (req, res, next) => {
   authToken = req.cookies[authCookieName];
   const user = await DB.getUserByToken(authToken);
   if (user) {
-    next(user);
+    next();
   } else {
     res.status(401).send({ msg: "Unauthorized" });
   }
@@ -121,17 +121,14 @@ secureApiRouter.post("/meal", (_req, res) => {
 });
 
 // Get all meals
-secureApiRouter.get("/meals", (_req, res) => {
+secureApiRouter.get("/meals", async (_req, res) => {
   let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
+  const user = await DB.getUser(username);
 
   if (user) {
     if (!user.meals) {
       user.meals = [];
+      DB.updateUser(user.username, { $set: { meals: [] } });
     }
     res.status(200).send(user.meals);
   } else {
@@ -230,31 +227,17 @@ secureApiRouter.get("/goal", (_req, res) => {
 });
 
 // Get the totals
-secureApiRouter.get("/totals", (_req, res) => {
+secureApiRouter.get("/totals", async (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let date = params[1].split("=")[1];
 
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
-
-  if (user && user.log) {
-    if (!user.log[date]) {
-      user.log[_req.body.date] = {
-        calories: 0,
-        protein: 0,
-        fat: 0,
-        carbs: 0,
-      };
-      res.status(201).send(user.log[date]);
-    } else {
-      res.status(200).send(user.log[date]);
-    }
+  const entry = await DB.getLogEntry(username, date);
+  if (!entry) {
+    DB.createLogEntry(entry);
+    res.status(201).send(entry);
   } else {
-    res.sendStatus(400);
+    res.status(200).send(entry);
   }
 });
 

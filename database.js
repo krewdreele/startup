@@ -7,6 +7,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db("startup");
 const userCollection = db.collection("user");
+const logCollection = db.collection("log");
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -41,8 +42,36 @@ async function createUser(username, password) {
   return user;
 }
 
+function updateUser(username, new_vals) {
+  userCollection.updateOne({ username: username }, new_vals);
+}
+
+function getLogEntry(username, date) {
+  return logCollection.findOne({ username: username, date: date });
+}
+
+function createLogEntry(username, date) {
+  let entry = {
+    username: username,
+    date: date,
+    calories: 0,
+    protein: 0,
+    fat: 0,
+    carbs: 0,
+  };
+  logCollection.insertOne(entry);
+}
+
+function updateLogEntry(username, date, new_vals) {
+  logCollection.updateOne({ username: username, date: date }, new_vals);
+}
+
 module.exports = {
   getUser,
   getUserByToken,
   createUser,
+  updateUser,
+  getLogEntry,
+  createLogEntry,
+  updateLogEntry,
 };
