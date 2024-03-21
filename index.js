@@ -48,25 +48,15 @@ apiRouter.post("/user", async (_req, res) => {
 });
 
 // Login
-apiRouter.post("/auth", (_req, res) => {
-  let user = users.find((el) => {
-    if (el.username === _req.body.username) {
-      return el;
-    }
-  });
+apiRouter.post("/auth", async (_req, res) => {
+  let user = await DB.getUser(_req.body.username);
 
   if (user) {
-    if (!user.log) {
-      user.log = {};
-      user.log[_req.body.date] = {
-        calories: 0,
-        protein: 0,
-        fat: 0,
-        carbs: 0,
-      };
-    }
-    if (_req.body.password === user.password) {
-      res.status(200).send({ username: user.username, auth: "1234" });
+    if (await bcrypt.compare(_req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.status(200).send(user);
+    } else {
+      res.sendStatus(400);
     }
   } else {
     res.sendStatus(400);
@@ -88,8 +78,22 @@ apiRouter.get("/user", (_req, res) => {
   }
 });
 
+// secureApiRouter verifies credentials for endpoints
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next(user);
+  } else {
+    res.status(401).send({ msg: "Unauthorized" });
+  }
+});
+
 // Create meal or save meal info
-apiRouter.post("/meal", (_req, res) => {
+secureApiRouter.post("/meal", (_req, res) => {
   let params = _req.url.split("?")[1];
   let username = params.split("=")[1];
   let user = users.find((el) => {
@@ -117,7 +121,7 @@ apiRouter.post("/meal", (_req, res) => {
 });
 
 // Get all meals
-apiRouter.get("/meals", (_req, res) => {
+secureApiRouter.get("/meals", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {
@@ -136,7 +140,7 @@ apiRouter.get("/meals", (_req, res) => {
 });
 
 // Get meal info
-apiRouter.get("/meal", (_req, res) => {
+secureApiRouter.get("/meal", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let mealname = params[1].split("=")[1];
@@ -163,7 +167,7 @@ apiRouter.get("/meal", (_req, res) => {
 });
 
 // Save main or daily goal
-apiRouter.post("/goal", (_req, res) => {
+secureApiRouter.post("/goal", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let type = params[1].split("=")[1];
@@ -187,7 +191,7 @@ apiRouter.post("/goal", (_req, res) => {
 });
 
 // Get main or daily goal
-apiRouter.get("/goal", (_req, res) => {
+secureApiRouter.get("/goal", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let type = params[1].split("=")[1];
@@ -226,7 +230,7 @@ apiRouter.get("/goal", (_req, res) => {
 });
 
 // Get the totals
-apiRouter.get("/totals", (_req, res) => {
+secureApiRouter.get("/totals", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let date = params[1].split("=")[1];
@@ -255,7 +259,7 @@ apiRouter.get("/totals", (_req, res) => {
 });
 
 // Update daily totals
-apiRouter.put("/totals", (_req, res) => {
+secureApiRouter.put("/totals", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {
@@ -278,7 +282,7 @@ apiRouter.put("/totals", (_req, res) => {
 });
 
 // Create a post
-apiRouter.post("/post", (_req, res) => {
+secureApiRouter.post("/post", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {
@@ -298,7 +302,7 @@ apiRouter.post("/post", (_req, res) => {
 });
 
 // Get all the posts
-apiRouter.get("/posts", (_req, res) => {
+secureApiRouter.get("/posts", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {
@@ -317,7 +321,7 @@ apiRouter.get("/posts", (_req, res) => {
 });
 
 // Get profile info
-apiRouter.get("/profile", (_req, res) => {
+secureApiRouter.get("/profile", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {
@@ -341,7 +345,7 @@ apiRouter.get("/profile", (_req, res) => {
 });
 
 // Update profile
-apiRouter.put("/profile", (_req, res) => {
+secureApiRouter.put("/profile", (_req, res) => {
   let username = _req.url.split("=")[1];
   let user = users.find((el) => {
     if (el.username === username) {

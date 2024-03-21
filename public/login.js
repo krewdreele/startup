@@ -44,13 +44,13 @@ async function authenticateUser() {
     }),
   });
 
-  if (response.status === 400) {
-    login_alert.style.display = "block";
-    login_alert.textContent = "Incorrect username or password";
-  } else if (response.status === 200) {
+  if (response.ok) {
     let body = await response.json();
     localStorage.setItem("this-user", JSON.stringify(body));
     document.location.href = "main.html";
+  } else {
+    login_alert.style.display = "block";
+    login_alert.textContent = "Incorrect username or password";
   }
 }
 
@@ -74,15 +74,20 @@ async function addUser() {
       body: JSON.stringify(user),
     });
 
-    create_alert.style.display = "none";
-    let modalEl = document.getElementById("create-account-modal");
-    modalEl.setAttribute("aria-hidden", "true");
-    modalEl.style.display = "none";
-    modalEl.className = "modal fade";
+    if (response.ok) {
+      create_alert.style.display = "none";
+      let modalEl = document.getElementById("create-account-modal");
+      modalEl.setAttribute("aria-hidden", "true");
+      modalEl.style.display = "none";
+      modalEl.className = "modal fade";
 
-    document.querySelector("body").className = "";
-    document.querySelector("body").style = "";
-    document.querySelector(".modal-backdrop.show").style.display = "none";
+      document.querySelector("body").className = "";
+      document.querySelector("body").style = "";
+      document.querySelector(".modal-backdrop.show").style.display = "none";
+    } else {
+      create_alert.style.display = "block";
+      create_alert.textContent = "Username already taken!";
+    }
   }
 }
 
