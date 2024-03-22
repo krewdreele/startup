@@ -245,79 +245,54 @@ secureApiRouter.put("/totals", async (_req, res) => {
 
 // Create a post
 secureApiRouter.post("/post", (_req, res) => {
-  let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
-
-  if (user) {
-    if (!user.posts) {
-      user.posts = [];
-    }
-    user.posts.push(_req.body);
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(400);
-  }
+  DB.createPost(_req.body);
+  res.sendStatus(200);
 });
 
 // Get all the posts
-secureApiRouter.get("/posts", (_req, res) => {
+secureApiRouter.get("/posts", async (_req, res) => {
   let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
 
-  if (user) {
-    if (!user.posts) {
-      user.posts = [];
-    }
-    res.status(200).send(user.posts);
+  const posts = await DB.getAllPosts(username);
+
+  if (posts) {
+    res.status(200).send(posts);
   } else {
-    res.sendStatus(400);
+    res.sendStatus(404);
   }
 });
 
 // Get profile info
-secureApiRouter.get("/profile", (_req, res) => {
+secureApiRouter.get("/profile", async (_req, res) => {
   let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
+  let user = await DB.getUser(username);
 
   if (user) {
     if (!user.profile) {
-      user.profile = {
+      let profile = {
         biography: "No biography found!",
       };
 
-      user.friends = [];
-    }
+      let new_vals = { $set: { profile: profile } };
+      DB.updateUser(username, new_vals);
 
-    res.status(200).send(user.profile);
+      res.status(201).send(profile);
+    } else {
+      res.status(200).send(user.profile);
+    }
   } else {
     res.sendStatus(400);
   }
 });
 
 // Update profile
-secureApiRouter.put("/profile", (_req, res) => {
+secureApiRouter.put("/profile", async (_req, res) => {
   let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
+  let user = await DB.getUser(username);
 
   if (user) {
-    user.profile = _req.body.profile;
-    user.username = _req.body.username;
+    let new_vals = { $set: _req.body };
+    DB.updateUser(username, new_vals);
     res.sendStatus(200);
   } else {
     res.sendStatus(400);

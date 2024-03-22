@@ -9,6 +9,7 @@ const db = client.db("startup");
 const userCollection = db.collection("user");
 const logCollection = db.collection("log");
 const mealCollection = db.collection("meals");
+const postCollection = db.collection("posts");
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -85,6 +86,15 @@ function updateMeal(meal) {
   mealCollection.replaceOne({ username: meal.username, name: meal.name }, meal);
 }
 
+function createPost(post) {
+  postCollection.insertOne(post);
+}
+
+function getAllPosts(username) {
+  const cursor = mealCollection.find({ username: username });
+  return cursor.toArray();
+}
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -97,4 +107,6 @@ module.exports = {
   getAllMeals,
   createMeal,
   updateMeal,
+  createPost,
+  getAllPosts,
 };

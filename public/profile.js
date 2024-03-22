@@ -76,45 +76,6 @@ async function loadProfile() {
   document.getElementById("biography").textContent = profile_info.biography;
 }
 
-function createPostHtml(description, meal, new_post) {
-  let post = document.createElement("div");
-  post.className = "post";
-
-  let username = document.createElement("a");
-  username.textContent = user.username;
-  username.setAttribute("href", "profile.html"); // this will need to be fixed later
-  post.appendChild(username);
-
-  let desc = document.createElement("p");
-  desc.textContent = description;
-  post.appendChild(desc);
-
-  if (meal != "none") {
-    let item = meals.find((x) => x.name === meal);
-    createCard(item, post);
-  }
-
-  if (new_post) {
-    savePost(username.textContent, desc.textContent, meal);
-  }
-
-  return post;
-}
-
-async function savePost(username, desc, meal) {
-  let post_json = JSON.stringify({
-    name: username,
-    desc: desc,
-    meal: meal ?? "none",
-  });
-
-  const response = await fetch(`api/post?user=${user.username}`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: post_json,
-  });
-}
-
 function post() {
   let post_desc = document.getElementById("post-desc");
 
@@ -141,6 +102,31 @@ function post() {
 
     clearPostInput();
   }
+}
+
+function createPostHtml(description, meal, new_post) {
+  let post = document.createElement("div");
+  post.className = "post";
+
+  let username = document.createElement("a");
+  username.textContent = user.username;
+  username.setAttribute("href", "profile.html");
+  post.appendChild(username);
+
+  let desc = document.createElement("p");
+  desc.textContent = description;
+  post.appendChild(desc);
+
+  if (meal != "none") {
+    let item = meals.find((x) => x.name === meal);
+    createCard(item, post);
+  }
+
+  if (new_post) {
+    savePost(username.textContent, desc.textContent, meal);
+  }
+
+  return post;
 }
 
 function createCard(item, container) {
@@ -175,6 +161,21 @@ function createCard(item, container) {
   container.appendChild(card);
 }
 
+async function savePost(username, desc, meal) {
+  let post = JSON.stringify({
+    username: username,
+    name: username,
+    desc: desc,
+    meal: meal ?? "none",
+  });
+
+  const response = await fetch(`api/post`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: post,
+  });
+}
+
 function getInfo(element) {
   let name = element.parentElement.children[0];
 
@@ -198,10 +199,8 @@ function clearPostInput() {
 }
 
 function editProfile() {
-  let user_in = document.getElementById("username-input");
   let bio_in = document.getElementById("bio-input");
 
-  user_in.value = user.username;
   if (user.biography) {
     bio_in.textContent = user.biography;
   } else {
@@ -210,11 +209,9 @@ function editProfile() {
 }
 
 async function saveEdit() {
-  let user_in = document.getElementById("username-input");
   let bio_in = document.getElementById("bio-input");
 
   let body = {
-    username: user_in.value,
     profile: { biography: bio_in.value },
   };
 
@@ -224,9 +221,5 @@ async function saveEdit() {
     body: JSON.stringify(body),
   });
 
-  user.username = user_in.value;
-  localStorage.setItem("this-user", JSON.stringify(user));
-
-  document.getElementById("username").textContent = user.username;
   document.getElementById("biography").textContent = bio_in.value;
 }
