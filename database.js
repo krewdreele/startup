@@ -8,6 +8,7 @@ const client = new MongoClient(url);
 const db = client.db("startup");
 const userCollection = db.collection("user");
 const logCollection = db.collection("log");
+const mealCollection = db.collection("meals");
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -60,10 +61,28 @@ function createLogEntry(username, date) {
     carbs: 0,
   };
   logCollection.insertOne(entry);
+  return entry;
 }
 
 function updateLogEntry(username, date, new_vals) {
   logCollection.updateOne({ username: username, date: date }, new_vals);
+}
+
+function getMeal(username, meal_name) {
+  return mealCollection.findOne({ username: username, name: meal_name });
+}
+
+function getAllMeals(username) {
+  const cursor = mealCollection.find({ username: username });
+  return cursor.toArray();
+}
+
+function createMeal(meal) {
+  mealCollection.insertOne(meal);
+}
+
+function updateMeal(meal) {
+  mealCollection.replaceOne({ username: meal.username, name: meal.name }, meal);
 }
 
 module.exports = {
@@ -74,4 +93,8 @@ module.exports = {
   getLogEntry,
   createLogEntry,
   updateLogEntry,
+  getMeal,
+  getAllMeals,
+  createMeal,
+  updateMeal,
 };

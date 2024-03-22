@@ -93,73 +93,41 @@ secureApiRouter.use(async (req, res, next) => {
 });
 
 // Create meal or save meal info
-secureApiRouter.post("/meal", (_req, res) => {
-  let params = _req.url.split("?")[1];
-  let username = params.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
+secureApiRouter.post("/meal", async (_req, res) => {
+  const meal = await DB.getMeal(_req.body.username, _req.body.name);
 
-  if (user) {
-    if (!user.meals) {
-      user["meals"] = [];
-    }
-    let index = user.meals.findIndex((el) => {
-      return el.name === _req.body.name;
-    });
-    if (index >= 0) {
-      user.meals[index] = _req.body;
-    } else {
-      user.meals.push(_req.body);
-    }
-    res.sendStatus(200);
+  if (meal) {
+    DB.updateMeal(_req.body);
   } else {
-    res.sendStatus(400);
+    DB.createMeal(_req.body);
   }
+
+  res.sendStatus(200);
 });
 
 // Get all meals
 secureApiRouter.get("/meals", async (_req, res) => {
   let username = _req.url.split("=")[1];
-  const user = await DB.getUser(username);
-
-  if (user) {
-    if (!user.meals) {
-      user.meals = [];
-      DB.updateUser(user.username, { $set: { meals: [] } });
-    }
-    res.status(200).send(user.meals);
+  const meals = await DB.getAllMeals(username);
+  if (meals) {
+    res.status(200).send(meals);
   } else {
-    res.sendStatus(400);
+    res.sendStatus(404);
   }
 });
 
 // Get meal info
-secureApiRouter.get("/meal", (_req, res) => {
+secureApiRouter.get("/meal", async (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let mealname = params[1].split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
 
-  if (user) {
-    let meal = user.meals.find((el) => {
-      if (el.name === mealname) {
-        return el;
-      }
-    });
-    if (meal) {
-      res.send(meal);
-    } else {
-      res.sendStatus(404);
-    }
+  const meal = await DB.getMeal(username, mealname);
+
+  if (meal) {
+    res.status(200).send(meal);
   } else {
-    res.sendStatus(400);
+    res.sendStatus(404);
   }
 });
 
@@ -231,37 +199,43 @@ secureApiRouter.get("/totals", async (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let date = params[1].split("=")[1];
+  let calendar = params[2].split("=")[1];
 
   const entry = await DB.getLogEntry(username, date);
   if (!entry) {
-    DB.createLogEntry(entry);
-    res.status(201).send(entry);
+    if (calendar === "1") {
+      res.sendStatus(204);
+    } else {
+      const create = await DB.createLogEntry(username, date);
+      res.status(201).send(create);
+    }
   } else {
     res.status(200).send(entry);
   }
 });
 
 // Update daily totals
-secureApiRouter.put("/totals", (_req, res) => {
-  let username = _req.url.split("=")[1];
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
+secureApiRouter.put("/totals", async (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let date = params[1].split("=")[1];
+
+  let totals = await DB.getLogEntry(username, date);
+
+  totals.calories += Number(_req.body.calories);
+  totals.protein += Number(_req.body.protein);
+  totals.fat += Number(_req.body.fat);
+  totals.carbs += Number(_req.body.carbs);
+
+  DB.updateLogEntry(username, date, {
+    $set: {
+      calories: totals.calories,
+      protein: totals.protein,
+      fat: totals.fat,
+      carbs: totals.carbs,
+    },
   });
-
-  if (user) {
-    let totals = user.log[_req.body.date];
-
-    totals.calories += Number(_req.body.calories);
-    totals.protein += Number(_req.body.protein);
-    totals.fat += Number(_req.body.fat);
-    totals.carbs += Number(_req.body.carbs);
-
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(400);
-  }
+  res.sendStatus(200);
 });
 
 // Create a post

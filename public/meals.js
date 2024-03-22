@@ -184,6 +184,7 @@ async function saveMeal() {
     card_container.appendChild(card);
 
     let request = {
+      username: user.username,
       type: mode,
       name: name.value,
       description: desc.value,
@@ -193,7 +194,7 @@ async function saveMeal() {
       carbs: carbs.value,
     };
 
-    const response = await fetch(`api/meal?user=${user.username}`, {
+    const response = await fetch(`api/meal`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(request),

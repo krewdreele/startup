@@ -65,7 +65,7 @@ async function setCalendar() {
     let day = document.createElement("button");
 
     const response = await fetch(
-      `api/totals?user=${user.username}&date=${date_str}`
+      `api/totals?user=${user.username}&date=${date_str}&calendar=1`
     );
 
     let totals = null;
