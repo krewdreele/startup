@@ -117,12 +117,11 @@ secureApiRouter.get("/meals", async (_req, res) => {
 });
 
 // Get meal info
-secureApiRouter.get("/meal", async (_req, res) => {
-  let params = _req.url.split("?")[1].split("&");
-  let username = params[0].split("=")[1];
-  let mealname = params[1].split("=")[1];
-
-  const meal = await DB.getMeal(username, mealname);
+//**This should be a get method but the meal name was not
+// transferring through the URL nicely when it has special characters
+// and you cannot have a body in a GET request**
+secureApiRouter.put("/meal", async (_req, res) => {
+  const meal = await DB.getMeal(_req.body.username, _req.body.meal_name);
 
   if (meal) {
     res.status(200).send(meal);

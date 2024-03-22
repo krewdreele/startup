@@ -224,9 +224,14 @@ function alert() {
 async function getInfo(element) {
   let name = element.parentElement.children[0];
 
-  const response = await fetch(
-    `api/meal?user=${user.username}&name=${name.textContent}`
-  );
+  const response = await fetch(`api/meal`, {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      username: user.username,
+      meal_name: name.textContent,
+    }),
+  });
 
   let info = await response.json();
 
@@ -332,6 +337,7 @@ async function saveInfo(element) {
   let carb_input = document.getElementById("carb-in");
 
   let new_meal = {
+    username: user.username,
     type: mode,
     name: name.textContent,
     description: "none",
@@ -341,7 +347,7 @@ async function saveInfo(element) {
     carbs: carb_input.value,
   };
 
-  const response = await fetch(`api/meal?user=${user.username}`, {
+  const response = await fetch(`api/meal`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(new_meal),
