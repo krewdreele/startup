@@ -91,7 +91,7 @@ function createPost(post) {
 }
 
 function getAllPosts(username) {
-  const cursor = mealCollection.find({ username: username });
+  const cursor = postCollection.find({ username: username });
   return cursor.toArray();
 }
 

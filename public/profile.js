@@ -164,7 +164,6 @@ function createCard(item, container) {
 async function savePost(username, desc, meal) {
   let post = JSON.stringify({
     username: username,
-    name: username,
     desc: desc,
     meal: meal ?? "none",
   });

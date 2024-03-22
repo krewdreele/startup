@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
 const DB = require("./database.js");
+const uuid = require("uuid");
 
 const authCookieName = "token";
 
@@ -53,7 +54,9 @@ apiRouter.post("/auth", async (_req, res) => {
 
   if (user) {
     if (await bcrypt.compare(_req.body.password, user.password)) {
-      setAuthCookie(res, user.token);
+      token = uuid.v4();
+      setAuthCookie(res, token);
+      DB.updateUser(_req.body.username, { $set: { token: token } });
       res.status(200).send(user);
     } else {
       res.sendStatus(400);
