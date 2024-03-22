@@ -118,7 +118,7 @@ secureApiRouter.get("/meals", async (_req, res) => {
 
 // Get meal info
 //**This should be a get method but the meal name was not
-// transferring through the URL nicely when it has special characters
+// transferring through the URL nicely when it had special characters
 // and you cannot have a body in a GET request**
 secureApiRouter.put("/meal", async (_req, res) => {
   const meal = await DB.getMeal(_req.body.username, _req.body.meal_name);
@@ -136,57 +136,63 @@ secureApiRouter.post("/goal", (_req, res) => {
   let username = params[0].split("=")[1];
   let type = params[1].split("=")[1];
 
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
-
-  if (user) {
-    if (type === "main") {
-      user.main_goal = _req.body;
-    } else {
-      user.daily_goal = _req.body;
-    }
-    res.sendStatus(200);
+  let new_vals = null;
+  if (type == "main") {
+    new_vals = { $set: { main_goal: _req.body } };
   } else {
-    res.sendStatus(400);
+    new_vals = { $set: { daily_goal: _req.body } };
   }
+  DB.updateUser(username, new_vals);
+  res.sendStatus(200);
 });
 
 // Get main or daily goal
-secureApiRouter.get("/goal", (_req, res) => {
+secureApiRouter.get("/goal", async (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let type = params[1].split("=")[1];
 
-  let user = users.find((el) => {
-    if (el.username === username) {
-      return el;
-    }
-  });
+  let user = await DB.getUser(username);
 
   if (user) {
+    let new_vals = null;
     if (type === "main") {
       if (!user.main_goal) {
-        user.main_goal = {
+        let main = {
           start_date: "01/01/2024",
           start_weight: "0",
           goal_weight: "01/01/2024",
           goal_date: "0",
         };
+
+        new_vals = {
+          $set: {
+            main_goal: main,
+          },
+        };
+        DB.updateUser(username, new_vals);
+        res.status(201).send(main);
+      } else {
+        res.status(200).send(user.main_goal);
       }
-      res.status(200).send(user.main_goal);
     } else {
       if (!user.daily_goal) {
-        user.daily_goal = {
+        let daily = {
           calories: "< 0",
           protein: "< 0",
           fat: "< 0",
           carbs: "< 0",
         };
+        new_vals = {
+          $set: {
+            daily_goal: daily,
+          },
+        };
+        DB.updateUser(username, new_vals);
+        res.status(201).send(daily);
+      } else {
+        res.status(200).send(user.daily_goal);
       }
-      res.status(200).send(user.daily_goal);
     }
   } else {
     res.sendStatus(400);

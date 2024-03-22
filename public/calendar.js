@@ -69,7 +69,7 @@ async function setCalendar() {
     );
 
     let totals = null;
-    if (response.status === 201) {
+    if (response.status === 204) {
       day.className = "btn btn-light";
     } else if (response.status === 200) {
       totals = await response.json();
