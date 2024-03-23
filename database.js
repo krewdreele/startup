@@ -93,7 +93,19 @@ function createLogEntry(username, date) {
 }
 
 function updateLogEntry(username, date, new_vals) {
-  logCollection.updateOne({ username: username, date: date }, new_vals);
+  date = date.split("/");
+  let month = date[0];
+  let day = date[1];
+  let year = date[2];
+  logCollection.updateOne(
+    {
+      username: username,
+      month: month,
+      day: day,
+      year: year,
+    },
+    new_vals
+  );
 }
 
 function getMeal(username, meal_name) {
