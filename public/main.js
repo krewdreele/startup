@@ -79,7 +79,7 @@ async function updateTotals() {
   let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
 
   const response = await fetch(
-    `api/totals?user=${user.username}&date=${date_str}&calendar=0`
+    `api/totals?user=${user.username}&date=${date_str}`
   );
 
   if (response.ok) {

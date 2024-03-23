@@ -38,6 +38,7 @@ let date = new Date();
 let current_month = months[date.getMonth()];
 let current_day = date.getDate();
 let daily_goal = null;
+let log = null;
 window.onload = onLoad;
 
 async function onLoad() {
@@ -49,7 +50,17 @@ async function onLoad() {
   setCalendar();
 }
 
+async function loadMonth() {
+  const response = await fetch(
+    `api/monthly/totals?user=${user.username}&month=${current_month.id}`
+  );
+
+  return response.json();
+}
+
 async function setCalendar() {
+  log = await loadMonth();
+
   document.getElementById("month-name").textContent = current_month.name;
   let calendar = document.getElementById("calendar");
   calendar.textContent = "";
@@ -61,18 +72,12 @@ async function setCalendar() {
   }
 
   for (let i = 1; i <= current_month.num_days; i++) {
-    let date_str = `${current_month.id}/${i}/${date.getFullYear()}`;
-    let day = document.createElement("button");
+    let day_btn = document.createElement("button");
 
-    const response = await fetch(
-      `api/totals?user=${user.username}&date=${date_str}&calendar=1`
-    );
-
-    let totals = null;
-    if (response.status === 204) {
-      day.className = "btn btn-light";
-    } else if (response.status === 200) {
-      totals = await response.json();
+    let day = await log[i];
+    if (!day) {
+      day_btn.className = "btn btn-light";
+    } else {
       let hit_cals = false;
       let hit_protein = false;
       let hit_fat = false;
@@ -80,48 +85,48 @@ async function setCalendar() {
 
       let parts = daily_goal.calories.split(" ");
       if (parts[0] === "<") {
-        hit_cals = totals.calories <= parts[1] ? true : false;
+        hit_cals = day.calories <= parts[1] ? true : false;
       } else {
-        hit_cals = totals.calories >= parts[1] ? true : false;
+        hit_cals = day.calories >= parts[1] ? true : false;
       }
 
       parts = daily_goal.protein.split(" ");
       if (parts[0] === "<") {
-        hit_protein = totals.protein <= parts[1] ? true : false;
+        hit_protein = day.protein <= parts[1] ? true : false;
       } else {
-        hit_protein = totals.protein >= parts[1] ? true : false;
+        hit_protein = day.protein >= parts[1] ? true : false;
       }
 
       parts = daily_goal.fat.split(" ");
       if (parts[0] === "<") {
-        hit_fat = totals.fat <= parts[1] ? true : false;
+        hit_fat = day.fat <= parts[1] ? true : false;
       } else {
-        hit_fat = totals.fat >= parts[1] ? true : false;
+        hit_fat = day.fat >= parts[1] ? true : false;
       }
 
       parts = daily_goal.carbs.split(" ");
       if (parts[0] === "<") {
-        hit_carbs = totals.carbs <= parts[1] ? true : false;
+        hit_carbs = day.carbs <= parts[1] ? true : false;
       } else {
-        hit_carbs = totals.carbs >= parts[1] ? true : false;
+        hit_carbs = day.carbs >= parts[1] ? true : false;
       }
 
       if (hit_cals && hit_carbs && hit_fat && hit_protein) {
-        day.className = "btn btn-success";
+        day_btn.className = "btn btn-success";
       } else {
-        day.className = "btn btn-danger";
+        day_btn.className = "btn btn-danger";
       }
     }
 
-    day.setAttribute("data-bs-toggle", "modal");
-    day.setAttribute("data-bs-target", "#calendar-date");
-    day.setAttribute("onclick", "dateClicked(this)");
-    day.textContent = i;
+    day_btn.setAttribute("data-bs-toggle", "modal");
+    day_btn.setAttribute("data-bs-target", "#calendar-date");
+    day_btn.setAttribute("onclick", "dateClicked(this)");
+    day_btn.textContent = i;
 
     if (i === current_day && current_month === months[date.getMonth()]) {
-      day.style.border = "3px solid black";
+      day_btn.style.border = "3px solid black";
     }
-    calendar.appendChild(day);
+    calendar.appendChild(day_btn);
   }
 }
 
@@ -143,17 +148,9 @@ async function dateClicked(element) {
   let title = current_month.name + " " + element.textContent;
   document.getElementById("calendar-date-label").textContent = title;
 
-  let date_str = `${current_month.id}/${
-    element.textContent
-  }/${date.getFullYear()}`;
+  let totals = await log[element.textContent];
 
-  const response = await fetch(
-    `api/totals?user=${user.username}&date=${date_str}`
-  );
-
-  if (response.status === 200) {
-    let totals = await response.json();
-
+  if (totals) {
     document.getElementById("log-calories").textContent = totals.calories;
     document.getElementById("log-protein").textContent = totals.protein;
     document.getElementById("log-fat").textContent = totals.fat;

@@ -49,13 +49,40 @@ function updateUser(username, new_vals) {
 }
 
 function getLogEntry(username, date) {
-  return logCollection.findOne({ username: username, date: date });
+  date = date.split("/");
+  let month = date[0];
+  let day = date[1];
+  let year = date[2];
+
+  return logCollection.findOne({
+    username: username,
+    month: month,
+    day: day,
+    year: year,
+  });
+}
+
+async function getLogEntrys(username, month) {
+  const cursor = logCollection.find({ username: username, month: month });
+  let log = {};
+  for await (const doc of cursor) {
+    log[doc.day] = doc;
+  }
+
+  return log;
 }
 
 function createLogEntry(username, date) {
+  date = date.split("/");
+  let month = date[0];
+  let day = date[1];
+  let year = date[2];
+
   let entry = {
     username: username,
-    date: date,
+    month: month,
+    day: day,
+    year: year,
     calories: 0,
     protein: 0,
     fat: 0,
@@ -101,6 +128,7 @@ module.exports = {
   createUser,
   updateUser,
   getLogEntry,
+  getLogEntrys,
   createLogEntry,
   updateLogEntry,
   getMeal,

@@ -208,21 +208,28 @@ secureApiRouter.get("/goal", async (_req, res) => {
   }
 });
 
-// Get the totals
+// Get the totals for a whole month
+secureApiRouter.get("/monthly/totals", async (_req, res) => {
+  let params = _req.url.split("?")[1].split("&");
+  let username = params[0].split("=")[1];
+  let month = params[1].split("=")[1];
+
+  const entrys = await DB.getLogEntrys(username, month);
+
+  if (entrys) res.status(200).send(entrys);
+  else res.sendStatus(404);
+});
+
+// Get the totals for a specific day
 secureApiRouter.get("/totals", async (_req, res) => {
   let params = _req.url.split("?")[1].split("&");
   let username = params[0].split("=")[1];
   let date = params[1].split("=")[1];
-  let calendar = params[2].split("=")[1];
 
   const entry = await DB.getLogEntry(username, date);
   if (!entry) {
-    if (calendar === "1") {
-      res.sendStatus(204);
-    } else {
-      const create = await DB.createLogEntry(username, date);
-      res.status(201).send(create);
-    }
+    const create = await DB.createLogEntry(username, date);
+    res.status(201).send(create);
   } else {
     res.status(200).send(entry);
   }
