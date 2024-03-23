@@ -95,6 +95,12 @@ secureApiRouter.use(async (req, res, next) => {
   }
 });
 
+// Logout
+secureApiRouter.delete("/auth", (_req, res) => {
+  res.clearCookie(authCookieName);
+  res.sendStatus(200);
+});
+
 // Create meal or save meal info
 secureApiRouter.post("/meal", async (_req, res) => {
   const meal = await DB.getMeal(_req.body.username, _req.body.name);

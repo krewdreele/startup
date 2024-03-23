@@ -222,3 +222,13 @@ async function saveEdit() {
 
   document.getElementById("biography").textContent = bio_in.value;
 }
+
+async function logout() {
+  const response = await fetch("api/auth", {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    window.location = "index.html";
+  }
+}
