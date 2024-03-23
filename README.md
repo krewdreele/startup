@@ -114,3 +114,18 @@ Endpoints:
 - get all posts (get/posts?user='username')
 - get profile info (get/profile?user='username')
 - update profile (put/profile?user='username')
+
+## Login Deliverable
+
+Used MongoDB to create a database to store user information (user, meals, log, posts, goals as
+well as encrypted passwords)
+
+- Create account (unique username, password is hashed)
+- Login to verify password and assign an authentication token as a cookie in the browser
+- Restricted most API calls and website functionality without authorization token
+- Added the ability to logout and delete token (profile>settings>logout)
+- Meal info now saved (and updated) in database (will be helpful when I add more search functionality)
+- Log info saved (and updated) in database when updating your totals for the day (also changed calendar query to allow for faster loading)
+- Goal info can now be saved (and updated) in database
+- Posts can now be saved (and updated) in db
+- My website doesn't have a lot of functionality for deleting from the db so this is something I will still need to add
