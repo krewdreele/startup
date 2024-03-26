@@ -3,6 +3,7 @@ let selectedMeal = null;
 let meals = [];
 let date = new Date();
 let input = document.getElementById("search-input");
+let notifications = document.getElementById("notifications");
 window.onload = onLoad;
 
 async function onLoad() {
@@ -19,6 +20,12 @@ async function onLoad() {
 
   document.getElementById("username").textContent = user.username;
   updateTotals();
+  if (!socket) initializeSocket();
+  socket.onmessage = async (event) => {
+    const msg = JSON.parse(await event.data.text());
+    let post = createPostHtml(msg);
+    notifications.appendChild(post);
+  };
 }
 
 function searchMeals() {

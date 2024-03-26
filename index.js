@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const DB = require("./database.js");
 const uuid = require("uuid");
-
+const { websocketService } = require("./websocket.js");
 const authCookieName = "token";
 
 // The service port may be set on the command line
@@ -320,6 +320,8 @@ app.use((_req, res) => {
   res.sendFile("index.html", { root: "public" });
 });
 
-app.listen(port, () => {
+let httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+websocketService(httpService);

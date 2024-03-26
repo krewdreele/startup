@@ -1,7 +1,6 @@
 let user = JSON.parse(localStorage.getItem("this-user"));
 let selectedMeal = null;
 let meals = [];
-let date = new Date();
 let input = document.getElementById("search-input");
 window.onload = onLoad;
 
@@ -16,6 +15,8 @@ async function onLoad() {
 
   input.onkeyup = searchMeals;
   loadProfile();
+
+  if (!socket) initializeSocket();
 }
 
 function searchMeals() {
@@ -59,13 +60,15 @@ async function loadProfile() {
   } else {
     for (let i = 0; i < posts.length; i++) {
       let post_info = posts[i];
-      let post = createPostHtml(
-        post_info.desc,
-        post_info?.meal ?? "none",
-        false
-      );
+      let post = {
+        username: user.username,
+        desc: post_info.desc,
+        meal: post_info?.meal ?? "none",
+      };
 
-      posts_html.appendChild(post);
+      let html = createPostHtml(post);
+
+      posts_html.appendChild(html);
     }
   }
 
@@ -93,85 +96,25 @@ function post() {
       document.getElementById("no-posts").style.display = "none";
     }
 
-    let post = createPostHtml(
-      post_desc.value,
-      selectedMeal?.textContent ?? "none",
-      true
-    );
-    posts.appendChild(post);
+    let post = {
+      username: user.username,
+      desc: post_desc.value,
+      meal: selectedMeal?.textContent ?? "none",
+    };
 
+    let html = createPostHtml(post);
+    posts.appendChild(html);
+    savePost(post);
     clearPostInput();
+    socket.send(JSON.stringify(post));
   }
 }
 
-function createPostHtml(description, meal, new_post) {
-  let post = document.createElement("div");
-  post.className = "post";
-
-  let username = document.createElement("a");
-  username.textContent = user.username;
-  username.setAttribute("href", "profile.html");
-  post.appendChild(username);
-
-  let desc = document.createElement("p");
-  desc.textContent = description;
-  post.appendChild(desc);
-
-  if (meal != "none") {
-    let item = meals.find((x) => x.name === meal);
-    createCard(item, post);
-  }
-
-  if (new_post) {
-    savePost(username.textContent, desc.textContent, meal);
-  }
-
-  return post;
-}
-
-function createCard(item, container) {
-  let card = document.createElement("div");
-  card.className = "card";
-
-  let html_img = document.createElement("img");
-
-  let body = document.createElement("div");
-  body.className = "card-body";
-
-  let meal_name = document.createElement("h5");
-  meal_name.textContent = item.name;
-
-  let meal_desc = document.createElement("p");
-  meal_desc.className = "card-text";
-  meal_desc.textContent = item.description;
-
-  let button = document.createElement("button");
-  button.className = "btn btn-info";
-  button.setAttribute("data-bs-target", "#meal-info");
-  button.setAttribute("data-bs-toggle", "modal");
-  button.setAttribute("onclick", "getInfo(this)");
-  button.textContent = "Info";
-
-  card.appendChild(html_img);
-  card.appendChild(body);
-  body.appendChild(meal_name);
-  body.appendChild(meal_desc);
-  body.appendChild(button);
-
-  container.appendChild(card);
-}
-
-async function savePost(username, desc, meal) {
-  let post = JSON.stringify({
-    username: username,
-    desc: desc,
-    meal: meal ?? "none",
-  });
-
+async function savePost(post) {
   const response = await fetch(`api/post`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: post,
+    body: JSON.stringify(post),
   });
 }
 
