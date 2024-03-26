@@ -45,8 +45,6 @@ function createCard(item, container) {
   let card = document.createElement("div");
   card.className = "card";
 
-  let html_img = document.createElement("img");
-
   let body = document.createElement("div");
   body.className = "card-body";
 
@@ -64,7 +62,6 @@ function createCard(item, container) {
   button.setAttribute("onclick", "getInfo(this)");
   button.textContent = "Info";
 
-  card.appendChild(html_img);
   card.appendChild(body);
   body.appendChild(meal_name);
   body.appendChild(meal_desc);

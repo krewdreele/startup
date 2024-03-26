@@ -30,13 +30,12 @@ async function onLoad() {
     localStorage.setItem("feed", JSON.stringify(feed));
   };
 
-  /*
-  <input type="text" placeholder="comment" />
-  <button class="btn btn-info">></button>
-  */
-
+  feed = JSON.parse(localStorage.getItem("feed"));
   if (feed.length != notifications.childElementCount) {
-    feed = JSON.parse(localStorage.getItem("feed"));
+    for (i of feed) {
+      let post = await createPostHtml(i);
+      notifications.appendChild(post);
+    }
   }
 }
 
@@ -113,4 +112,31 @@ async function updateTotals() {
 function clear() {
   input.value = "";
   document.getElementById("meal-search-container").textContent = "";
+}
+
+async function getInfo(element) {
+  let name = element.parentElement.children[0].textContent;
+  let username = element.parentElement.parentElement.children[0].textContent;
+
+  const response = await fetch("api/meal", {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username: username, meal_name: name }),
+  });
+
+  if (response.ok) {
+    let info = await response.json();
+
+    document.getElementById("meal-info-label").textContent = name.textContent;
+    document.getElementById("info-cals").textContent = `${
+      info?.calories ?? "N/A"
+    }`;
+    document.getElementById("info-protein").textContent = `${
+      info?.protein ?? "N/A"
+    }`;
+    document.getElementById("info-fat").textContent = `${info?.fat ?? "N/A"}`;
+    document.getElementById("info-carbs").textContent = `${
+      info?.carbs ?? "N/A"
+    }`;
+  }
 }
