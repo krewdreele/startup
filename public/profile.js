@@ -16,7 +16,7 @@ async function onLoad() {
   input.onkeyup = searchMeals;
   loadProfile();
 
-  if (!socket) initializeSocket();
+  if (!socket) initializeSocket(user.username);
 }
 
 function searchMeals() {
@@ -66,7 +66,7 @@ async function loadProfile() {
         meal: post_info?.meal ?? "none",
       };
 
-      let html = createPostHtml(post);
+      let html = await createPostHtml(post);
 
       posts_html.appendChild(html);
     }
@@ -79,7 +79,7 @@ async function loadProfile() {
   document.getElementById("biography").textContent = profile_info.biography;
 }
 
-function post() {
+async function post() {
   let post_desc = document.getElementById("post-desc");
 
   if (post_desc.value === "") {
@@ -102,7 +102,7 @@ function post() {
       meal: selectedMeal?.textContent ?? "none",
     };
 
-    let html = createPostHtml(post);
+    let html = await createPostHtml(post);
     posts.appendChild(html);
     savePost(post);
     clearPostInput();

@@ -1,20 +1,20 @@
 let socket = null;
 
-function initializeSocket() {
+function initializeSocket(username) {
   const protocol = window.location.protocol === "http:" ? "ws" : "wss";
   socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
   socket.onopen = (event) => {
-    console.log("client connected");
+    console.log(`${username} connected`);
   };
   socket.onclose = (event) => {
-    console.log("client disconnected");
+    console.log(`${username} disconnected`);
   };
 }
 
-function createPostHtml(post) {
+async function createPostHtml(post) {
   let html = document.createElement("div");
-  post.className = "post";
+  html.className = "post";
 
   let username = document.createElement("a");
   username.textContent = post.username;
@@ -26,9 +26,18 @@ function createPostHtml(post) {
   html.appendChild(desc);
 
   if (post.meal != "none") {
-    let item = meals.find((x) => x.name === post.meal);
-    createCard(item, html);
+    const response = await fetch("api/meal", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ username: post.username, meal_name: post.meal }),
+    });
+
+    if (response.ok) {
+      let meal = await response.json();
+      createCard(meal, html);
+    }
   }
+
   return html;
 }
 

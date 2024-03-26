@@ -1,6 +1,7 @@
 let user = JSON.parse(localStorage.getItem("this-user"));
 let selectedMeal = null;
 let meals = [];
+let feed = [];
 let date = new Date();
 let input = document.getElementById("search-input");
 let notifications = document.getElementById("notifications");
@@ -20,12 +21,23 @@ async function onLoad() {
 
   document.getElementById("username").textContent = user.username;
   updateTotals();
-  if (!socket) initializeSocket();
+  if (!socket) initializeSocket(user.username);
   socket.onmessage = async (event) => {
     const msg = JSON.parse(await event.data.text());
-    let post = createPostHtml(msg);
+    let post = await createPostHtml(msg);
     notifications.appendChild(post);
+    feed.push(msg);
+    localStorage.setItem("feed", JSON.stringify(feed));
   };
+
+  /*
+  <input type="text" placeholder="comment" />
+  <button class="btn btn-info">></button>
+  */
+
+  if (feed.length != notifications.childElementCount) {
+    feed = JSON.parse(localStorage.getItem("feed"));
+  }
 }
 
 function searchMeals() {
