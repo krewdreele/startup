@@ -116,7 +116,8 @@ function clear() {
 
 async function getInfo(element) {
   let name = element.parentElement.children[0].textContent;
-  let username = element.parentElement.parentElement.children[0].textContent;
+  let username =
+    element.parentElement.parentElement.parentElement.children[0].textContent;
 
   const response = await fetch("api/meal", {
     method: "PUT",
@@ -127,7 +128,7 @@ async function getInfo(element) {
   if (response.ok) {
     let info = await response.json();
 
-    document.getElementById("meal-info-label").textContent = name.textContent;
+    document.getElementById("meal-info-label").textContent = info.name;
     document.getElementById("info-cals").textContent = `${
       info?.calories ?? "N/A"
     }`;
