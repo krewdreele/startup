@@ -139,6 +139,17 @@ secureApiRouter.put("/meal", async (_req, res) => {
   }
 });
 
+secureApiRouter.delete("/meal", async (_req, res) => {
+  const meal = await DB.getMeal(_req.body.username, _req.body.meal_name);
+
+  if (meal) {
+    DB.deleteMeal(meal);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
 // Save main or daily goal
 secureApiRouter.post("/goal", (_req, res) => {
   let params = _req.url.split("?")[1].split("&");

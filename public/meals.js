@@ -86,6 +86,10 @@ async function loadMeals() {
   let lunch_container = document.getElementById("Lunch").children[0];
   let dinner_container = document.getElementById("Dinner").children[0];
 
+  breakfast_container.textContent = "";
+  lunch_container.textContent = "";
+  dinner_container.textContent = "";
+
   let response = await fetch(`api/meals?user=${user.username}`);
 
   let meals = await response.json();
@@ -287,6 +291,19 @@ function editInfo(element) {
   body.replaceChild(carb_input, carb_info);
 }
 
+async function deleteMeal(element) {
+  let meal_name =
+    element.parentElement.parentElement.children[0].children[0].textContent;
+
+  const response = await fetch("api/meal", {
+    method: "DELETE",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username: user.username, meal_name: meal_name }),
+  });
+
+  loadMeals();
+}
+
 function cancelEdit(element) {
   if (document.getElementById("save-info-button").style.display === "none")
     return;
@@ -320,10 +337,10 @@ function cancelEdit(element) {
   let fat_input = document.getElementById("fat-in");
   let carb_input = document.getElementById("carb-in");
 
-  body.replaceChild(calories, calorie_input);
-  body.replaceChild(protein, protein_input);
-  body.replaceChild(fat, fat_input);
-  body.replaceChild(carbs, carb_input);
+  body.replaceChild(calorie_input, calories);
+  body.replaceChild(protein_input, protein);
+  body.replaceChild(fat_input, fat);
+  body.replaceChild(carb_input, carbs);
 }
 
 async function saveInfo(element) {

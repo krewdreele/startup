@@ -117,12 +117,16 @@ function getAllMeals(username) {
   return cursor.toArray();
 }
 
-function createMeal(meal) {
-  mealCollection.insertOne(meal);
+function createMeal(req) {
+  mealCollection.insertOne(req);
 }
 
-function updateMeal(meal) {
-  mealCollection.replaceOne({ username: meal.username, name: meal.name }, meal);
+function updateMeal(req) {
+  mealCollection.replaceOne({ username: req.username, name: req.name }, req);
+}
+
+function deleteMeal(req) {
+  mealCollection.deleteOne({ username: req.username, name: req.name });
 }
 
 function createPost(post) {
@@ -146,6 +150,7 @@ module.exports = {
   getMeal,
   getAllMeals,
   createMeal,
+  deleteMeal,
   updateMeal,
   createPost,
   getAllPosts,
