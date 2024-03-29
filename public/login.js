@@ -152,14 +152,6 @@ function validateCreateAccount() {
       create_alert.innerText += "Password should contain a number\n";
       valid = false;
     }
-
-    let regex4 = /[!@#$%^&*.?]/;
-    if (!regex4.test(password.value)) {
-      create_alert.style.display = "block";
-      create_alert.innerText +=
-        "Password should contain a special character i.e !@#$%^&*.?\n";
-      valid = false;
-    }
   }
 
   return valid;
