@@ -1,7 +1,6 @@
 let user = JSON.parse(localStorage.getItem("this-user"));
 let selectedMeal = null;
 let meals = [];
-let feed = [];
 let date = new Date();
 let input = document.getElementById("search-input");
 let notifications = document.getElementById("notifications");
@@ -21,20 +20,21 @@ async function onLoad() {
 
   document.getElementById("username").textContent = user.username;
   updateTotals();
+  let feed = JSON.parse(localStorage.getItem("feed")) ?? [];
+
   if (!socket) initializeSocket(user.username);
   socket.onmessage = async (event) => {
     const msg = JSON.parse(await event.data.text());
     let post = await createPostHtml(msg);
-    notifications.appendChild(post);
+    notifications.prepend(post);
     feed.push(msg);
     localStorage.setItem("feed", JSON.stringify(feed));
   };
 
-  feed = JSON.parse(localStorage.getItem("feed"));
-  if (feed.length != notifications.childElementCount) {
+  if (feed && feed.length != notifications.childElementCount) {
     for (i of feed) {
       let post = await createPostHtml(i);
-      notifications.appendChild(post);
+      notifications.prepend(post);
     }
   }
 }
