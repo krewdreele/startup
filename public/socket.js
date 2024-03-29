@@ -21,6 +21,10 @@ async function createPostHtml(post) {
   username.setAttribute("href", "profile.html");
   html.appendChild(username);
 
+  let date = document.createElement("p");
+  date.textContent = post.date;
+  html.appendChild(date);
+
   let desc = document.createElement("p");
   desc.textContent = post.desc;
   html.appendChild(desc);

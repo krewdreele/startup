@@ -96,10 +96,14 @@ async function post() {
       document.getElementById("no-posts").style.display = "none";
     }
 
+    let date = new Date();
+    let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+
     let post = {
       username: user.username,
       desc: post_desc.value,
       meal: selectedMeal?.textContent ?? "none",
+      date: date_str,
     };
 
     let html = await createPostHtml(post);
