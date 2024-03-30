@@ -129,3 +129,15 @@ well as encrypted passwords)
 - Goal info can now be saved (and updated) in database
 - Posts can now be saved (and updated) in db
 - My website doesn't have a lot of functionality for deleting from the db so this is something I will still need to add
+
+## Websocket Deliverable
+
+Used WebSocket to enable server side and peer to peer communication.
+
+- Users' posts now broadcast to everyone else who is online
+- Need to create 'friend' functionality so that users only see their friends posts (or maybe just see them first)
+- What happens if a friend posts and you are not online? -- need to be addressed at some point too
+- Other users can click on info link in post to see the nutrition
+- Still need to link profile to the correct user (probably easier to do with React)
+- Added some more delete functionality (meals, posts)
+- Made the posts look better and gave them a title for easier search in db
