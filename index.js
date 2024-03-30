@@ -139,6 +139,7 @@ secureApiRouter.put("/meal", async (_req, res) => {
   }
 });
 
+// Delete a meal
 secureApiRouter.delete("/meal", async (_req, res) => {
   const meal = await DB.getMeal(_req.body.username, _req.body.meal_name);
 
@@ -287,6 +288,12 @@ secureApiRouter.get("/posts", async (_req, res) => {
   } else {
     res.sendStatus(404);
   }
+});
+
+// Delete a post
+secureApiRouter.delete("/post", async (_req, res) => {
+  DB.deletePost(_req.body);
+  res.sendStatus(200);
 });
 
 // Get profile info

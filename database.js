@@ -138,6 +138,10 @@ function getAllPosts(username) {
   return cursor.toArray();
 }
 
+function deletePost(req) {
+  postCollection.deleteOne({ username: req.username, title: req.title });
+}
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -154,4 +158,5 @@ module.exports = {
   updateMeal,
   createPost,
   getAllPosts,
+  deletePost,
 };

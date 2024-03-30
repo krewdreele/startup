@@ -12,22 +12,45 @@ function initializeSocket(username) {
   };
 }
 
-async function createPostHtml(post) {
+async function createPostHtml(post, profile = false) {
   let html = document.createElement("div");
   html.className = "post";
+
+  let header = document.createElement("div");
+  header.style.display = "flex";
+  header.style.justifyContent = "space-between";
 
   let username = document.createElement("a");
   username.textContent = post.username;
   username.setAttribute("href", "profile.html");
-  html.appendChild(username);
+  header.appendChild(username);
 
+  if (profile) {
+    let delete_btn = document.createElement("button");
+    delete_btn.setAttribute("onClick", "deletePost(this)");
+    delete_btn.className = "btn btn-danger";
+    delete_btn.textContent = "X";
+    delete_btn.style.marginLeft = "20px";
+    header.appendChild(delete_btn);
+  }
+
+  html.appendChild(header);
+
+  let body = document.createElement("div");
+  body.style.display = "flex";
+  body.style.flexDirection = "column";
+  body.style.justifyContent = "space-evenly";
+  let title = document.createElement("p");
   let date = document.createElement("p");
-  date.textContent = post.date;
-  html.appendChild(date);
-
   let desc = document.createElement("p");
+  title.textContent = post.title;
+  date.textContent = post.date;
   desc.textContent = post.desc;
-  html.appendChild(desc);
+  body.appendChild(title);
+  body.appendChild(date);
+  body.appendChild(desc);
+
+  html.appendChild(body);
 
   if (post.meal != "none") {
     const response = await fetch("api/meal", {

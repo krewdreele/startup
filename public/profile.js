@@ -47,7 +47,7 @@ function selectMeal(element) {
 async function loadProfile() {
   document.getElementById("username").textContent = user.username;
   let posts_html = document.getElementById("posts");
-  posts_html.children = "";
+  posts_html.textContent = "";
 
   const response = await fetch(`api/posts?user=${user.username}`);
   let posts = await response.json();
@@ -60,13 +60,8 @@ async function loadProfile() {
   } else {
     for (let i = 0; i < posts.length; i++) {
       let post_info = posts[i];
-      let post = {
-        username: user.username,
-        desc: post_info.desc,
-        meal: post_info?.meal ?? "none",
-      };
 
-      let html = await createPostHtml(post);
+      let html = await createPostHtml(post_info, true);
 
       posts_html.appendChild(html);
     }
@@ -80,12 +75,14 @@ async function loadProfile() {
 }
 
 async function post() {
-  let post_desc = document.getElementById("post-desc");
+  let post_desc = document.getElementById("post-desc").value;
 
-  if (post_desc.value === "") {
+  let title = document.getElementById("title").value;
+
+  if (post_desc === "" || title === "") {
     let alert = document.getElementById("post-alert");
     alert.style.display = "block";
-    alert.textContent = "Unable to post. Please provide a description!";
+    alert.textContent = "Please fill out all fields!";
 
     setTimeout(() => {
       alert.style.display = "none";
@@ -97,16 +94,19 @@ async function post() {
     }
 
     let date = new Date();
-    let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+    let date_str = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
 
     let post = {
       username: user.username,
-      desc: post_desc.value,
+      desc: post_desc,
       meal: selectedMeal?.textContent ?? "none",
       date: date_str,
+      title: title,
     };
 
-    let html = await createPostHtml(post);
+    let html = await createPostHtml(post, true);
     posts.appendChild(html);
     savePost(post);
     clearPostInput();
@@ -120,6 +120,24 @@ async function savePost(post) {
     headers: { "content-type": "application/json" },
     body: JSON.stringify(post),
   });
+}
+
+async function deletePost(element) {
+  let request = {
+    title:
+      element.parentElement.parentElement.children[1].children[0].textContent,
+    username: user.username,
+  };
+
+  const response = await fetch("api/post", {
+    method: "DELETE",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(request),
+  });
+
+  if (response.ok) {
+    loadProfile();
+  }
 }
 
 function getInfo(element) {
@@ -142,6 +160,7 @@ function clearPostInput() {
   document.getElementById("post-desc").value = "";
   input.value = "";
   document.getElementById("meal-search-container").textContent = "";
+  document.getElementById("title").value = "";
 }
 
 function editProfile() {
