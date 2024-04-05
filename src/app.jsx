@@ -1,29 +1,48 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { Login } from './login/login';
+import {Home} from './home/home';
+import {Goals} from './goals/goals';
+import {Meals} from './meals/meals';
+import {Log} from './log/log';
+import {Profile} from './profile/profile';
 
 export default function App() {
   return (
+    <BrowserRouter>
   <div>
     <header>
-      <h1>Tracker</h1>
+      <NavLink to=''>Tracker</NavLink>
       <nav>
-        <a href="main.html">Home</a>
-        <a href="goals.html">Goals</a>
-        <a href="meals.html">Meals</a>
-        <a href="calendar.html">Log</a>
+        <NavLink to="home">Home</NavLink>
+        <NavLink to="goals">Goals</NavLink>
+        <NavLink to="meals">Meals</NavLink>
+        <NavLink to="log">Log</NavLink>
       </nav>
       <div>
-        <a href="profile.html" id="username">username</a>
+        <NavLink id="username" to='profile'>username</NavLink>
         <img src="Portrait.png" />
       </div>
     </header>
-    <main>
-        App content will go here
-    </main>
+        <Routes>
+            <Route path='/' element={<Login />} exact />
+            <Route path='/home' element={<Home />} />
+            <Route path='/goals' element={<Goals />} />
+            <Route path='/meals' element={<Meals />} />
+            <Route path='/log' element={<Log />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='*' element={<NotFound />} />
+        </Routes>
     <footer>
       <a href="https://github.com/krewdreele/startup">Drew Keele</a>
     </footer>
   </div>
+  </BrowserRouter>
    );
+}
+
+function NotFound() {
+  return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
 }
