@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap');
+
+main{
+    font-family: Oxygen, sans-serif;
+    font-size: large;
+
+    flex: 4;
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+main > div > p {
+    margin: 20px;
+}
+
+main > div > input {
+    margin-right:10px;
+    border-radius: 5px;
+}
+
+
+

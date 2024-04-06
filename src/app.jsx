@@ -11,8 +11,8 @@ import {Profile} from './profile/profile';
 
 export default function App() {
   return (
+    <div id='page'>
     <BrowserRouter>
-  <div>
     <header>
       <NavLink to=''>Tracker</NavLink>
       <nav>
@@ -38,8 +38,8 @@ export default function App() {
     <footer>
       <a href="https://github.com/krewdreele/startup">Drew Keele</a>
     </footer>
-  </div>
   </BrowserRouter>
+  </div>
    );
 }
 

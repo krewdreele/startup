@@ -1,49 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap');
 @media screen and (max-width: 600px) {
-    header {
-        width: 90%;
-    }
-
-    header>h1 {
-        margin: 5px;
-    }
-
-    header>div {
-        display: flex;
-        flex-direction: column;
-        margin-right: 15px;
-    }
-
-    header>nav {
-        display: flex;
-        flex-direction: column;
-    }
-
-    header>nav>a {
-        margin: 5px;
-    }
-
-    div>a {
-        margin: 5px;
-    }
+    
 }
 
-body,
-header,
-footer {
-    font-family: Oxygen, sans-serif;
-    font-size: larger;
-}
-
-body {
+#page {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
 header,
-main,
 footer {
+    font-family: Oxygen, sans-serif;
+    font-size: larger;
     margin: 0px 15px 5px 15px;
 }
 
@@ -52,6 +21,12 @@ header {
     display: flex;
     align-items: baseline;
     border-bottom: thin lightgray solid;
+}
+
+footer {
+    flex: 1;
+    border-top: thin lightgray solid;
+    display: flex;
 }
 
 h1 {
@@ -78,55 +53,6 @@ header>div>img {
     margin: 10px;
 }
 
-main {
-    flex: 6;
-    display: flex;
-    flex-wrap: wrap-reverse;
-    justify-content: space-evenly;
-}
-
-.section-container {
-    border: thin lightgray solid;
-    border-radius: 15px;
-    flex: 1;
-    margin: 15px 20px;
-}
-
-
-section {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
-section>p {
-    margin: 15px;
-}
-
-#notification-container {
-    flex: 2;
-    overflow-y: scroll;
-    height: 500px;
-}
-
-#notifications {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: medium;
-    padding: 10px;
-    width: 85%;
-}
-
-.post>img {
-    max-width: 90%;
-}
-
-button {
-    margin: 10px;
-}
-
 a {
     text-decoration: none;
 }
@@ -134,39 +60,4 @@ a {
 b {
     margin: 10px;
     font-size: larger;
-}
-
-
-footer {
-    flex: 1;
-    border-top: thin lightgray solid;
-    display: flex;
-}
-
-input {
-    margin: 3px 0px;
-    border: thin solid gray;
-    border-radius: 6px;
-}
-
-#upload {
-    background-color: white;
-    border: thin solid gray;
-    border-radius: 10px;
-    margin-left: 40px;
-}
-
-.card {
-    width: 300px;
-}
-
-.card>img {
-    max-width: 100%;
-    max-height: 50%;
-}
-
-#total-protein,
-#total-fat,
-#total-carbs {
-    margin: 0 5px;
 }
