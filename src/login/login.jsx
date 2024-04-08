@@ -2,13 +2,17 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import {Create} from './create';
 import './login.css'
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
   const [username, setUsername] = React.useState(JSON.parse(localStorage.getItem("this-user")).username ?? "");
   const [password, setPassword] = React.useState("");
   const [createAccount, setShow] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
+
   const handleCreateAccount = () => setShow(true);
 
   const onChangeUser = (e) => {
@@ -17,6 +21,10 @@ export function Login() {
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+  }
+
+  const onChangeAlert = (b) => {
+    setAlert(b);
   }
 
   return (
@@ -37,17 +45,24 @@ export function Login() {
           Create Account
         </Button>
       </div>
+      <Alert show={alert}></Alert>
     </main>
   );
+
+function Alert({show}){
+  return show ? (
+    <div
+      className="alert alert-danger"
+      role="alert"
+      id="login-alert"
+    >Invalid username or password</div>) : null;
 }
 
 async function authenticateUser() {
-  let login_alert = document.getElementById("login-alert");
-  login_alert.style.display = "none";
+  onChangeAlert(false);
 
   if (password === "" || username === "") {
-    login_alert.style.display = "block";
-    login_alert.textContent = "Please enter your username and password!";
+    onChangeAlert(true);
     return;
   }
 
@@ -67,9 +82,9 @@ async function authenticateUser() {
   if (response.ok) {
     let body = await response.json();
     localStorage.setItem("this-user", JSON.stringify(body));
-    document.location.href = "main.html";
+    navigate("/home");
   } else {
-    login_alert.style.display = "block";
-    login_alert.textContent = "Incorrect username or password";
+    onChangeAlert(true);
   }
+}
 }
