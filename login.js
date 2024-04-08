@@ -1,4 +1,4 @@
-let confirm_pw = document.getElementById("confirm");
+let confirm = document.getElementById("confirm");
 let password = document.getElementById("pw");
 
 let first = document.getElementById("fn");
@@ -17,7 +17,7 @@ username.onkeyup = () => {
   if (username.value != "") username.style.background = "white";
 };
 password.onchange = confirmPassword;
-confirm_pw.onkeyup = confirmPassword;
+confirm.onkeyup = confirmPassword;
 
 async function authenticateUser() {
   let username = document.getElementById("username").value;
@@ -119,7 +119,7 @@ function validateCreateAccount() {
 
   valid = confirmPassword();
 
-  if (password.value == confirm_pw.value) {
+  if (password.value == confirm.value) {
     if (password.value.length < 8) {
       create_alert.style.display = "block";
       create_alert.innerText += "Password must have at least 8 characters\n";
@@ -169,11 +169,11 @@ function confirmPassword() {
     password.style.background = "white";
   }
 
-  if (password.value != confirm_pw.value || confirm_pw.value == "") {
-    confirm_pw.style.background = alert_color;
+  if (password.value != confirm.value || confirm.value == "") {
+    confirm.style.background = alert_color;
     valid = false;
   } else {
-    confirm_pw.style.background = "white";
+    confirm.style.background = "white";
   }
 
   return valid;
