@@ -5,7 +5,7 @@ import './login.css'
 import { useNavigate } from 'react-router-dom';
 
 export function Login() {
-  const [username, setUsername] = React.useState(JSON.parse(localStorage.getItem("this-user")).username ?? "");
+  const [username, setUsername] = React.useState(localStorage.getItem("this-user")?? "");
   const [password, setPassword] = React.useState("");
   const [createAccount, setShow] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
@@ -81,7 +81,7 @@ async function authenticateUser() {
 
   if (response.ok) {
     let body = await response.json();
-    localStorage.setItem("this-user", JSON.stringify(body));
+    localStorage.setItem("this-user", body.username);
     navigate("/home");
   } else {
     onChangeAlert(true);
