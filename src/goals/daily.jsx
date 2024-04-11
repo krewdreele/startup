@@ -37,7 +37,7 @@ export function DailyGoal() {
 
   if(!edit){
   return (
-    <section id="main-goal-section">
+    <section id="goal-section">
       <h2>Daily Goals</h2>
         <p>Calories: {ltCals ? '<' : '>'} {cals}</p>
         <p>Protein: {ltProtein ? '<' : '>'} {protein}</p>
@@ -54,24 +54,29 @@ export function DailyGoal() {
 }
 else{
   return (
-    <section id="main-goal-section">
+    <section id="goal-section">
       <h2>Daily Goals</h2>
-        <p>Calories: 
+      <div id="row-section">
+        <div>
+          <p>Calories: </p>
+          <p>Protein: </p>
+          <p>Fat: </p>
+          <p>Carbs: </p>
+        </div>
+        <div>
           <Button onClick={() => setLtCals(!ltCals)}>{ltCals ? '<' : '>'}</Button>
-            <input value={cals} onChange={(e) => setCals(e.target.value)}></input>
-        </p>
-        <p>Protein: 
           <Button onClick={() => setLtProtein(!ltProtein)}>{ltProtein ? '<' : '>'}</Button>
-            <input value={protein} onChange={(e) => setProtein(e.target.value)}></input>
-        </p>
-        <p>Fat: 
           <Button onClick={() => setLtFat(!ltFat)}>{ltFat ? '<' : '>'}</Button>
-            <input value={fat} onChange={(e) => setFat(e.target.value)}></input>
-        </p>
-        <p>Carbs: 
           <Button onClick={() => setLtCarbs(!ltCarbs)}>{ltCarbs ? '<' : '>'}</Button>
-            <input value={carbs} onChange={(e) => setCarbs(e.target.value)}></input>
-        </p>
+        </div>
+        <div>
+          <input value={cals} onChange={(e) => setCals(e.target.value)}></input>
+          <input value={protein} onChange={(e) => setProtein(e.target.value)}></input>
+          <input value={fat} onChange={(e) => setFat(e.target.value)}></input>
+          <input value={carbs} onChange={(e) => setCarbs(e.target.value)}></input>
+        </div>
+      </div>
+      <div>
       <Button 
       variant='secondary-outline'
       onClick={() => {
@@ -105,6 +110,7 @@ else{
       >
       Save
       </Button>
+      </div>
     </section>
 )}
 }

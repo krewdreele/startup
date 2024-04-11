@@ -1,10 +1,10 @@
 import React from 'react';
 import { MainGoal } from './main';
 import { DailyGoal } from './daily';
-
+import "./goals.css";
 export function Goals() {
   return (
-    <main>
+    <main id="main-goal">
       <div className="section-container">
         <MainGoal></MainGoal>
       </div>

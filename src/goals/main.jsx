@@ -29,7 +29,7 @@ export function MainGoal() {
 
   if(!edit){
   return (
-    <section id="main-goal-section">
+    <section id="goal-section">
       <h2>Main Goal</h2>
         <p>Start weight: {sw}</p>
         <p>Start date: {sd}</p>
@@ -46,12 +46,23 @@ export function MainGoal() {
 }
 else{
   return (
-    <section id="main-goal-section">
+    <section id="goal-section">
       <h2>Main Goal</h2>
-        <p>Start weight: <input value={sw} onChange={(e) => setSW(e.target.value)}></input></p>
-        <p>Start date: <input value={sd} onChange={(e) => setSD(e.target.value)}></input></p>
-        <p>Goal weight: <input value={gw} onChange={(e) => setGW(e.target.value)}></input></p>
-        <p>Goal date: <input value={gd} onChange={(e) => setGD(e.target.value)}></input></p>
+      <div id="row-section">
+      <div>
+        <p>Start weight:</p> 
+        <p>Start date:</p>    
+        <p>Goal weight:</p>   
+        <p>Goal date:</p> 
+      </div>    
+      <div>
+        <input value={sw} onChange={(e) => setSW(e.target.value)}></input>
+        <input type='date' value={sd} onChange={(e) => setSD(e.target.value)}></input>
+        <input value={gw} onChange={(e) => setGW(e.target.value)}></input>
+        <input type='date' value={gd} onChange={(e) => setGD(e.target.value)}></input>
+      </div>
+      </div>
+      <div>
       <Button 
       variant='secondary-outline'
       onClick={() => {
@@ -80,6 +91,7 @@ else{
       >
       Save
       </Button>
+      </div>
     </section>
 )}
 }

@@ -1,0 +1,61 @@
+h2 {
+    margin:15px;
+}
+
+#main-goal {
+    flex: 6;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+}
+
+.section-container {
+    border: thin lightgray solid;
+    border-radius: 15px;
+    flex: 1;
+    margin: 15px 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#goal-section{
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+#goal-section > p{
+    margin: 10px;
+}
+
+#goal-section > button {
+    margin: 10px;
+}
+
+#goal-section > div > button {
+    margin: 10px;
+}
+
+#row-section{
+    display: flex;
+    flex-direction: row;
+}
+
+#row-section > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: baseline;
+}
+
+#row-section > div > p {
+    margin: 10px;
+}
+
+#row-section > div > input {
+    margin: 10px;
+}
+
+
+
