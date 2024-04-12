@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function Info({show, handleClose, item, handleLoad}) {
+export function Info({show, handleClose, item, handleDelete}) {
     const [edit, setEdit] = React.useState(false);
     const [cancel, setCancel] = React.useState(false);
     const [cals, setCals] = React.useState(item.calories);
@@ -30,7 +30,7 @@ export function Info({show, handleClose, item, handleLoad}) {
                 onClick={() => {
                     deleteMeal(item.name, username); 
                     handleClose();
-                    handleLoad();
+                    handleDelete(item.name);
                 }}
                 variant='danger'
                 >

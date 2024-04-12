@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function Add({show, handleClose, type, handleLoad}) {
+export function Add({show, handleClose, type, handleAdd}) {
     const [name, setName] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [cals, setCals] = React.useState(0);
@@ -77,8 +77,7 @@ export function Add({show, handleClose, type, handleLoad}) {
                 <Button
                 onClick={() => {
                   handleClose();
-                  handleLoad();
-                  saveMeal(name, desc, cals, protein, fat, carbs, type);}}  
+                  saveMeal(name, desc, cals, protein, fat, carbs, type, handleAdd);}}  
                 >
                 Save
                 </Button>
@@ -87,7 +86,7 @@ export function Add({show, handleClose, type, handleLoad}) {
     )
 }
 
-async function saveMeal(name, desc, cals, protein, fat, carbs, type){
+async function saveMeal(name, desc, cals, protein, fat, carbs, type, handleAdd){
     let request = {
       username: localStorage.getItem("this-user"),
       type: type,
@@ -99,6 +98,7 @@ async function saveMeal(name, desc, cals, protein, fat, carbs, type){
       carbs: carbs,
     };
 
+    handleAdd(request);
     const response = await fetch(`api/meal`, {
       method: "POST",
       headers: { "content-type": "application/json" },
