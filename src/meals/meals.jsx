@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { MealCard } from './card';
+import "./meals.css"
 
 let breakfast = [];
 let lunch = [];
@@ -18,22 +19,23 @@ export function Meals() {
   }, []);
 
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect}>
-      <Carousel.Item className='container-fluid bg-secondary text-center'>
+    <Carousel id="carousel" activeIndex={index} onSelect={handleSelect}>
+      <Carousel.Item className='container'>
         <h2>Breakfast</h2>
         <div className="card-container">{breakfast}</div>
       </Carousel.Item>
-      <Carousel.Item className='container-fluid bg-secondary text-center'>
+      <Carousel.Item className='container'>
         <h2>Lunch</h2>
         <div className="card-container">{lunch}</div>
       </Carousel.Item>
-      <Carousel.Item className='container-fluid bg-secondary text-center'>
+      <Carousel.Item className='container'>
         <h2>Dinner</h2>
         <div className="card-container">{dinner}</div>
       </Carousel.Item>
     </Carousel>
   );
 }
+
 
 async function loadMeals(breakfast, lunch, dinner) {
 
@@ -47,11 +49,11 @@ async function loadMeals(breakfast, lunch, dinner) {
     for (let i in meals) {
       let item = meals[i];
       if (item.type == "Breakfast") {
-        breakfast.push(<MealCard name={item.name} description={item.description} key={i}></MealCard>)
+        breakfast.push(<MealCard key={i} item={item}></MealCard>)
       } else if (item.type == "Lunch") {
-        lunch.push(<MealCard name={item.name} description={item.description} key={i}></MealCard>)
+        lunch.push(<MealCard key={i} item={item} ></MealCard>)
       } else if (item.type == "Dinner") {
-        dinner.push(<MealCard name={item.name} description={item.description} key={i}></MealCard>)
+        dinner.push(<MealCard key={i} item={item}></MealCard>)
       }
     } 
   }
