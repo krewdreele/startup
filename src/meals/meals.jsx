@@ -7,25 +7,25 @@ import { Add } from './add';
 import "./meals.css";
 
 export function Meals() {
-  const [index, setIndex] = useState(0);
   const [breakfast, setBreakfast] = useState([]);
-  let [lunch, setLunch] = useState([]);
-  let [dinner, setDinner] = useState([]);
+  const [lunch, setLunch] = useState([]);
+  const [dinner, setDinner] = useState([]);
 
   const [mode, setMode] = React.useState("Breakfast");
   const [showAdd, setShowAdd] = React.useState(false);
 
-  const handleSelect = (selectedIndex) => {
-    setIndex(selectedIndex);
-  }
+  const [load, setLoad] = React.useState(true);
 
   const handleClose = () => {
     setShowAdd(false);
   };
 
+  const handleLoad = () => {
+    setLoad(!load);
+  }
+
   useEffect(() => {
     let user = localStorage.getItem("this-user");
-
     async function loadMeals(){
       let response = await fetch(`api/meals?user=${user}`);
 
@@ -37,11 +37,11 @@ export function Meals() {
         setDinner(meals.filter((meal) => meal.type == "Dinner"));
       }
     } loadMeals();
-  }, [!showAdd]);
+  }, [load]);
 
   return (
     <main id="meals">
-      <Add show={showAdd} handleClose={handleClose} type={mode}></Add>
+      <Add show={showAdd} handleClose={handleClose} type={mode} handleLoad={handleLoad}></Add>
       <Tabs
         activeKey={mode}
         onSelect={(k) => setMode(k)}
@@ -51,7 +51,7 @@ export function Meals() {
         <h2>Breakfast</h2>
         <div className="card-container">{
           breakfast.map(function(meal) {
-            return <MealCard key={meal.name} item={meal}></MealCard>;
+            return <MealCard key={meal.name} item={meal} handleLoad={handleLoad}></MealCard>;
           })
           }
         </div>
@@ -61,7 +61,7 @@ export function Meals() {
         <h2>Lunch</h2>
         <div className="card-container">{
           lunch.map(function(meal){
-            return <MealCard key={meal.name} item={meal}></MealCard>;
+            return <MealCard key={meal.name} item={meal} handleLoad={handleLoad}></MealCard>;
           })
           }
         </div>
@@ -71,7 +71,7 @@ export function Meals() {
         <h2>Dinner</h2>
         <div className="card-container">{
           dinner.map(function(meal){
-            return <MealCard key={meal.name} item={meal}></MealCard>;
+            return <MealCard key={meal.name} item={meal} handleLoad={handleLoad}></MealCard>;
           })
           }
         </div>

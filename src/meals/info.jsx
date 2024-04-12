@@ -2,9 +2,15 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function Info({show, handleClose, item}) {
+export function Info({show, handleClose, item, handleLoad}) {
     const [edit, setEdit] = React.useState(false);
     const [cancel, setCancel] = React.useState(false);
+    const [cals, setCals] = React.useState(item.calories);
+    const [protein, setProtein] = React.useState(item.protein);
+    const [fat, setFat] = React.useState(item.fat);
+    const [carbs, setCarbs] = React.useState(item.carbs);
+
+    let username = localStorage.getItem("this-user");
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -13,15 +19,19 @@ export function Info({show, handleClose, item}) {
             </Modal.Header>
             <Modal.Body>
                 <div id="info">
-                    <p>Calories: {item.calories}</p>
-                    <p>Protein: {item.protein}</p>
-                    <p>Fat: {item.fat}</p>
-                    <p>Carbs: {item.carbs}</p>
+                    <p>Calories: {edit ? <input value={cals} onChange={(e) => setCals(e.target.value)}></input> : cals}</p>
+                    <p>Protein: {edit ? <input value={protein} onChange={(e) => setProtein(e.target.value)}></input> : protein}</p>
+                    <p>Fat: {edit ? <input value={fat} onChange={(e) => setFat(e.target.value)}></input> : fat}</p>
+                    <p>Carbs: {edit ? <input value={carbs} onChange={(e) => setCarbs(e.target.value)}></input> : carbs}</p>
                 </div>
             </Modal.Body>
             <Modal.Footer>
                 {edit && <Button 
-                onClick={() => deleteMeal()}
+                onClick={() => {
+                    deleteMeal(item.name, username); 
+                    handleClose();
+                    handleLoad();
+                }}
                 variant='danger'
                 >
                     Delete
@@ -42,10 +52,41 @@ export function Info({show, handleClose, item}) {
                     Cancel
                 </Button>}
 
-                {edit && <Button onClick={() => setEdit(false)}>
+                {edit && <Button onClick={() => {
+                    setEdit(false);
+                    
+                    async function saveMeal() {
+
+                    let new_meal = {
+                    username: username,
+                    type: item.type,
+                    name: item.name,
+                    description: item.description,
+                    calories: cals,
+                    protein: protein,
+                    fat: fat,
+                    carbs: carbs,
+                };
+
+                    const response = await fetch(`api/meal`, {
+                        method: "POST",
+                        headers: { "content-type": "application/json" },
+                        body: JSON.stringify(new_meal),
+                    });
+                } saveMeal();
+                }}>
                     Save Changes
                 </Button>}
             </Modal.Footer>
         </Modal>
     )
+}
+
+async function deleteMeal(name, username) {
+    
+  const response = await fetch("api/meal", {
+    method: "DELETE",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username: username, meal_name: name }),
+  });
 }

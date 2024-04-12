@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function Add({show, handleClose, type}) {
+export function Add({show, handleClose, type, handleLoad}) {
     const [name, setName] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [cals, setCals] = React.useState(0);
@@ -70,13 +70,15 @@ export function Add({show, handleClose, type}) {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant='outline-secondary'
-                        onClick={() => handleClose}
+                        onClick={() => handleClose()}
                 >
                 Cancel
                 </Button>
                 <Button
-                onClick={() => {handleClose();
-                saveMeal(name, desc, cals, protein, fat, carbs, type);}}  
+                onClick={() => {
+                  handleClose();
+                  handleLoad();
+                  saveMeal(name, desc, cals, protein, fat, carbs, type);}}  
                 >
                 Save
                 </Button>
