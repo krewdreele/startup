@@ -199,10 +199,10 @@ secureApiRouter.get("/goal", async (_req, res) => {
     } else {
       if (!user.daily_goal) {
         let daily = {
-          calories: "< 0",
-          protein: "< 0",
-          fat: "< 0",
-          carbs: "< 0",
+          calories: "0",
+          protein: "0",
+          fat: "0",
+          carbs: "0",
         };
         new_vals = {
           $set: {

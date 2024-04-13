@@ -88,7 +88,9 @@ export function Add({...props}) {
                     
                     props.addPost(post);
                     savePost(post);
+                    if(props.ws){
                     props.ws.send(JSON.stringify(post));
+                    }
                   }}  
                 >
                 Save

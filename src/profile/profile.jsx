@@ -4,8 +4,7 @@ import "./profile.css";
 import { Edit } from "./edit";
 import { Add } from "./add";
 import { Settings } from './settings';
-import { MealCard } from '../meals/card';
-
+import { Post } from './post';
 
 export function Profile({ws}) {
   let user = localStorage.getItem("this-user");
@@ -14,7 +13,7 @@ export function Profile({ws}) {
   const [settings, setSettings] = useState(false);
   const [add, setAdd] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [meals, setMeals] = useState([]);
+  
 
   const handleCloseEdit = () => {
     setEdit(false);
@@ -34,6 +33,7 @@ export function Profile({ws}) {
 
   const deletePost = (name) => {
     setPosts(posts.filter((post) => post.title !== name));
+    deletePostDB(name, user);
   }
 
   useEffect(() => {
@@ -48,18 +48,6 @@ export function Profile({ws}) {
       setPosts(posts);
     }
     loadProfile();
-  }, []);
-
-  useEffect(() => {
-    async function loadMeals(){
-
-      const response = await fetch(`api/meals?user=${user}`);
-
-      if(response.ok){
-        let meals = await response.json();
-        setMeals(meals);
-      }
-    } loadMeals();
   }, []);
 
   return (
@@ -102,27 +90,7 @@ export function Profile({ws}) {
           </Button>
           <div id='posts'>            {
             posts.map(function(post) {
-              let meal = meals.find((m) => m.name === post.meal);
-              return (
-              <div key={post.title} className="post">
-                <div className='post-header'>{post.username} 
-                  <Button onClick={() => {
-                    deletePostDB(post.title, post.username);
-                    deletePost(post.title);
-                  }}
-                  variant='danger'
-                  >
-                    X
-                  </Button>
-                </div>
-                <div className='post-body'>
-                  <p>{post.title}</p>
-                  <p>{post.date}</p>
-                  <p>{post.desc}</p>
-                </div>
-                {meal && <MealCard item={meal}></MealCard>}
-              </div>
-              );
+              return <Post key={post.title} post={post} deletePost={deletePost}></Post>
             })
           }
           </div>

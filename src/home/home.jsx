@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Search } from './search';
 import "./home.css";
+import { Post } from '../profile/post';
 
 export function Home({ws}) {
 
@@ -10,6 +11,8 @@ export function Home({ws}) {
   const [totalProtein, setTotalProtein] = useState(0);
   const [totalFat, setTotalFat] = useState(0);
   const [totalCarbs, setTotalCarbs] = useState(0);
+  const [posts, setPosts] = useState([]);
+  let user = localStorage.getItem("this-user");
 
   const handleClose = () => {
     setAddFood(false);
@@ -35,9 +38,12 @@ export function Home({ws}) {
     setTotalCarbs(totalCarbs + carbs);
   }
 
+  const addPost = (post) => {
+    setPosts([...posts, post]);
+  }
+
   useEffect ( () => {
     async function getTotals(){
-      let user = localStorage.getItem("this-user");
       let date = new Date();
       let date_str = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
 
@@ -52,6 +58,22 @@ export function Home({ws}) {
       setTotalFat(totals.fat);
       setTotalCarbs(totals.carbs);
     }
+
+    async function websocket(){
+      if(ws){
+      ws.onmessage = async (event) => {
+        const msg = JSON.parse(await event.data.text());
+        addPost(msg);
+      }
+    }
+    }
+    async function loadPosts() {
+      const response2 = await fetch(`api/posts?user=${user}`);
+      let posts = await response2.json();
+      setPosts(posts);
+    }
+    loadPosts();
+    websocket();
     getTotals();
   }, []);
 
@@ -67,7 +89,12 @@ export function Home({ws}) {
      <div className="section-container">
         <section>
           <h2>Feed</h2>
-          <div></div>
+          <div id='posts'>            {
+            posts.map(function(post) {
+              return <Post key={post.title} post={post}></Post>
+            })
+          }
+          </div>
         </section>
       </div>
       <div className="section-container">
