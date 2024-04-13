@@ -141,3 +141,12 @@ Used WebSocket to enable server side and peer to peer communication.
 - Still need to link profile to the correct user (probably easier to do with React)
 - Added some more delete functionality (meals, posts)
 - Made the posts look better and gave them a title for easier search in db
+
+## React Deliverable
+
+Ported entire project over to React
+
+- No more html
+- No more js
+- Added a bunch of jsx files instead
+- Pretty much same functionality / look but code is a lot simpler and easier to read
