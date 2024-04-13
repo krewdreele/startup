@@ -18,6 +18,7 @@
 #calendar {
     align-items: center;
     justify-content: flex-start;
+    flex: 6;
 }
 
 .datepicker {

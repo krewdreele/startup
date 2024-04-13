@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
-import "./calendar.css";
+import "./log.css";
 class Month {
   constructor(name, start_day, num_days, id) {
     this.name = name;
