@@ -35,13 +35,14 @@ const months = [
   new Month("December", 0, 31, 11),
 ];
 
-let username = localStorage.getItem("this-user");
-let date = new Date();
-let daily_goal = await loadGoal();
+
 
 export function Log() {
+  let username = localStorage.getItem("this-user");
+  let date = new Date();
   const [current_month, setCurMonth] = React.useState(months[date.getMonth()]);
   const [buttons, setButtons] = React.useState([]);
+  let daily_goal = null;
 
   const prevMonth = () => {
     let new_index = current_month.id - 1;
@@ -59,6 +60,17 @@ export function Log() {
     setCalendar(current_month, setButtons);
   }, [current_month]);
 
+  useEffect(() => {
+    async function loadGoal(){
+      const response = await fetch(`api/goal?user=${username}&type=daily`);
+
+      if (response.status === 200) {
+        daily_goal = await response.json();
+      }
+      
+    }
+    loadGoal();
+  })
 
   return (
     <main id="calendar">
@@ -168,14 +180,4 @@ async function setCalendar(current_month, setButtons){
   }
   }
   setButtons(lyst);
-}
-
-async function loadGoal() {
-  const response = await fetch(`api/goal?user=${username}&type=daily`);
-
-  if (response.status === 200) {
-    return response.json();
-  }
-  
-  return null;
 }
