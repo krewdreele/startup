@@ -26,7 +26,7 @@ export function Info({show, handleClose, item, handleDelete}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                {edit && <Button 
+                {edit && handleDelete && <Button 
                 onClick={() => {
                     deleteMeal(item.name, username); 
                     handleClose();

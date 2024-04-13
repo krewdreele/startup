@@ -3,8 +3,9 @@ import Button from 'react-bootstrap/Button';
 import {Create} from './create';
 import './login.css'
 import { useNavigate } from 'react-router-dom';
+import { initializeSocket } from './socket';
 
-export function Login() {
+export function Login({setWS}) {
   const [username, setUsername] = React.useState(localStorage.getItem("this-user")?? "");
   const [password, setPassword] = React.useState("");
   const [createAccount, setShow] = React.useState(false);
@@ -34,7 +35,7 @@ export function Login() {
         <p>Please login to continue</p>
         <input type="text" placeholder="username" onChange={(e) => onChangeUser(e)} value={username}required />
         <input type="password" placeholder="password" onChange={(e) => onChangePassword(e)}required />
-        <Button variant="info" onClick={() => authenticateUser()}>
+        <Button variant="info" onClick={() => authenticateUser(setWS)}>
           Login
         </Button>
         <p>Don't have an account?</p>
@@ -58,7 +59,7 @@ function Alert({show}){
     >Invalid username or password</div>) : null;
 }
 
-async function authenticateUser() {
+async function authenticateUser(setWS) {
   onChangeAlert(false);
 
   if (password === "" || username === "") {
@@ -82,6 +83,7 @@ async function authenticateUser() {
   if (response.ok) {
     let body = await response.json();
     localStorage.setItem("this-user", body.username);
+    setWS(initializeSocket(body.username));
     navigate("/home");
   } else {
     onChangeAlert(true);

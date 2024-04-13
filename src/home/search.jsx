@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-
-
 export function Search({...props}){
 
     const [meals, setMeals] = useState([]);
@@ -46,7 +44,10 @@ export function Search({...props}){
                 .map(function(meal) { 
                     return <Button key={meal.name} 
                     variant="outline-info"
-                    onClick={() => setSelected(meal)}
+                    onClick={() => {
+                      setSelected(meal);
+                      setSearch(meal.name);
+                    }}
                     >{meal.name}
                     </Button>;
                 })
@@ -89,7 +90,7 @@ export function Search({...props}){
                     }
                 
                     );
-                  } if(selected) saveTotals(); 
+                  } if(selected.calories) {saveTotals();} 
                 }  
                 } 
                 >

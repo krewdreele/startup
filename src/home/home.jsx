@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { Search } from './search';
 import "./home.css";
 
-export function Home() {
+export function Home({ws}) {
 
   const [addFood, setAddFood] = useState(false);
   const [totalCals, setTotalCals] = useState(0);

@@ -1,8 +1,6 @@
-let socket = null;
-
-function initializeSocket(username) {
+export function initializeSocket(username) {
   const protocol = window.location.protocol === "http:" ? "ws" : "wss";
-  socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  let socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
   socket.onopen = (event) => {
     console.log(`${username} connected`);
@@ -10,6 +8,8 @@ function initializeSocket(username) {
   socket.onclose = (event) => {
     console.log(`${username} disconnected`);
   };
+
+  return socket;
 }
 
 async function createPostHtml(post, profile = false) {

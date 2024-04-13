@@ -9,6 +9,12 @@
     height: 100vh;
 }
 
+.title {
+    font-size: xx-large;
+    color: black;
+    margin: 20px;
+}
+
 header,
 footer {
     font-family: Oxygen, sans-serif;
