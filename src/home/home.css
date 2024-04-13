@@ -43,3 +43,9 @@ section>p {
 .container {
     display: flex;
 }
+
+#meal-search-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%
+}
