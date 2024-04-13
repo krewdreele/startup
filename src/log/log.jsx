@@ -113,7 +113,7 @@ async function setCalendar(current_month, setButtons){
     }
     else{
       let hit = true;
-
+      if(daily_goal){
       if(daily_goal.ltCals){
         if(day.calories > daily_goal.calories){
           hit=false;
@@ -165,6 +165,7 @@ async function setCalendar(current_month, setButtons){
         lyst.push(<Button className='button' key={i} variant='danger'>{i}</Button>)
       }
     }
+  }
   }
   setButtons(lyst);
 }
